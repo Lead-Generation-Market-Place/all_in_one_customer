@@ -12,11 +12,14 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+  flutter_localizations:
+    sdk: flutter
   provider: ^6.1.5
   flutter_smart_dialog: ^4.9.8+8
   cached_network_image: ^3.4.1
   lottie: ^3.3.1
   flutter_launcher_icons: ^0.14.4
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -28,16 +31,19 @@ flutter_launcher_icons:
   ios: true
 
 
+
   flutter_lints: ^5.0.0
 
 flutter:
-
+  generate: true
   uses-material-design: true
   assets:
     - assets/lottie/
     - assets/icons/
     - assets/images/
     - assets/images/splash_1.jpg
+
+
   # example:
   # fonts:
   #   - family: Schyler
@@ -53,3 +59,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
