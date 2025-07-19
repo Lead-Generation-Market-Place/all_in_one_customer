@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:yelpax/config/localization/l10n/l10n.dart';
 import 'package:yelpax/config/localization/locale_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:yelpax/config/themes/theme_provider.dart';
 import 'generated/app_localizations.dart';
 
 void main() {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<LocaleProvider>(context);
-
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       locale: provider.locale,
       supportedLocales: L10n.all,
@@ -33,9 +34,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: themeProvider.themeData,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
