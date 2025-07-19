@@ -1,16 +1,25 @@
-# yelpax
+# 📱 all_in_one_customer
 
-A new Flutter project.
+> Flutter Mobile App for the "All-In-One" Platform  
+> Customer-side application built with Clean Architecture, RestAPI, and Provider.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🧩 Overview
 
-A few resources to get you started if this is your first Flutter project:
+**all_in_one_customer** is the customer-facing mobile application of the **All-In-One Super App** platform. Inspired by platforms like **Groupon** and **Thumbtack**, the app allows users to:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Discover local services and deals
+- Chat with service providers
+- Book appointments
+- Track orders
+- Manage their profile
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This mobile app is built in **Flutter**, with **Provider** for state management and **REST API** as the backend.
+
+---
+
+## 🏗️ Architecture
+
+This project follows **Clean Architecture** with a modular, scalable folder structure and clearly separated layers:
+
