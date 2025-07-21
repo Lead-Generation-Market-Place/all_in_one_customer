@@ -1,26 +1,42 @@
 import 'package:flutter/material.dart';
 
+import '../../core/utils/app_restart.dart';
+
 class UnexpectedErrorScreen extends StatelessWidget {
-  const UnexpectedErrorScreen({super.key});
+  String message;
+  UnexpectedErrorScreen({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.warning_amber_rounded, size: 48, color: Colors.red),
-              SizedBox(height: 12),
-              Text(
+              const Icon(
+                Icons.warning_amber_rounded,
+                size: 48,
+                color: Colors.red,
+              ),
+              const SizedBox(height: 12),
+              Text(message),
+              const Text(
                 "Something went wrong!",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, color: Colors.red),
               ),
-              SizedBox(height: 12),
-              Text("Please restart the app or contact support."),
+              const SizedBox(height: 12),
+              const Text("Please restart the app or contact support."),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: () {
+                  RestartWidget.restartApp(context);
+                },
+                icon: const Icon(Icons.refresh),
+                label: const Text("Restart App"),
+              ),
             ],
           ),
         ),

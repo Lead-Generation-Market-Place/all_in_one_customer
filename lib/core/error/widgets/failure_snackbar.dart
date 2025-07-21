@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/core/error/failure.dart';
+import 'package:yelpax/core/error/failures/failure.dart';
 
 void showFailureSnackbar(BuildContext context, Failure failure) {
   ScaffoldMessenger.of(context).showSnackBar(

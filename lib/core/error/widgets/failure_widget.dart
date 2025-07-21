@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yelpax/generated/app_localizations.dart';
-import 'failure.dart';
+import '../failures/failure.dart';
 
 class FailureWidget extends StatelessWidget {
   final Failure failure;

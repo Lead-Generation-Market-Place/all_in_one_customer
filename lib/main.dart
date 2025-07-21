@@ -1,15 +1,53 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/config/localization/l10n/l10n.dart';
 import 'package:yelpax/config/localization/locale_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:yelpax/config/routes/router.dart';
 import 'package:yelpax/config/themes/theme_provider.dart';
+import 'package:yelpax/core/utils/app_restart.dart';
 import 'package:yelpax/providers/providers.dart';
+import 'package:yelpax/shared/screens/unexpected_error_screen.dart';
 import 'config/themes/theme_mode_type.dart';
 import 'generated/app_localizations.dart';
 
 void main() {
-  runApp(MultiProvider(providers: appProviders, child: const MyApp()));
+  runZonedGuarded(
+    () {
+      WidgetsFlutterBinding.ensureInitialized();
+      FlutterError.onError = (FlutterErrorDetails details) {
+        runApp(
+          RestartWidget(
+            child: MaterialApp(
+              home: UnexpectedErrorScreen(message: details.toString()),
+            ),
+          ),
+        );
+      };
+
+      runApp(
+        RestartWidget(
+          child: MultiProvider(providers: appProviders, child: const MyApp()),
+        ),
+      );
+    },
+    (error, stack) {
+      Logger().log(
+        Level.error,
+        "Dart Server Error occured on $error on Stack \n $stack",
+      );
+      runApp(
+        RestartWidget(
+          child: MaterialApp(
+            home: UnexpectedErrorScreen(message: error.toString()),
+          ),
+        ),
+      );
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,6 +60,8 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp(
+      onGenerateRoute: AppRouter.generateRoute,
+      onUnknownRoute: (settings) => AppRouter.unknownRoute(settings),
       locale: provider.locale,
       supportedLocales: L10n.all,
       localizationsDelegates: [

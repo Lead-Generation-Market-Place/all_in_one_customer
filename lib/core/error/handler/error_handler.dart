@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:logger/logger.dart';
-import 'package:yelpax/core/error/exceptions.dart';
-import 'package:yelpax/core/error/failure.dart';
+import 'package:yelpax/core/error/exceptions/exceptions.dart';
+import 'package:yelpax/core/error/failures/failure.dart';
 
 class ErrorHandler {
   static final _logger = Logger();
