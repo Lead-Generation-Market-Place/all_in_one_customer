@@ -22,4 +22,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get icrement => 'Increment';
+
+  @override
+  String get retry => 'Retry';
 }

@@ -22,4 +22,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get icrement => 'اضافه';
+
+  @override
+  String get retry => 'دوباره';
 }

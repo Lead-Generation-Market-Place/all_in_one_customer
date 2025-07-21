@@ -4,5 +4,6 @@
   "login": "ورود",
   "signup": "ثبت نام",
   "welcome": "خوش آمدید!",
-  "icrement":"اضافه"
+  "icrement": "اضافه",
+  "retry": "دوباره"
 }

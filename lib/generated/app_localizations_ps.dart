@@ -22,4 +22,7 @@ class AppLocalizationsPs extends AppLocalizations {
 
   @override
   String get icrement => 'اضافه';
+
+  @override
+  String get retry => 'هڅه';
 }

@@ -4,6 +4,6 @@
   "login": "Login",
   "signup": "Sign Up",
   "welcome": "Welcome!",
-  "icrement":"Increment"
-
+  "icrement": "Increment",
+  "retry": "Retry"
 }
