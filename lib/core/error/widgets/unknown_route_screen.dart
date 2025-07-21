@@ -18,10 +18,14 @@ class UnknowRouteScreen extends StatelessWidget {
             children: [
               Icon(Icons.error_outline, size: 64, color: Colors.red),
               const SizedBox(height: 16),
-              Text(
-                message,
-                style: TextStyle(fontSize: 18),
-                textAlign: TextAlign.center,
+              ListView(
+                children: [
+                  Text(
+                    message,
+                    style: TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
               const SizedBox(height: 24),
               if (onRetry != null)

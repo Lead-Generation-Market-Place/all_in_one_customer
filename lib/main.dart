@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
@@ -11,23 +12,25 @@ import 'package:yelpax/config/themes/theme_provider.dart';
 import 'package:yelpax/core/utils/app_restart.dart';
 import 'package:yelpax/providers/providers.dart';
 import 'package:yelpax/shared/screens/unexpected_error_screen.dart';
+import 'package:yelpax/shared/screens/unexpected_release_mode_error.dart';
 import 'config/themes/theme_mode_type.dart';
 import 'generated/app_localizations.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   runZonedGuarded(
     () {
       WidgetsFlutterBinding.ensureInitialized();
-      FlutterError.onError = (FlutterErrorDetails details) {
-        runApp(
-          RestartWidget(
-            child: MaterialApp(
-              home: UnexpectedErrorScreen(message: details.toString()),
-            ),
-          ),
+      ErrorWidget.builder = (FlutterErrorDetails details) {
+        if (kReleaseMode) {
+          return UnexpectedReleaseModeError(message: details.toString());
+        }
+        return MaterialApp(
+          navigatorKey: navigatorKey,
+          home: UnexpectedErrorScreen(message: details.toString()),
         );
       };
-
       runApp(
         RestartWidget(
           child: MultiProvider(providers: appProviders, child: const MyApp()),
@@ -39,13 +42,13 @@ void main() {
         Level.error,
         "Dart Server Error occured on $error on Stack \n $stack",
       );
-      runApp(
-        RestartWidget(
-          child: MaterialApp(
-            home: UnexpectedErrorScreen(message: error.toString()),
-          ),
+
+      navigatorKey.currentState!.push(
+        MaterialPageRoute(
+          builder: (context) => UnexpectedErrorScreen(message: 'message'),
         ),
       );
+      // navigatorKey.currentState!.pushNamed(AppRouter.unknownRouteScreen);
     },
   );
 }
@@ -60,6 +63,7 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp(
+      navigatorKey: navigatorKey,
       onGenerateRoute: AppRouter.generateRoute,
       onUnknownRoute: (settings) => AppRouter.unknownRoute(settings),
       locale: provider.locale,
@@ -138,7 +142,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          throw Exception('Exception');
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

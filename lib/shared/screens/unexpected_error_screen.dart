@@ -12,8 +12,7 @@ class UnexpectedErrorScreen extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: ListView(
             children: [
               const Icon(
                 Icons.warning_amber_rounded,
@@ -21,12 +20,9 @@ class UnexpectedErrorScreen extends StatelessWidget {
                 color: Colors.red,
               ),
               const SizedBox(height: 12),
+
               Text(message),
-              const Text(
-                "Something went wrong!",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, color: Colors.red),
-              ),
+
               const SizedBox(height: 12),
               const Text("Please restart the app or contact support."),
               const SizedBox(height: 20),
