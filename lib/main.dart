@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: AppRouter.generateRoute,
       onUnknownRoute: (settings) => AppRouter.unknownRoute(settings),
       locale: provider.locale,
+
       supportedLocales: L10n.all,
       localizationsDelegates: [
         AppLocalizations.delegate, // <- Generated
@@ -118,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text('Texting Fonts'),
             DropdownButton<ThemeModeType>(
               value: widget.themeProvider.currentTheme,
               items: ThemeModeType.values.map((type) {
@@ -132,7 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               },
             ),
-
             Text(AppLocalizations.of(context)!.icrement),
             Text(
               '$_counter',
@@ -142,9 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          throw Exception('Exception');
-        },
+        onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
