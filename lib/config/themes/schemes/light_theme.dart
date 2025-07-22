@@ -4,4 +4,5 @@ final lightTheme = ThemeData(
   brightness: Brightness.light,
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+  fontFamily: 'Inter',
 );
