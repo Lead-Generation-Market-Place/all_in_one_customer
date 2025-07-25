@@ -1,5 +1,7 @@
 // lib/core/init/app_initializer.dart
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class AppInitializer {
   static Future<void> initializeApp() async {
     // Example: Load user session, remote config, Firebase, etc.
