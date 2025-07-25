@@ -12,7 +12,7 @@ class APIService {
 
   String get baseUrl {
     if (kDebugMode) {
-      return 'test url';
+      return 'https://dummyjson.com/auth';
     }
 
     return 'production url';

@@ -9,8 +9,8 @@ import 'package:yelpax/config/localization/locale_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:yelpax/config/routes/router.dart';
 import 'package:yelpax/config/themes/theme_provider.dart';
+import 'package:yelpax/core/constants/app_constants.dart';
 import 'package:yelpax/core/utils/app_restart.dart';
-import 'package:yelpax/features/splash/presentation/splash_screen.dart';
 import 'package:yelpax/providers/providers.dart';
 import 'package:yelpax/shared/screens/unexpected_error_screen.dart';
 import 'package:yelpax/shared/screens/unexpected_release_mode_error.dart';
@@ -56,7 +56,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<LocaleProvider>(context);
@@ -71,13 +70,13 @@ class MyApp extends StatelessWidget {
 
       supportedLocales: L10n.all,
       localizationsDelegates: [
-        AppLocalizations.delegate, // <- Generated
+        AppLocalizations.delegate, // <- Generated file to use localization
 
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      title: 'Flutter Demo',
+      title: AppConstants.app_name,
       theme: themeProvider.themeData,
     );
   }

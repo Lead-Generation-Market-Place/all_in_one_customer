@@ -8,7 +8,7 @@ class AuthRemoteDataSource {
 
   Future<SigninModel> signIn(String email, String password) async {
     final Response response = await _service.request(
-      'login',
+      '/login',
       DioMethod.post,
       contentType: 'application/json',
       param: {'email': email, 'password': password},
