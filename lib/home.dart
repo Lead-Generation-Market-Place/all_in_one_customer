@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/app/presentation/shell/widgets/custom_bottom_nav.dart';
 import 'package:yelpax/config/routes/router.dart';
-import 'package:yelpax/config/themes/theme_mode_type.dart';
+
 import 'package:yelpax/config/themes/theme_provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -37,6 +38,11 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 1,
+        onTap: (int value) {},
       ),
     );
   }
