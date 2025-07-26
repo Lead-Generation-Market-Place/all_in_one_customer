@@ -5,4 +5,5 @@ final lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
   fontFamily: 'Inter',
+  cardColor: Colors.indigoAccent,
 );

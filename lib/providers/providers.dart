@@ -10,5 +10,5 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider(create: (_) => ThemeProvider()),
   ChangeNotifierProvider(create: (_) => LocaleProvider()),
   ChangeNotifierProvider(create: (_) => createSignInController()),
-  ChangeNotifierProvider(create: (context) => createOnboardingController()),
+  ChangeNotifierProvider(create: (_) => createOnboardingController()),
 ];

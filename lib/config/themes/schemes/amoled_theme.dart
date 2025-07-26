@@ -4,8 +4,6 @@ final amoledTheme = ThemeData(
   brightness: Brightness.dark,
   scaffoldBackgroundColor: Colors.black,
   useMaterial3: true,
-  colorScheme: const ColorScheme.dark(
-    primary: Colors.teal,
-    background: Colors.black,
-  ),
+  colorScheme: const ColorScheme.dark(primary: Colors.teal),
+  cardColor: Colors.tealAccent,
 );

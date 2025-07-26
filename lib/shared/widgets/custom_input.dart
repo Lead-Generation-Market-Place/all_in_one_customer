@@ -83,7 +83,9 @@ class _CustomInputFieldState extends State<CustomInputField> {
           borderSide: const BorderSide(color: AppColors.error, width: 1.5),
         ),
         filled: true,
-        fillColor: widget.isEnabled ? AppColors.white : Colors.grey[200],
+        fillColor: widget.isEnabled
+            ? AppColors.neutral200
+            : AppColors.neutral500,
         errorStyle: const TextStyle(
           color: AppColors.error,
           fontSize: 13,

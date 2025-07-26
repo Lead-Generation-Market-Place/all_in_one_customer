@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:yelpax/app/presentation/shell/widgets/custom_bottom_nav.dart';
 import 'package:yelpax/config/routes/router.dart';
-
-import 'package:yelpax/config/themes/theme_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-
     return Scaffold(
       appBar: AppBar(title: const Text('Home')),
       body: Center(

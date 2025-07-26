@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/utils/app_restart.dart';
 
 class UnexpectedErrorScreen extends StatelessWidget {
-  String message;
+  final String message;
   UnexpectedErrorScreen({super.key, required this.message});
 
   @override

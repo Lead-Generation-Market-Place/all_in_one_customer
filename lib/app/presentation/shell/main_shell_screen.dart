@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../features/featured/presentation/screens/featured_screen.dart';
 import 'widgets/custom_bottom_nav.dart';
 
 class MainShellScreen extends StatefulWidget {
@@ -47,14 +48,6 @@ class _MainShellScreenState extends State<MainShellScreen> {
 }
 
 //Testing screens
-class FeaturedScreen extends StatelessWidget {
-  const FeaturedScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text('Featured Screen')));
-  }
-}
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -67,13 +60,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   void initState() {
     print('categories init state initilaized');
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     print('categories Screen disposed');
   }

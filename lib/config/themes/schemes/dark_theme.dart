@@ -7,4 +7,5 @@ final darkTheme = ThemeData(
     seedColor: Colors.indigo,
     brightness: Brightness.dark,
   ),
+  cardColor: Colors.grey[300],
 );

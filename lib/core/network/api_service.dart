@@ -44,8 +44,6 @@ class APIService {
           return dio.put(endpoint, data: param ?? formData);
         case DioMethod.delete:
           return dio.delete(endpoint, data: param ?? formData);
-        default:
-          return dio.post(endpoint, data: param ?? formData);
       }
     } catch (e) {
       throw Exception('Network error');

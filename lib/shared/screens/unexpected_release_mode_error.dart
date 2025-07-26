@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/utils/app_restart.dart';
 
 class UnexpectedReleaseModeError extends StatelessWidget {
-  String message;
+  final String message;
   UnexpectedReleaseModeError({super.key, required this.message});
 
   @override
