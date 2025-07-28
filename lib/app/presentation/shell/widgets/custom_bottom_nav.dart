@@ -22,7 +22,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.featured_play_list_outlined),
           activeIcon: Icon(Icons.featured_play_list),
-          label: 'Featured',
+          label: 'Promotion',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.category_outlined),
@@ -35,14 +35,14 @@ class CustomBottomNavigationBar extends StatelessWidget {
           label: 'Notifications',
         ),
         BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.heart),
-          activeIcon: Icon(CupertinoIcons.heart_fill),
-          label: 'Saved',
+          icon: Icon(Icons.sell_outlined),
+          activeIcon: Icon(Icons.sell),
+          label: 'Sell',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          activeIcon: Icon(Icons.person),
-          label: 'Profile',
+          icon: Icon(Icons.settings_outlined),
+          activeIcon: Icon(Icons.settings),
+          label: 'Settings',
         ),
       ],
     );

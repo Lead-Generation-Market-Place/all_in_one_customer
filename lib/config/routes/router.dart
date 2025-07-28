@@ -3,7 +3,7 @@ import 'package:yelpax/app/presentation/shell/main_shell_screen.dart';
 import 'package:yelpax/core/error/widgets/unknown_route_screen.dart';
 import 'package:yelpax/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:yelpax/features/signin/presentation/screens/sign_in_screen.dart';
-import '../../features/featured/presentation/screens/featured_screen.dart';
+import '../../features/promotion/presentation/screens/promotion_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
 
 class AppRouter {
@@ -24,7 +24,7 @@ class AppRouter {
       case onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
       case featured:
-        return MaterialPageRoute(builder: (_) => const FeaturedScreen());
+        return MaterialPageRoute(builder: (_) => const PromotionScreen());
       // case login:
       //   return MaterialPageRoute(builder: (_) => const LoginScreen());
       case signIn:
