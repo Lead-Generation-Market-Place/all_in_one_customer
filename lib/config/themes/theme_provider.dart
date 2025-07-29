@@ -10,6 +10,7 @@ class ThemeProvider extends ChangeNotifier {
   ThemeModeType get currentTheme => _currentTheme;
 
   void setTheme(ThemeModeType type) {
+    if (_currentTheme == type) return;
     _currentTheme = type;
     notifyListeners();
   }

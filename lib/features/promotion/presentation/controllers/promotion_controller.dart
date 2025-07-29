@@ -1,38 +1,69 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:yelpax/config/routes/router.dart';
 
 class PromotionController extends ChangeNotifier {
   final ScrollController _scrollController = ScrollController();
-  ScrollController get scrollController =>
-      _scrollController; //Scroll Controller
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-
-  void onDispose() {
-    print('disposed');
-    _scrollController.dispose();
-    _scrollController.removeListener(() => _scrollController);
+  bool _refreshLoading = false;
+  bool _categoryLoading = false;
+  List _categories = [];
+  PromotionController() {
+    _scrollController.addListener(_scrollListener);
   }
 
-  void onInit() {
-    _scrollController.addListener(() {
-      if (_scrollController.offset < -50) {
-        if (!_isLoading) {
-          retry();
-        }
-      }
-    });
+  ScrollController get scrollController => _scrollController;
+  bool get refreshLoading => _refreshLoading;
+  bool get categoryLoading => _categoryLoading;
+  List get categories => _categories;
+
+  void _scrollListener() {
+    if (_scrollController.offset < -50 && !_refreshLoading) {
+      retry();
+    }
   }
 
-  Future retry() async {
+  Future getCategories() async {
     try {
+      _categoryLoading = true;
       notifyListeners();
-      _isLoading = true;
+      await Future.delayed(Duration(seconds: 4));
+      categories.add('Grocery');
+      categories.add('Foods');
+      categories.add('Shooping');
+      categories.add('Home Services');
+      categories.add('IT');
+    } catch (e) {
+      _categories = [];
+      print('errr on _category loading');
+    } finally {
+      _categoryLoading = false;
+      notifyListeners();
+    }
+  }
+
+  openCategory(String title, BuildContext context) {
+    switch (title) {
+      case 'Grocery':
+        return Navigator.pushNamed(context, AppRouter.grocery);
+    }
+  }
+
+  Future<void> retry() async {
+    _refreshLoading = true;
+    notifyListeners();
+    try {
       await Future.delayed(Duration(seconds: 5));
     } catch (e) {
-      print(e);
+      print('❌ Error: $e');
     } finally {
+      _refreshLoading = false;
       notifyListeners();
-      _isLoading = false;
     }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
   }
 }

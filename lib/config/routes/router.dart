@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yelpax/app/presentation/shell/main_shell_screen.dart';
 import 'package:yelpax/core/error/widgets/unknown_route_screen.dart';
+import 'package:yelpax/features/grocery/presentation/screens/grocery_screen_homepage.dart';
 import 'package:yelpax/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:yelpax/features/signin/presentation/screens/sign_in_screen.dart';
 import '../../features/promotion/presentation/screens/promotion_screen.dart';
@@ -14,6 +15,7 @@ class AppRouter {
   static const String main_shell_screen = '/mainshellscreen';
   static const String onboarding = '/onboarding';
   static const String featured = '/featured';
+  static const String grocery = '/grocery';
 
   static const String unknownRouteScreen = '/unknownRouteScreen';
 
@@ -31,11 +33,14 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => SignInScreen());
       case home:
         return MaterialPageRoute(builder: (_) => const MainShellScreen());
+      case grocery:
+        return MaterialPageRoute(builder: (_) => const GroceryScreenHomepage());
       case unknownRouteScreen:
         return MaterialPageRoute(
           builder: (_) =>
               const UnknowRouteScreen(message: 'Unknown Route Screen'),
         );
+
       default:
         return MaterialPageRoute(
           builder: (_) => const UnknowRouteScreen(message: "Unknown Route!"),
