@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:yelpax/core/constants/height.dart';
 import 'package:yelpax/core/constants/width.dart';
 import 'package:yelpax/features/promotion/presentation/controllers/promotion_controller.dart';
-import 'package:yelpax/features/promotion/presentation/widgets/category_widget.dart';
 import 'package:yelpax/features/promotion/presentation/widgets/notice_banner.dart';
 import 'package:yelpax/features/promotion/presentation/widgets/sliver_appbar.dart';
 
@@ -82,12 +81,18 @@ class _PromotionScreenState extends State<PromotionScreen> {
                         itemCount: _controller.categories.length,
 
                         itemBuilder: (context, index) {
-                          return buildCategory(context, value.categories, () {
-                            value.openCategory(
-                              value.categories[index],
-                              context,
-                            );
-                          }, index);
+                          return _buildCategory(
+                            context,
+                            value.categories,
+                            () {
+                              value.openCategory(
+                                value.categories[index],
+                                context,
+                              );
+                            },
+                            index,
+                            'assets/images/y_logo.png',
+                          );
                         },
                       ),
                     );
@@ -109,4 +114,31 @@ class _PromotionScreenState extends State<PromotionScreen> {
       ),
     );
   }
+}
+
+//static widgets
+Widget _buildCategory(
+  BuildContext context,
+  List categories,
+  VoidCallback onPress,
+  int index,
+  String imageUrl,
+) {
+  return Card(
+    child: Column(
+      children: [
+        InkWell(
+          onTap: onPress,
+          child: Container(
+            height: height(context) / 15,
+            width: width(context) / 3,
+            decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage(imageUrl)),
+            ),
+          ),
+        ),
+        Text(categories[index]),
+      ],
+    ),
+  );
 }

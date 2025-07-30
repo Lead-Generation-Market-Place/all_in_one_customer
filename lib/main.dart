@@ -67,11 +67,9 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: AppRouter.generateRoute,
       onUnknownRoute: (settings) => AppRouter.unknownRoute(settings),
       locale: provider.locale,
-
       supportedLocales: L10n.all,
       localizationsDelegates: [
         AppLocalizations.delegate, // <- Generated file to use localization
-
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

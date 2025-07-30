@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-final groceryTheme = ThemeData(
+final homeServicesTheme = ThemeData(
   brightness: Brightness.light,
   scaffoldBackgroundColor: Colors.white,
   useMaterial3: true,
-  colorScheme: const ColorScheme.light(primary: Colors.green),
-  cardColor: Colors.greenAccent,
+  colorScheme: const ColorScheme.light(primary: Colors.cyan),
+  cardColor: Colors.cyanAccent,
   textTheme: TextTheme(
     titleSmall: TextStyle(
       fontSize: 20,
@@ -41,8 +41,8 @@ final groceryTheme = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(color: Colors.grey[800]),
     hintStyle: TextStyle(color: Colors.grey[600]),
-    fillColor: Colors.green[50], // Light green background
-    iconColor: Colors.green[700],
+    fillColor: Colors.cyan[50], // Light cyan background
+    iconColor: Colors.cyan[800],
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: BorderSide(color: Colors.grey[400]!),
@@ -53,7 +53,7 @@ final groceryTheme = ThemeData(
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: Colors.green[700]!, width: 1.8),
+      borderSide: BorderSide(color: Colors.cyan[800]!, width: 1.8),
     ),
     filled: true,
     errorStyle: const TextStyle(

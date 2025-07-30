@@ -8,6 +8,7 @@ class PromotionController extends ChangeNotifier {
   List _categories = [];
   PromotionController() {
     _scrollController.addListener(_scrollListener);
+    getCategories();
   }
 
   ScrollController get scrollController => _scrollController;
@@ -44,6 +45,8 @@ class PromotionController extends ChangeNotifier {
     switch (title) {
       case 'Grocery':
         return Navigator.pushNamed(context, AppRouter.grocery);
+      case 'Home Services':
+        return Navigator.pushNamed(context, AppRouter.homeServices);
     }
   }
 

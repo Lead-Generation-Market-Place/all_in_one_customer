@@ -11,7 +11,7 @@ Widget buildNoticeBanner(BuildContext context) {
     ),
     child: Text(
       textAlign: TextAlign.center,
-      style: TextStyle(color: Theme.of(context).primaryColorLight),
+      style: Theme.of(context).textTheme.bodySmall,
       'Execulusive: Up to 30% off local in-app invite-only. start saving now code ',
     ),
   );

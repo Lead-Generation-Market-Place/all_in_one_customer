@@ -3,7 +3,7 @@ import 'theme_mode_type.dart';
 import 'themes.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeModeType _currentTheme = ThemeModeType.light;
+  ThemeModeType _currentTheme = ThemeModeType.dark;
 
   ThemeData get themeData => AppTheme.getThemeByType(_currentTheme);
 

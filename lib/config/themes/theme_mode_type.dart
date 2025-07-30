@@ -1,1 +1,1 @@
-enum ThemeModeType { light, dark, amoled, food, grocery }
+enum ThemeModeType { light, dark, homeServices, food, grocery }

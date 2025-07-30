@@ -22,15 +22,6 @@ class _GroceryScreenHomepageState extends State<GroceryScreenHomepage> {
   }
 
   @override
-  void dispose() {
-    final theme = Provider.of<ThemeProvider>(context, listen: false);
-    theme.setTheme(ThemeModeType.light);
-
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(

@@ -50,6 +50,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
       controller: widget.controller,
       validator: widget.validator,
       onChanged: widget.onChanged,
+
       decoration: InputDecoration(
         labelText: widget.label, // Floating label inside border
         hintText: widget.hintText,
@@ -66,32 +67,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
                 },
               )
             : (widget.suffixIcon != null ? Icon(widget.suffixIcon) : null),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 14,
-        ),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: AppColors.primaryBlue,
-            width: 1.8,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
-        ),
-        filled: true,
-        fillColor: widget.isEnabled
-            ? AppColors.neutral200
-            : AppColors.neutral500,
-        errorStyle: const TextStyle(
-          color: AppColors.error,
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-          height: 1.2,
-        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       ),
     );
   }
