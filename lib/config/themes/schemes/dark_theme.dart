@@ -31,10 +31,11 @@ final darkTheme = ThemeData(
       height: 1.2,
     ),
   ),
-  cardColor: Colors.grey[850],
+
+  cardTheme: CardThemeData(color: Colors.grey[850], elevation: 1.2),
   textTheme: TextTheme(
     titleSmall: TextStyle(
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),

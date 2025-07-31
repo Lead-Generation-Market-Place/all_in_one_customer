@@ -4,7 +4,6 @@ import 'package:yelpax/config/themes/theme_mode_type.dart';
 import 'package:yelpax/config/themes/theme_provider.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
 import 'package:yelpax/shared/widgets/custom_shimmer.dart';
-
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
 import '../../../../shared/widgets/custom_input.dart';
@@ -19,167 +18,405 @@ class HomeServicesScreen extends StatefulWidget {
 class _HomeServicesScreenState extends State<HomeServicesScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    super.initState();
+    _initializeData();
+  }
+
+  void _initializeData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final theme = Provider.of<ThemeProvider>(context, listen: false);
-      theme.setTheme(ThemeModeType.homeServices);
-      Provider.of<HomeServicesController>(
+      final controller = Provider.of<HomeServicesController>(
         context,
         listen: false,
-      ).getCategories();
+      );
+
+      theme.setTheme(ThemeModeType.homeServices);
+      controller.getCategories();
     });
-    // TODO: implement initState
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Welcome, Username'),
-        centerTitle: false,
-        actions: [
-          IconButton(
-            onPressed: () => print('Pressed'),
-            icon: Icon(Icons.person_outlined),
-          ),
-        ],
-      ),
+    return Scaffold(appBar: _buildAppBar(), body: _buildBody());
+  }
 
-      body: Container(
-        padding: const EdgeInsets.all(8),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomInputField(
-                label: 'Search',
-                hintText: 'What do you need to help with',
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Most Popular',
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.left,
-              ),
-              Consumer<HomeServicesController>(
-                builder: (context, value, child) {
-                  if (value.categoryLoading) {
-                    return CustomShimmer(
-                      layoutType: ShimmerLayoutType.horizontalList,
-                    );
-                  }
-                  if (value.categories == null) {
-                    return InkWell(child: Icon(Icons.refresh));
-                  }
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 8,
-                    ),
-                    width: width(context),
-                    height: height(context) / 6,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: value.categories.length,
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: const Text('Welcome, Username'),
+      centerTitle: false,
+      actions: [
+        IconButton(
+          onPressed: () => debugPrint('Pressed'),
+          icon: const Icon(Icons.person_outlined),
+        ),
+      ],
+    );
+  }
 
-                      itemBuilder: (context, index) {
-                        return _buildCategory(
-                          context,
-                          value.categories,
-                          () {
-                            print(
-                              'Tapped on Category : ${value.categories[index]}',
-                            );
-                          },
-                          index,
-                          'assets/images/y_logo.png',
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-              SizedBox(height: 50),
-              Text(
-                'Based on your activity',
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.left,
-              ),
-              Consumer<HomeServicesController>(
-                builder: (context, value, child) {
-                  if (value.categoryLoading) {
-                    return CustomShimmer(
-                      layoutType: ShimmerLayoutType.grid,
-                      height: height(context) / 2,
-                      itemCount: 6,
-                    );
-                  }
-                  if (value.categories == null) {
-                    return InkWell(child: Icon(Icons.refresh));
-                  }
+  Widget _buildBody() {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildSearchField(),
+            const SizedBox(height: 16),
+            _buildSectionTitle('Categories'),
+            _buildPopularCategories(),
+            const SizedBox(height: 50),
+            _buildSectionTitle('Based on your activity'),
 
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 8,
-                    ),
-                    width: width(context),
-                    height: height(context) / 1.5,
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                      ),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: value.categories.length,
-
-                      itemBuilder: (context, index) {
-                        return _buildCategory(
-                          context,
-                          value.categories,
-                          () {
-                            print(
-                              'Tapped on Category : ${value.categories[index]}',
-                            );
-                          },
-                          index,
-                          'assets/images/y_logo.png',
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
+            _buildActivityBasedCategories(),
+            _buildDivider(),
+            _buildSectionTitle('For your home'),
+            _buildAddressBasedCategory(),
+            _buildSectionTitle('Your goals', isNavigating: true),
+            _buildYourGoals(),
+            _buildDivider(),
+            _buildSectionTitle('Popular on Yelpax'),
+            _buildPopularCategories(),
+            _buildDivider(),
+            _buildSectionTitle('Trending now'),
+            _buildPopularCategories(),
+            _buildSectionTitle('Home upkeep', isNavigating: true),
+            _buildYourGoals(),
+            _buildDivider(),
+            _buildSectionTitle('More guides', isNavigating: true),
+            _buildMoreGuides(),
+            _buildDivider(),
+            _buildSectionTitle('Outdoor upkeep'),
+            _buildPopularCategories(),
+            _buildDivider(),
+            _buildSectionTitle('Essential Home Service'),
+            _buildPopularCategories(),
+          ],
         ),
       ),
     );
   }
-}
 
-//custom static widgets
-Widget _buildCategory(
-  BuildContext context,
-  List categories,
-  VoidCallback onPress,
-  int index,
-  String imageUrl,
-) {
-  return Card(
-    child: Column(
+  Widget _buildSearchField() {
+    return const CustomInputField(
+      label: 'Search',
+      hintText: 'What do you need to help with',
+    );
+  }
+
+  Widget _buildSectionTitle(String title, {bool isNavigating = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        InkWell(
-          onTap: onPress,
-          child: Container(
-            height: height(context) / 13,
-            width: width(context) / 1.8,
-            decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage(imageUrl)),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium,
+          textAlign: TextAlign.left,
+        ),
+        isNavigating
+            ? IconButton(
+                onPressed: () => print(title),
+                icon: Icon(Icons.arrow_forward_ios_outlined),
+              )
+            : SizedBox.shrink(),
+      ],
+    );
+  }
+
+  Widget _buildPopularCategories() {
+    return Consumer<HomeServicesController>(
+      builder: (context, controller, _) {
+        if (controller.categoryLoading) {
+          return const CustomShimmer(
+            layoutType: ShimmerLayoutType.horizontalList,
+          );
+        }
+
+        if (controller.categories == null) {
+          return InkWell(
+            onTap: () => controller.getCategories(),
+            child: const Icon(Icons.refresh),
+          );
+        }
+
+        return _buildHorizontalCategoryList(controller.categories);
+      },
+    );
+  }
+
+  Widget _buildActivityBasedCategories() {
+    return Consumer<HomeServicesController>(
+      builder: (context, controller, _) {
+        if (controller.categoryLoading) {
+          return CustomShimmer(
+            layoutType: ShimmerLayoutType.grid,
+            height: height(context) / 2,
+            crossAxisCount: 2,
+            itemCount: 6,
+          );
+        }
+
+        if (controller.categories == null) {
+          return InkWell(
+            onTap: () => controller.getCategories(),
+            child: const Icon(Icons.refresh),
+          );
+        }
+
+        return _buildGridCategoryList(controller.categories);
+      },
+    );
+  }
+
+  Widget _buildHorizontalCategoryList(List categories) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      width: width(context),
+      height: height(context) / 6,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) => _buildCategoryItem(
+          context,
+          categories[index],
+          'assets/images/y_logo.png',
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridCategoryList(List categories) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      width: width(context),
+      height: height(context) / 1.5,
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+        ),
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) => _buildCategoryItem(
+          context,
+          categories[index],
+          'assets/images/y_logo.png',
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddressBasedCategory() {
+    return Consumer<HomeServicesController>(
+      builder: (context, value, child) {
+        if (value.categoryLoading) {
+          return CustomShimmer(
+            layoutType: ShimmerLayoutType.list,
+            itemCount: 3,
+          );
+        }
+        if (value.isAddressExists) {
+          return _buildHorizontalCategoryList(value.categories);
+        }
+        return Column(
+          children: [
+            Text(
+              'Add your address for more accureate pricing, find nearby pros, and useful tips.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            Row(
+              children: [
+                TextButton(
+                  onPressed: () => print('adding Address'),
+                  child: Text('Add your address ->'),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildYourGoals() {
+    return Consumer<HomeServicesController>(
+      builder: (context, value, child) {
+        if (value.categoryLoading) {
+          return CustomShimmer(
+            layoutType: ShimmerLayoutType.list,
+            itemCount: 4,
+          );
+        }
+        if (value.categories.isEmpty) {
+          return Icon(Icons.error_outline);
+        }
+        return Column(
+          children: [
+            Card(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: Theme.of(context).secondaryHeaderColor,
+                    width: width(context),
+                    height: height(context) / 5,
+                    child: Image.asset('assets/images/y_logo.png'),
+                  ),
+                  _buildSectionTitle('Keep things clean'),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    width: width(context),
+                    height: height(context) / 3.7,
+                    child: ListView.builder(
+                      itemCount: 3,
+                      itemBuilder: (context, index) =>
+                          _buildCardForGoals(value.categories, index),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Card(
+                      child: ListTile(
+                        title: Text(
+                          'View Guide ->',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 30),
+            Card(
+              child: ListTile(
+                title: Text(
+                  'Looking for  something tailored to you?',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                ),
+                subtitle: TextButton(
+                  onPressed: () => print('Tell us about button pressed'),
+                  child: Text('Tell us about your goals'),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildMoreGuides() {
+    return Consumer<HomeServicesController>(
+      builder: (context, value, child) {
+        if (value.categoryLoading) {
+          return CustomShimmer(
+            layoutType: ShimmerLayoutType.grid,
+            crossAxisCount: 1,
+            itemCount: 2,
+          );
+        }
+        if (value.categories.isEmpty) {
+          return Icon(Icons.error_outline);
+        }
+        return Container(
+          width: width(context),
+          height: height(context) / 2.5,
+
+          child: ListView.builder(
+            itemCount: 2,
+            itemBuilder: (context, index) {
+              return Card(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(8),
+                      height: height(context) / 6,
+                      width: width(context) / 4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.pink,
+                        image: const DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/splash_1.jpg'),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Icon(Icons.auto_graph),
+                          Text(
+                            'Increase home value',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          Text(
+                            'Projects that can help you add value to your home.',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            maxLines: 4,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  //static widgets
+  Widget _buildCategoryItem(
+    BuildContext context,
+    String categoryName,
+    String imageUrl,
+  ) {
+    return Card(
+      child: Column(
+        children: [
+          InkWell(
+            onTap: () => debugPrint('Tapped on Category: $categoryName'),
+            child: Container(
+              height: height(context) / 13,
+              width: width(context) / 1.8,
+              decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage(imageUrl)),
+              ),
             ),
           ),
+          Text(categoryName, style: Theme.of(context).textTheme.titleSmall),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Container(margin: const EdgeInsets.all(24), child: Divider());
+  }
+
+  Widget _buildCardForGoals(List category, int index) {
+    return Card(
+      child: ListTile(
+        leading: Image.asset('assets/images/y_logo.png'),
+        title: Text(
+          category[index],
+          style: Theme.of(context).textTheme.titleSmall,
         ),
-        Text(categories[index]),
-      ],
-    ),
-  );
+        subtitle: Text(
+          '\$${100}-150 avg.',
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        trailing: IconButton(
+          onPressed: () => print('saved'),
+          icon: Icon(Icons.bookmark_outline),
+        ),
+      ),
+    );
+  }
 }
