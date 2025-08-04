@@ -55,7 +55,7 @@ final homeServicesTheme = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(color: Colors.grey[800]),
     hintStyle: TextStyle(color: Colors.grey[600]),
-    fillColor: Colors.cyan[50], // Light cyan background
+    fillColor: Colors.white, // Light cyan background
     iconColor: Colors.cyan[800],
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/config/themes/theme_mode_type.dart';
 import 'package:yelpax/config/themes/theme_provider.dart';
@@ -54,19 +55,24 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   }
 
   Widget _buildBody() {
+    final _controller = Provider.of<HomeServicesController>(
+      context,
+      listen: false,
+    );
     return Container(
       padding: const EdgeInsets.all(8),
       child: SingleChildScrollView(
+        controller: _controller.scrollController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSearchField(),
+            _buildIsRefreshing(),
             const SizedBox(height: 16),
             _buildSectionTitle('Categories'),
             _buildPopularCategories(),
             const SizedBox(height: 50),
             _buildSectionTitle('Based on your activity'),
-
             _buildActivityBasedCategories(),
             _buildDivider(),
             _buildSectionTitle('For your home'),
@@ -90,6 +96,31 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
             _buildDivider(),
             _buildSectionTitle('Essential Home Service'),
             _buildPopularCategories(),
+            _buildDivider(),
+            _buildSectionTitle('Moving into a new home'),
+            _buildPopularCategories(),
+            _buildDivider(),
+            _buildSectionTitle('Caring for a pet'),
+            _buildPopularCategories(),
+            _buildDivider(),
+            _buildSectionTitle('Planing a wedding'),
+            _buildPopularCategories(),
+            _buildDivider(),
+            _buildSectionTitle('Home office essentials'),
+            _buildPopularCategories(),
+            _buildDivider(),
+            _buildSectionTitle('Virtual lessons'),
+            _buildPopularCategories(),
+            _buildDivider(),
+            _buildSectionTitle('Financial advising'),
+            _buildPopularCategories(),
+            _buildDivider(),
+            _buildSectionTitle('Online tutoring'),
+            _buildPopularCategories(),
+            _buildDivider(),
+            _buildGetInspiration(),
+            _buildDivider(),
+            _buildFooter(),
           ],
         ),
       ),
@@ -98,8 +129,30 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
 
   Widget _buildSearchField() {
     return const CustomInputField(
+      prefixIcon: Icons.search_outlined,
       label: 'Search',
       hintText: 'What do you need to help with',
+    );
+  }
+
+  Widget _buildIsRefreshing() {
+    return Consumer<HomeServicesController>(
+      builder: (context, value, child) {
+        return value.refreshLoading
+            ? Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: SizedBox(
+                    width: 24, // Fixed width
+                    height: 24, // Fixed height
+                    child: CircularProgressIndicator.adaptive(
+                      strokeWidth: 3, // Thinner stroke
+                    ),
+                  ),
+                ),
+              )
+            : SizedBox.shrink();
+      },
     );
   }
 
@@ -371,6 +424,66 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     );
   }
 
+  Widget _buildGetInspiration() {
+    return Consumer<HomeServicesController>(
+      builder: (context, controller, _) {
+        if (controller.categoryLoading) {
+          return const CustomShimmer(
+            layoutType: ShimmerLayoutType.horizontalList,
+            crossAxisCount: 1,
+            itemCount: 1,
+          );
+        }
+
+        if (controller.categories == null) {
+          return InkWell(
+            onTap: () => controller.getCategories(),
+            child: const Icon(Icons.refresh),
+          );
+        }
+
+        return Card(
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                    children: [
+                      Text(
+                        'Get inspiration from Yelpax projects we love.',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      TextButton(
+                        onPressed: () => print('See our favorites'),
+                        child: Text('See our favorites ->'),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  height: height(context) / 6,
+                  width: width(context) / 3,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.pink,
+                    image: const DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/images/splash_1.jpg'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   //static widgets
   Widget _buildCategoryItem(
     BuildContext context,
@@ -416,6 +529,21 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           onPressed: () => print('saved'),
           icon: Icon(Icons.bookmark_outline),
         ),
+      ),
+    );
+  }
+
+  Widget _buildFooter() {
+    return Center(
+      child: Column(
+        children: [
+          Text("Don't see what you're looking for?"),
+          TextButton(
+            onPressed: () => Logger().d('Search all services clicked'),
+            child: Text('Search all services'),
+          ),
+          SizedBox(height: 20),
+        ],
       ),
     );
   }
