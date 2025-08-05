@@ -5,9 +5,9 @@ import 'package:yelpax/config/themes/theme_mode_type.dart';
 import 'package:yelpax/config/themes/theme_provider.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
 import 'package:yelpax/shared/widgets/custom_shimmer.dart';
+import 'package:yelpax/shared/widgets/sliver_appbar.dart';
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
-import '../../../../shared/widgets/custom_input.dart';
 
 class HomeServicesScreen extends StatefulWidget {
   const HomeServicesScreen({super.key});
@@ -38,20 +38,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar(), body: _buildBody());
-  }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      title: const Text('Welcome, Username'),
-      centerTitle: false,
-      actions: [
-        IconButton(
-          onPressed: () => debugPrint('Pressed'),
-          icon: const Icon(Icons.person_outlined),
-        ),
-      ],
-    );
+    return Scaffold(body: _buildBody());
   }
 
   Widget _buildBody() {
@@ -61,98 +48,72 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     );
     return Container(
       padding: const EdgeInsets.all(8),
-      child: SingleChildScrollView(
-        controller: _controller.scrollController,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildSearchField(),
-            _buildIsRefreshing(),
-            const SizedBox(height: 16),
-            _buildSectionTitle('Categories'),
-            _buildPopularCategories(),
-            const SizedBox(height: 50),
-            _buildSectionTitle('Based on your activity'),
-            _buildActivityBasedCategories(),
-            _buildDivider(),
-            _buildSectionTitle('For your home'),
-            _buildAddressBasedCategory(),
-            _buildSectionTitle('Your goals', isNavigating: true),
-            _buildYourGoals(),
-            _buildDivider(),
-            _buildSectionTitle('Popular on Yelpax'),
-            _buildPopularCategories(),
-            _buildDivider(),
-            _buildSectionTitle('Trending now'),
-            _buildPopularCategories(),
-            _buildSectionTitle('Home upkeep', isNavigating: true),
-            _buildYourGoals(),
-            _buildDivider(),
-            _buildSectionTitle('More guides', isNavigating: true),
-            _buildMoreGuides(),
-            _buildDivider(),
-            _buildSectionTitle('Outdoor upkeep'),
-            _buildPopularCategories(),
-            _buildDivider(),
-            _buildSectionTitle('Essential Home Service'),
-            _buildPopularCategories(),
-            _buildDivider(),
-            _buildSectionTitle('Moving into a new home'),
-            _buildPopularCategories(),
-            _buildDivider(),
-            _buildSectionTitle('Caring for a pet'),
-            _buildPopularCategories(),
-            _buildDivider(),
-            _buildSectionTitle('Planing a wedding'),
-            _buildPopularCategories(),
-            _buildDivider(),
-            _buildSectionTitle('Home office essentials'),
-            _buildPopularCategories(),
-            _buildDivider(),
-            _buildSectionTitle('Virtual lessons'),
-            _buildPopularCategories(),
-            _buildDivider(),
-            _buildSectionTitle('Financial advising'),
-            _buildPopularCategories(),
-            _buildDivider(),
-            _buildSectionTitle('Online tutoring'),
-            _buildPopularCategories(),
-            _buildDivider(),
-            _buildGetInspiration(),
-            _buildDivider(),
-            _buildFooter(),
+      child: RefreshIndicator.adaptive(
+        onRefresh: () => _controller.retry(),
+        child: CustomScrollView(
+          physics: BouncingScrollPhysics(),
+          slivers: [
+            buildSliverAppbar(context),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                const SizedBox(height: 16),
+                _buildSectionTitle('Categories'),
+                _buildPopularCategories(),
+                const SizedBox(height: 50),
+                _buildSectionTitle('Based on your activity'),
+                _buildActivityBasedCategories(),
+                _buildDivider(),
+                _buildSectionTitle('For your home'),
+                _buildAddressBasedCategory(),
+                _buildSectionTitle('Your goals', isNavigating: true),
+                _buildYourGoals(),
+                _buildDivider(),
+                _buildSectionTitle('Popular on Yelpax'),
+                _buildPopularCategories(),
+                _buildDivider(),
+                _buildSectionTitle('Trending now'),
+                _buildPopularCategories(),
+                _buildSectionTitle('Home upkeep', isNavigating: true),
+                _buildYourGoals(),
+                _buildDivider(),
+                _buildSectionTitle('More guides', isNavigating: true),
+                _buildMoreGuides(),
+                _buildDivider(),
+                _buildSectionTitle('Outdoor upkeep'),
+                _buildPopularCategories(),
+                _buildDivider(),
+                _buildSectionTitle('Essential Home Service'),
+                _buildPopularCategories(),
+                _buildDivider(),
+                _buildSectionTitle('Moving into a new home'),
+                _buildPopularCategories(),
+                _buildDivider(),
+                _buildSectionTitle('Caring for a pet'),
+                _buildPopularCategories(),
+                _buildDivider(),
+                _buildSectionTitle('Planing a wedding'),
+                _buildPopularCategories(),
+                _buildDivider(),
+                _buildSectionTitle('Home office essentials'),
+                _buildPopularCategories(),
+                _buildDivider(),
+                _buildSectionTitle('Virtual lessons'),
+                _buildPopularCategories(),
+                _buildDivider(),
+                _buildSectionTitle('Financial advising'),
+                _buildPopularCategories(),
+                _buildDivider(),
+                _buildSectionTitle('Online tutoring'),
+                _buildPopularCategories(),
+                _buildDivider(),
+                _buildGetInspiration(),
+                _buildDivider(),
+                _buildFooter(),
+              ]),
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSearchField() {
-    return const CustomInputField(
-      prefixIcon: Icons.search_outlined,
-      label: 'Search',
-      hintText: 'What do you need to help with',
-    );
-  }
-
-  Widget _buildIsRefreshing() {
-    return Consumer<HomeServicesController>(
-      builder: (context, value, child) {
-        return value.refreshLoading
-            ? Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SizedBox(
-                    width: 24, // Fixed width
-                    height: 24, // Fixed height
-                    child: CircularProgressIndicator.adaptive(
-                      strokeWidth: 3, // Thinner stroke
-                    ),
-                  ),
-                ),
-              )
-            : SizedBox.shrink();
-      },
     );
   }
 
@@ -214,7 +175,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
             child: const Icon(Icons.refresh),
           );
         }
-
+        print(controller.categories.length);
         return _buildGridCategoryList(controller.categories);
       },
     );
@@ -241,12 +202,12 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       width: width(context),
-      height: height(context) / 1.5,
+      height: height(context) / 2.5,
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+          crossAxisCount: 2,
         ),
-        scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.vertical,
         itemCount: categories.length,
         itemBuilder: (context, index) => _buildCategoryItem(
           context,

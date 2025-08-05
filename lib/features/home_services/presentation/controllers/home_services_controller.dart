@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
 class HomeServicesController extends ChangeNotifier {
-  HomeServicesController() {
-    _scrollController.addListener(_scrollListener);
-  }
+  HomeServicesController() {}
+
   bool _categoryLoading = false;
   bool _isAddressExists = false;
   List _categories = [];
 
   bool get categoryLoading => _categoryLoading;
   bool get isAddressExists => _isAddressExists;
-  final ScrollController _scrollController = ScrollController();
-  ScrollController get scrollController => _scrollController;
+
   List get categories => _categories;
   bool _refreshLoading = false;
   bool get refreshLoading => _refreshLoading;
@@ -27,12 +25,6 @@ class HomeServicesController extends ChangeNotifier {
     } finally {
       _refreshLoading = false;
       notifyListeners();
-    }
-  }
-
-  void _scrollListener() {
-    if (_scrollController.offset < -50 && !_refreshLoading) {
-      retry();
     }
   }
 
@@ -59,8 +51,6 @@ class HomeServicesController extends ChangeNotifier {
 
   @override
   void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
     super.dispose();
   }
 }

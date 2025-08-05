@@ -4,7 +4,7 @@ import 'package:yelpax/core/constants/height.dart';
 import 'package:yelpax/core/constants/width.dart';
 import 'package:yelpax/features/promotion/presentation/controllers/promotion_controller.dart';
 import 'package:yelpax/features/promotion/presentation/widgets/notice_banner.dart';
-import 'package:yelpax/features/promotion/presentation/widgets/sliver_appbar.dart';
+import 'package:yelpax/shared/widgets/sliver_appbar.dart';
 
 class PromotionScreen extends StatefulWidget {
   const PromotionScreen({super.key});
@@ -22,94 +22,78 @@ class _PromotionScreenState extends State<PromotionScreen> {
     );
     return SafeArea(
       child: Scaffold(
-        body: CustomScrollView(
-          controller: _controller.scrollController,
-          slivers: [
-            buildSliverAppbar(context),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Consumer<PromotionController>(
-                  builder: (context, value, child) {
-                    return value.refreshLoading
-                        ? Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: SizedBox(
-                                width: 24, // Fixed width
-                                height: 24, // Fixed height
-                                child: CircularProgressIndicator.adaptive(
-                                  strokeWidth: 3, // Thinner stroke
-                                ),
-                              ),
-                            ),
-                          )
-                        : SizedBox.shrink();
-                  },
-                ),
-                Container(
-                  width: width(context) / 1.2,
-                  height: height(context) / 15,
-                  child: PageView.builder(
-                    scrollBehavior: ScrollBehavior(),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 2,
-                    itemBuilder: (context, index) {
-                      return buildNoticeBanner(context);
+        body: RefreshIndicator.adaptive(
+          onRefresh: () => _controller.retry(),
+          child: CustomScrollView(
+            slivers: [
+              buildSliverAppbar(context),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  Container(
+                    width: width(context) / 1.2,
+                    height: height(context) / 15,
+                    child: PageView.builder(
+                      scrollBehavior: ScrollBehavior(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 2,
+                      itemBuilder: (context, index) {
+                        return buildNoticeBanner(context);
+                      },
+                    ),
+                  ),
+                  Consumer<PromotionController>(
+                    builder: (context, value, child) {
+                      if (value.categoryLoading) {
+                        return CircularProgressIndicator.adaptive();
+                      }
+                      if (value.categories.isEmpty) {
+                        return InkWell(
+                          child: Icon(Icons.refresh),
+                          onTap: () => value.getCategories(),
+                        );
+                      }
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        width: width(context),
+                        height: height(context) / 8,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _controller.categories.length,
+
+                          itemBuilder: (context, index) {
+                            return _buildCategory(
+                              context,
+                              value.categories,
+                              () {
+                                value.openCategory(
+                                  value.categories[index],
+                                  context,
+                                );
+                              },
+                              index,
+                              'assets/images/y_logo.png',
+                            );
+                          },
+                        ),
+                      );
                     },
                   ),
-                ),
-                Consumer<PromotionController>(
-                  builder: (context, value, child) {
-                    if (value.categoryLoading) {
-                      return CircularProgressIndicator.adaptive();
-                    }
-                    if (value.categories.isEmpty) {
-                      return InkWell(
-                        child: Icon(Icons.refresh),
-                        onTap: () => value.getCategories(),
-                      );
-                    }
+                  ...List.generate(5, (index) {
                     return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 8,
-                      ),
-                      width: width(context),
-                      height: height(context) / 8,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _controller.categories.length,
-
-                        itemBuilder: (context, index) {
-                          return _buildCategory(
-                            context,
-                            value.categories,
-                            () {
-                              value.openCategory(
-                                value.categories[index],
-                                context,
-                              );
-                            },
-                            index,
-                            'assets/images/y_logo.png',
-                          );
-                        },
-                      ),
+                      width: 100,
+                      height: 500,
+                      color: Colors.amber,
+                      margin: const EdgeInsets.all(10),
                     );
-                  },
-                ),
-                ...List.generate(5, (index) {
-                  return Container(
-                    width: 100,
-                    height: 500,
-                    color: Colors.amber,
-                    margin: const EdgeInsets.all(10),
-                  );
-                }),
-              ]),
-            ),
-          ],
-          physics: BouncingScrollPhysics(),
+                  }),
+                ]),
+              ),
+            ],
+            physics: BouncingScrollPhysics(),
+          ),
         ),
       ),
     );
