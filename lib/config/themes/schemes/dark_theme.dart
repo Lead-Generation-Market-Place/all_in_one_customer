@@ -8,6 +8,7 @@ final darkTheme = ThemeData(
     seedColor: Colors.indigo,
     brightness: Brightness.dark,
   ),
+
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(color: Colors.white70),
     hintStyle: TextStyle(color: Colors.white70),

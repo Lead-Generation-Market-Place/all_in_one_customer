@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/controllers/service_professionals_controller.dart';
 import 'package:yelpax/features/onboarding/onboarding_di.dart';
 import 'package:yelpax/features/promotion/presentation/controllers/promotion_controller.dart';
 import 'package:yelpax/features/signin/auth_di.dart';

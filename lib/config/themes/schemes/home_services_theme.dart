@@ -52,6 +52,7 @@ final homeServicesTheme = ThemeData(
       color: Colors.black45,
     ),
   ),
+
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(color: Colors.grey[800]),
     hintStyle: TextStyle(color: Colors.grey[600]),

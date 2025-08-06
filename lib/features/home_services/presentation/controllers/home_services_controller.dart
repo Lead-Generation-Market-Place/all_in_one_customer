@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:yelpax/config/routes/router.dart';
 
 class HomeServicesController extends ChangeNotifier {
   HomeServicesController() {}
@@ -14,12 +16,22 @@ class HomeServicesController extends ChangeNotifier {
   bool _refreshLoading = false;
   bool get refreshLoading => _refreshLoading;
 
+  Future<void> openCategory(Map categoryDetails, BuildContext context) async {
+    print(categoryDetails);
+    Navigator.pushNamed(
+      context,
+      AppRouter.serviceProfessionalsScreen,
+      arguments: categoryDetails,
+    );
+  }
+
   Future<void> retry() async {
-    debugPrint('Loading ....');
     _refreshLoading = true;
     notifyListeners();
     try {
       await Future.delayed(Duration(seconds: 5));
+      SmartDialog.showToast('Data Loaded Successfully');
+      debugPrint('Data Loaded ....');
     } catch (e) {
       print('❌ Error: $e');
     } finally {

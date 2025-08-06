@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/app/presentation/shell/widgets/custom_bottom_nav.dart';
 import 'package:yelpax/config/themes/theme_mode_type.dart';
 import 'package:yelpax/config/themes/theme_provider.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
@@ -38,7 +39,13 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody());
+    return Scaffold(
+      body: _buildBody(),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 0,
+        onTap: (value) => print(value),
+      ),
+    );
   }
 
   Widget _buildBody() {
@@ -152,7 +159,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           );
         }
 
-        return _buildHorizontalCategoryList(controller.categories);
+        return _buildHorizontalCategoryList(controller.categories, controller);
       },
     );
   }
@@ -176,12 +183,15 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           );
         }
         print(controller.categories.length);
-        return _buildGridCategoryList(controller.categories);
+        return _buildGridCategoryList(controller.categories, controller);
       },
     );
   }
 
-  Widget _buildHorizontalCategoryList(List categories) {
+  Widget _buildHorizontalCategoryList(
+    List categories,
+    HomeServicesController controller,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       width: width(context),
@@ -193,12 +203,16 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           context,
           categories[index],
           'assets/images/y_logo.png',
+          controller,
         ),
       ),
     );
   }
 
-  Widget _buildGridCategoryList(List categories) {
+  Widget _buildGridCategoryList(
+    List categories,
+    HomeServicesController controller,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       width: width(context),
@@ -213,6 +227,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           context,
           categories[index],
           'assets/images/y_logo.png',
+          controller,
         ),
       ),
     );
@@ -228,7 +243,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           );
         }
         if (value.isAddressExists) {
-          return _buildHorizontalCategoryList(value.categories);
+          return _buildHorizontalCategoryList(value.categories, value);
         }
         return Column(
           children: [
@@ -450,17 +465,24 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     BuildContext context,
     String categoryName,
     String imageUrl,
+    HomeServicesController controller,
   ) {
     return Card(
       child: Column(
         children: [
           InkWell(
-            onTap: () => debugPrint('Tapped on Category: $categoryName'),
+            onTap: () => controller.openCategory({
+              'name': categoryName,
+              'imageUrl': imageUrl,
+            }, context),
             child: Container(
               height: height(context) / 13,
               width: width(context) / 1.8,
               decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage(imageUrl)),
+                image: DecorationImage(
+                  image: AssetImage(imageUrl),
+                  onError: (exception, stackTrace) => CircleAvatar(),
+                ),
               ),
             ),
           ),

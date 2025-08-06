@@ -4,6 +4,7 @@ import 'package:yelpax/core/constants/height.dart';
 import 'package:yelpax/core/constants/width.dart';
 import 'package:yelpax/features/promotion/presentation/controllers/promotion_controller.dart';
 import 'package:yelpax/features/promotion/presentation/widgets/notice_banner.dart';
+import 'package:yelpax/shared/widgets/custom_shimmer.dart';
 import 'package:yelpax/shared/widgets/sliver_appbar.dart';
 
 class PromotionScreen extends StatefulWidget {
@@ -44,7 +45,12 @@ class _PromotionScreenState extends State<PromotionScreen> {
                   Consumer<PromotionController>(
                     builder: (context, value, child) {
                       if (value.categoryLoading) {
-                        return CircularProgressIndicator.adaptive();
+                        return CustomShimmer(
+                          crossAxisCount: 8,
+                          scrollDirection: Axis.horizontal,
+
+                          layoutType: ShimmerLayoutType.horizontalList,
+                        );
                       }
                       if (value.categories.isEmpty) {
                         return InkWell(

@@ -3,6 +3,7 @@ import 'package:yelpax/app/presentation/shell/main_shell_screen.dart';
 import 'package:yelpax/core/error/widgets/unknown_route_screen.dart';
 import 'package:yelpax/features/grocery/presentation/screens/grocery_screen_homepage.dart';
 import 'package:yelpax/features/home_services/presentation/screens/home_services_screen.dart.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/screens/service_professionals_screen.dart';
 import 'package:yelpax/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:yelpax/features/signin/presentation/screens/sign_in_screen.dart';
 import '../../features/promotion/presentation/screens/promotion_screen.dart';
@@ -19,6 +20,8 @@ class AppRouter {
   static const String grocery = '/grocery';
   static const String homeServices = '/homeservices';
   static const String unknownRouteScreen = '/unknownRouteScreen';
+  static const String serviceProfessionalsScreen =
+      '/serviceProfessionalsScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -38,6 +41,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const GroceryScreenHomepage());
       case homeServices:
         return MaterialPageRoute(builder: (_) => const HomeServicesScreen());
+      case serviceProfessionalsScreen:
+        final arg = settings.arguments ?? {};
+        return MaterialPageRoute(
+          builder: (context) => ServiceProfessionalsScreen(serviceDetails: arg),
+        );
       case unknownRouteScreen:
         return MaterialPageRoute(
           builder: (_) =>
