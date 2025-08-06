@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/web.dart';
 
 class ServiceProfessionalsController extends ChangeNotifier {
   bool _professionalsLoading = false;
@@ -48,21 +47,21 @@ class ServiceProfessionalsController extends ChangeNotifier {
       _professionals = [
         {
           'name': 'alex',
-          'ratings': '5',
+          'ratings': 5,
           'isActive': false,
           'timesHired': 84,
           'estimatedPrice': '97\$ - \$113/hour',
         },
         {
           'name': 'pablo',
-          'ratings': '3',
+          'ratings': 3,
           'isActive': true,
           'timesHired': 20,
           'estimatedPrice': '47\$ - \$113/hour',
         },
         {
           'name': 'yameen',
-          'ratings': '2',
+          'ratings': 2,
           'isActive': true,
           'timesHired': 4,
           'estimatedPrice': '37\$ - \$13/hour',

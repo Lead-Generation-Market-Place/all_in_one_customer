@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/controllers/service_professionals_controller.dart';
+import 'package:yelpax/shared/widgets/star_rating_widget.dart';
 
 class ServiceProfessionalsScreen extends StatefulWidget {
   var serviceDetails;
@@ -41,7 +42,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
           child: Builder(
             builder: (_) {
               if (controller.professionalsLoading) {
-                return const CupertinoActivityIndicator();
+                return const CircularProgressIndicator.adaptive();
               }
 
               if (controller.professionals.isEmpty) {
@@ -58,20 +59,54 @@ class _ServiceProfessionalsView extends StatelessWidget {
                 );
               }
 
-              return ListView.separated(
-                padding: const EdgeInsets.all(16),
-                itemCount: controller.professionals.length,
-                separatorBuilder: (_, __) => const Divider(),
-                itemBuilder: (context, index) {
-                  final item = controller.professionals[index];
-                  return ListTile(
-                    title: Text(item['name']),
-                    subtitle: Text(
-                      "Rating: ${item['ratings']} | Hired: ${item['timesHired']}x",
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+
+                    child: Text(
+                      'Top 3 matching movers',
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    trailing: Text(item['estimatedPrice']),
-                  );
-                },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+
+                    child: Text('Our Criteria'),
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                      padding: const EdgeInsets.all(8),
+                      itemCount: controller.professionals.length,
+                      separatorBuilder: (_, __) => const Divider(),
+                      itemBuilder: (context, index) {
+                        final item = controller.professionals[index];
+                        return Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 40,
+                              backgroundImage: AssetImage(
+                                'assets/images/splash_1.jpg',
+                              ),
+                            ),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(item['name']),
+                                StarRatingWidget(
+                                  initialRating: item['ratings'],
+                                  onRatingChanged: (p0) => print(p0),
+                                ),
+                              ],
+                            ),
+                            trailing: Text(item['estimatedPrice']),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               );
             },
           ),
