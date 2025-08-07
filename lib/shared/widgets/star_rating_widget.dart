@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:yelpax/core/constants/width.dart';
 
 class StarRatingWidget extends StatefulWidget {
-  final int maxStars;
-  final int initialRating;
-  final Function(int) onRatingChanged;
+  final double maxStars;
+  final double initialRating;
+  final Function(double)? onRatingChanged;
+  final bool isReviewing;
+  final double size;
 
   const StarRatingWidget({
     Key? key,
     this.maxStars = 5,
-    this.initialRating = 0,
-    required this.onRatingChanged,
+    this.initialRating = 0.0,
+    this.onRatingChanged,
+    this.isReviewing = false,
+    this.size = 20,
   }) : super(key: key);
 
   @override
@@ -18,7 +22,7 @@ class StarRatingWidget extends StatefulWidget {
 }
 
 class _StarRatingState extends State<StarRatingWidget> {
-  int _currentRating = 0;
+  late double _currentRating;
 
   @override
   void initState() {
@@ -26,23 +30,34 @@ class _StarRatingState extends State<StarRatingWidget> {
     _currentRating = widget.initialRating;
   }
 
+  void _handleTap(int index) {
+    if (widget.isReviewing && widget.onRatingChanged != null) {
+      setState(() {
+        // +1 because index starts from 0
+        _currentRating = index + 1.0;
+        widget.onRatingChanged!(_currentRating);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(widget.maxStars, (index) {
+      children: List.generate(widget.maxStars.toInt(), (index) {
+        IconData icon;
+        if (index + 1 <= _currentRating.floor()) {
+          icon = Icons.star;
+        } else if (index + 0.5 <= _currentRating) {
+          icon = Icons.star_half;
+        } else {
+          icon = Icons.star_border;
+        }
+
         return GestureDetector(
-          onTap: () {
-            setState(() {
-              _currentRating = index + 1;
-              widget.onRatingChanged(_currentRating);
-            });
-          },
-          child: Icon(
-            index < _currentRating ? Icons.star : Icons.star_border,
-            color: Colors.amber,
-            size: width(context) / 30,
-          ),
+          onTap: () => _handleTap(index),
+          behavior: HitTestBehavior.opaque,
+          child: Icon(icon, color: Colors.amber, size: widget.size),
         );
       }),
     );

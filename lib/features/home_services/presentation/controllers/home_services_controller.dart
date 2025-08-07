@@ -50,6 +50,7 @@ class HomeServicesController extends ChangeNotifier {
       categories.add('Junk Removal');
       categories.add('Plumber');
       categories.add('TV Mounting');
+      categories.add('Applicance service specialists');
       categories.add('See All');
       // _isAddressExists = true;
     } catch (e) {

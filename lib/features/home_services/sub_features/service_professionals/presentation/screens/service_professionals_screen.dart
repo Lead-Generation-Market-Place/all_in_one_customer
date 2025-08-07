@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/controllers/service_professionals_controller.dart';
-import 'package:yelpax/shared/widgets/star_rating_widget.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/widgets/professional_card_widget.dart';
 
 class ServiceProfessionalsScreen extends StatefulWidget {
-  var serviceDetails;
-  ServiceProfessionalsScreen({super.key, required this.serviceDetails});
+  final dynamic serviceDetails;
+
+  const ServiceProfessionalsScreen({Key? key, required this.serviceDetails})
+    : super(key: key);
 
   @override
   State<ServiceProfessionalsScreen> createState() =>
@@ -18,10 +20,9 @@ class _ServiceProfessionalsScreenState
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) {
-        return ServiceProfessionalsController(widget.serviceDetails);
-      },
-      child: _ServiceProfessionalsView(),
+      create: (context) =>
+          ServiceProfessionalsController(widget.serviceDetails),
+      child: const _ServiceProfessionalsView(),
     );
   }
 }
@@ -32,85 +33,94 @@ class _ServiceProfessionalsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<ServiceProfessionalsController>();
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Service Professionals'),
-      ),
-      child: SafeArea(
-        child: Center(
-          child: Builder(
-            builder: (_) {
-              if (controller.professionalsLoading) {
-                return const CircularProgressIndicator.adaptive();
-              }
-
-              if (controller.professionals.isEmpty) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("No professionals found."),
-                    const SizedBox(height: 12),
-                    CupertinoButton(
-                      child: const Text("Retry"),
-                      onPressed: controller.retry,
-                    ),
-                  ],
-                );
-              }
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-
-                    child: Text(
-                      'Top 3 matching movers',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-
-                    child: Text('Our Criteria'),
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                      padding: const EdgeInsets.all(8),
-                      itemCount: controller.professionals.length,
-                      separatorBuilder: (_, __) => const Divider(),
-                      itemBuilder: (context, index) {
-                        final item = controller.professionals[index];
-                        return Card(
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 40,
-                              backgroundImage: AssetImage(
-                                'assets/images/splash_1.jpg',
-                              ),
-                            ),
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(item['name']),
-                                StarRatingWidget(
-                                  initialRating: item['ratings'],
-                                  onRatingChanged: (p0) => print(p0),
-                                ),
-                              ],
-                            ),
-                            trailing: Text(item['estimatedPrice']),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(
+          'Service Professionals',
+          style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
+      ),
+      child: SafeArea(child: _buildBody(controller, theme, textTheme)),
+    );
+  }
+
+  Widget _buildBody(
+    ServiceProfessionalsController controller,
+    ThemeData theme,
+    TextTheme textTheme,
+  ) {
+    if (controller.professionalsLoading) {
+      return const Center(child: CircularProgressIndicator.adaptive());
+    }
+
+    if (controller.professionals.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("No professionals found", style: textTheme.bodyLarge),
+            const SizedBox(height: 16),
+            CupertinoButton.filled(
+              child: const Text("Retry"),
+              onPressed: controller.retry,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildHeader(controller, textTheme),
+        const SizedBox(height: 8),
+        _buildCriteriaText(textTheme),
+        const SizedBox(height: 8),
+        _buildProfessionalsList(controller, theme, textTheme),
+      ],
+    );
+  }
+
+  Widget _buildHeader(
+    ServiceProfessionalsController controller,
+    TextTheme textTheme,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Text(
+        'Top 3 matching ${controller.serviceDetails['name']}',
+        style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildCriteriaText(TextTheme textTheme) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Text(
+        'Our Criteria',
+        style: textTheme.bodyLarge?.copyWith(color: CupertinoColors.systemGrey),
+      ),
+    );
+  }
+
+  Widget _buildProfessionalsList(
+    ServiceProfessionalsController controller,
+    ThemeData theme,
+    TextTheme textTheme,
+  ) {
+    return Expanded(
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        itemCount: controller.professionals.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        itemBuilder: (context, index) {
+          final professional = controller.professionals[index];
+          return ProfessionalCardWidget(professional: professional);
+        },
       ),
     );
   }
