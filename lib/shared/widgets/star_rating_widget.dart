@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yelpax/core/constants/width.dart';
 
 class StarRatingWidget extends StatefulWidget {
   final int maxStars;
@@ -40,7 +41,7 @@ class _StarRatingState extends State<StarRatingWidget> {
           child: Icon(
             index < _currentRating ? Icons.star : Icons.star_border,
             color: Colors.amber,
-            size: 32,
+            size: width(context) / 30,
           ),
         );
       }),
