@@ -5,10 +5,11 @@ final lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
   fontFamily: 'Inter',
-  cardColor: Colors.indigoAccent,
+
+  cardTheme: CardThemeData(color: Colors.indigoAccent, elevation: 1.2),
   textTheme: TextTheme(
     titleSmall: TextStyle(
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),

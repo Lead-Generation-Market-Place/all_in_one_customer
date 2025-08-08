@@ -5,10 +5,24 @@ final homeServicesTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   useMaterial3: true,
   colorScheme: const ColorScheme.light(primary: Colors.cyan),
-  cardColor: Colors.cyanAccent,
+  dividerTheme: DividerThemeData(
+    color: Colors.grey[300],
+    indent: 8,
+    endIndent: 8,
+  ),
+  cardTheme: CardThemeData(
+    color: Colors.white,
+    shadowColor: Colors.cyan.withOpacity(0.2),
+    elevation: 2,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+      side: BorderSide(color: Colors.grey.withOpacity(0.2), width: 1),
+    ),
+    margin: const EdgeInsets.all(2),
+  ),
   textTheme: TextTheme(
     titleSmall: TextStyle(
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),
@@ -25,23 +39,24 @@ final homeServicesTheme = ThemeData(
     bodySmall: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.normal,
-      color: Colors.black,
+      color: Colors.grey,
     ),
     bodyMedium: TextStyle(
       fontSize: 17,
       fontWeight: FontWeight.normal,
-      color: Colors.black,
+      color: Colors.grey,
     ),
     bodyLarge: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.normal,
-      color: Colors.black,
+      color: Colors.black45,
     ),
   ),
+
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(color: Colors.grey[800]),
     hintStyle: TextStyle(color: Colors.grey[600]),
-    fillColor: Colors.cyan[50], // Light cyan background
+    fillColor: Colors.white, // Light cyan background
     iconColor: Colors.cyan[800],
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),

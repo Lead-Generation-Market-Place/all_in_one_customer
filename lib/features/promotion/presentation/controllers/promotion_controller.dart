@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:logger/web.dart';
 import 'package:yelpax/config/routes/router.dart';
 
 class PromotionController extends ChangeNotifier {
-  final ScrollController _scrollController = ScrollController();
   bool _refreshLoading = false;
   bool _categoryLoading = false;
   List _categories = [];
   PromotionController() {
-    _scrollController.addListener(_scrollListener);
     getCategories();
   }
 
-  ScrollController get scrollController => _scrollController;
   bool get refreshLoading => _refreshLoading;
   bool get categoryLoading => _categoryLoading;
   List get categories => _categories;
-
-  void _scrollListener() {
-    if (_scrollController.offset < -50 && !_refreshLoading) {
-      retry();
-    }
-  }
 
   Future getCategories() async {
     try {
@@ -46,7 +38,11 @@ class PromotionController extends ChangeNotifier {
       case 'Grocery':
         return Navigator.pushNamed(context, AppRouter.grocery);
       case 'Home Services':
-        return Navigator.pushNamed(context, AppRouter.homeServices);
+        return Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRouter.homeServices,
+          (route) => false,
+        );
     }
   }
 
@@ -56,7 +52,7 @@ class PromotionController extends ChangeNotifier {
     try {
       await Future.delayed(Duration(seconds: 5));
     } catch (e) {
-      print('❌ Error: $e');
+      Logger().w('Error on retrying!!! $e');
     } finally {
       _refreshLoading = false;
       notifyListeners();
@@ -65,8 +61,6 @@ class PromotionController extends ChangeNotifier {
 
   @override
   void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
     super.dispose();
   }
 }

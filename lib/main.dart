@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/config/localization/l10n/l10n.dart';
@@ -62,6 +63,8 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp(
+      navigatorObservers: [FlutterSmartDialog.observer],
+      builder: FlutterSmartDialog.init(),
       initialRoute: AppRouter.splash,
       navigatorKey: navigatorKey,
       onGenerateRoute: AppRouter.generateRoute,

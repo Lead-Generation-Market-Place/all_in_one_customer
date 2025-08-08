@@ -5,10 +5,11 @@ final foodTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   useMaterial3: true,
   colorScheme: const ColorScheme.light(primary: Colors.deepOrange),
-  cardColor: Colors.deepOrangeAccent,
+
+  cardTheme: CardThemeData(color: Colors.deepOrange, elevation: 1.2),
   textTheme: TextTheme(
     titleSmall: TextStyle(
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),

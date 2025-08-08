@@ -5,10 +5,11 @@ final groceryTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   useMaterial3: true,
   colorScheme: const ColorScheme.light(primary: Colors.green),
-  cardColor: Colors.greenAccent,
+
+  cardTheme: CardThemeData(color: Colors.greenAccent, elevation: 1.2),
   textTheme: TextTheme(
     titleSmall: TextStyle(
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),

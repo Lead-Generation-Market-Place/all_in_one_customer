@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/height.dart';
-import '../../../../shared/widgets/custom_input.dart';
+import '../../core/constants/height.dart';
+import 'custom_input.dart';
 
 Widget buildSliverAppbar(BuildContext context) {
   return SliverAppBar(
