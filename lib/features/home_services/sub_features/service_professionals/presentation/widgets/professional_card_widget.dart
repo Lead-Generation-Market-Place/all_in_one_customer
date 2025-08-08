@@ -19,19 +19,26 @@ class ProfessionalCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildAvatar(professional),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _buildProfessionalDetails(professional, textTheme, onTap),
-            ),
-          ],
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildAvatar(professional),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildProfessionalDetails(
+                  professional,
+                  textTheme,
+                  onTap,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -120,9 +127,7 @@ Widget _buildAvailabilityInfo(dynamic professional, TextTheme textTheme) {
         )
       : Text(
           'Response in ${professional['response']} min',
-          style: textTheme.bodyMedium?.copyWith(
-            color: CupertinoColors.systemGrey,
-          ),
+          style: textTheme.bodyMedium,
         );
 }
 
@@ -134,13 +139,7 @@ Widget _buildHiredCount(dynamic professional, TextTheme textTheme) {
 }
 
 Widget _buildPriceInfo(dynamic professional, TextTheme textTheme) {
-  return Text(
-    professional['estimatedPrice'],
-    style: textTheme.bodyMedium?.copyWith(
-      fontWeight: FontWeight.bold,
-      color: CupertinoColors.systemGreen,
-    ),
-  );
+  return Text(professional['estimatedPrice'], style: textTheme.titleSmall);
 }
 
 Widget _buildLastReview(

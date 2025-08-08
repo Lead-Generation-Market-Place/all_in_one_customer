@@ -45,13 +45,15 @@ class AppRouter {
       case homeServices:
         return MaterialPageRoute(builder: (_) => const HomeServicesScreen());
       case serviceProfessionalsScreen:
-        final arg = settings.arguments ?? {};
+        final _arg = settings.arguments ?? {};
         return MaterialPageRoute(
-          builder: (context) => ServiceProfessionalsScreen(serviceDetails: arg),
+          builder: (context) =>
+              ServiceProfessionalsScreen(serviceDetails: _arg),
         );
       case singleServiceProfessionalScreen:
+        final _arg = settings.arguments ?? {};
         return MaterialPageRoute(
-          builder: (_) => SingleServiceProfessionalScreen(),
+          builder: (_) => SingleServiceProfessionalScreen(proDetails: _arg),
         );
       case unknownRouteScreen:
         return MaterialPageRoute(

@@ -39,12 +39,12 @@ final homeServicesTheme = ThemeData(
     bodySmall: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.normal,
-      color: Colors.grey,
+      color: Colors.grey[850],
     ),
     bodyMedium: TextStyle(
       fontSize: 17,
       fontWeight: FontWeight.normal,
-      color: Colors.grey,
+      color: Colors.grey[850],
     ),
     bodyLarge: TextStyle(
       fontSize: 20,
