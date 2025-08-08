@@ -1,13 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/controllers/service_professionals_controller.dart';
 
 import '../../../../../../core/utils/get_rating_label.dart';
 import '../../../../../../shared/widgets/star_rating_widget.dart';
 
 class ProfessionalCardWidget extends StatelessWidget {
   Map professional;
-  ProfessionalCardWidget({super.key, required this.professional});
+  GestureTapCallback onTap;
+  ProfessionalCardWidget({
+    super.key,
+    required this.professional,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +28,9 @@ class ProfessionalCardWidget extends StatelessWidget {
           children: [
             _buildAvatar(professional),
             const SizedBox(width: 12),
-            Expanded(child: _buildProfessionalDetails(professional, textTheme)),
+            Expanded(
+              child: _buildProfessionalDetails(professional, textTheme, onTap),
+            ),
           ],
         ),
       ),
@@ -44,7 +53,11 @@ Widget _buildAvatar(dynamic professional) {
   );
 }
 
-Widget _buildProfessionalDetails(dynamic professional, TextTheme textTheme) {
+Widget _buildProfessionalDetails(
+  dynamic professional,
+  TextTheme textTheme,
+  GestureTapCallback onTap,
+) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -56,7 +69,7 @@ Widget _buildProfessionalDetails(dynamic professional, TextTheme textTheme) {
       const SizedBox(height: 8),
       _buildPriceInfo(professional, textTheme),
       const SizedBox(height: 8),
-      _buildLastReview(professional, textTheme),
+      _buildLastReview(professional, textTheme, onTap),
     ],
   );
 }
@@ -130,7 +143,11 @@ Widget _buildPriceInfo(dynamic professional, TextTheme textTheme) {
   );
 }
 
-Widget _buildLastReview(dynamic professional, TextTheme textTheme) {
+Widget _buildLastReview(
+  dynamic professional,
+  TextTheme textTheme,
+  GestureTapCallback onTap,
+) {
   return RichText(
     text: TextSpan(
       children: [
@@ -141,7 +158,7 @@ Widget _buildLastReview(dynamic professional, TextTheme textTheme) {
         TextSpan(
           text: ' See More',
           style: TextStyle(color: Colors.blue),
-          recognizer: TapGestureRecognizer()..onTap = () {},
+          recognizer: TapGestureRecognizer()..onTap = onTap,
         ),
       ],
     ),

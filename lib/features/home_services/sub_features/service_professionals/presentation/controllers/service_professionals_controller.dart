@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../config/routes/router.dart';
+
 class ServiceProfessionalsController extends ChangeNotifier {
   bool _professionalsLoading = false;
   List<Map<String, dynamic>> _professionals = [];
@@ -87,6 +89,15 @@ class ServiceProfessionalsController extends ChangeNotifier {
       _professionalsLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> openCategory(Map categoryDetails, BuildContext context) async {
+    print(categoryDetails);
+    Navigator.pushNamed(
+      context,
+      AppRouter.singleServiceProfessionalScreen,
+      arguments: categoryDetails,
+    );
   }
 
   @override

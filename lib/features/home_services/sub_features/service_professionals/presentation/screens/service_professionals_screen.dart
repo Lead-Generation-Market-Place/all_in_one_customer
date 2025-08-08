@@ -119,7 +119,10 @@ class _ServiceProfessionalsView extends StatelessWidget {
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final professional = controller.professionals[index];
-          return ProfessionalCardWidget(professional: professional);
+          return ProfessionalCardWidget(
+            professional: professional,
+            onTap: () => controller.openCategory(professional, context),
+          );
         },
       ),
     );
