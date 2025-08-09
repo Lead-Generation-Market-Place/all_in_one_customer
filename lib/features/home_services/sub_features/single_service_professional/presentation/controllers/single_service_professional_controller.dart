@@ -25,6 +25,8 @@ class SingleServiceProfessionalController extends ChangeNotifier {
         'estimatedPrice': '97\$ - \$113/hour',
         'response': '~56',
         'starsCount': 33,
+        'aboutPro':
+            'We are a eveteran-owned business specializing in local and long-distance moving service. in addition to expert moving. we offer a full range of services including junk removal, yard waste removal, and general waster disposal. our team is commited to delivering professional, efficient, and excellent service with a focus on cus tomer satisfaction.  whether youre reloc',
         'lastReviewText':
             "lorem ipsum psdfsdg;asjdgksajd;gjdsa;kgjkdsjgasdkjh;kasdjh;ksdjgjsdfsdkfj;skjdfksdjf",
         'imageUrl': 'https://iili.io/FsejxXp.jpg',

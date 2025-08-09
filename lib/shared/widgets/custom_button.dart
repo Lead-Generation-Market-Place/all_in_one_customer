@@ -40,11 +40,11 @@ class CustomButton extends StatelessWidget {
     final isDisabled = !enabled || isLoading || onPressed == null;
 
     return Container(
+      color: Colors.transparent,
       margin: margin,
       width: isFullWidth ? double.infinity : width,
       height: height ?? _getHeight(),
       child: Material(
-        color: Colors.transparent,
         child: InkWell(
           onTap: isDisabled ? null : onPressed,
           borderRadius: BorderRadius.circular(12),
