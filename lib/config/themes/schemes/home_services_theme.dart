@@ -22,31 +22,38 @@ final homeServicesTheme = ThemeData(
   ),
   textTheme: TextTheme(
     titleSmall: TextStyle(
+      letterSpacing: 0.8,
       fontSize: 18,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),
     titleMedium: TextStyle(
+      letterSpacing: 0.8,
       fontSize: 24,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),
     titleLarge: TextStyle(
+      letterSpacing: 0.8,
       fontSize: 28,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),
     bodySmall: TextStyle(
+      letterSpacing: 0.4,
+      wordSpacing: 1.2,
       fontSize: 14,
       fontWeight: FontWeight.normal,
       color: Colors.grey[850],
     ),
     bodyMedium: TextStyle(
+      letterSpacing: 0.4,
       fontSize: 17,
       fontWeight: FontWeight.normal,
       color: Colors.grey[850],
     ),
     bodyLarge: TextStyle(
+      letterSpacing: 0.4,
       fontSize: 20,
       fontWeight: FontWeight.normal,
       color: Colors.black45,

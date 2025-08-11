@@ -17,9 +17,11 @@ class SingleServiceProPersonnelDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: _PersonnelInfoSection(
-        proCompleteDetails: proCompleteDetails,
-        proDetails: proDetails,
+      child: SingleChildScrollView(
+        child: _PersonnelInfoSection(
+          proCompleteDetails: proCompleteDetails,
+          proDetails: proDetails,
+        ),
       ),
     );
   }
@@ -53,6 +55,14 @@ class _PersonnelInfoSection extends StatelessWidget {
           _buildAboutProSection(textTheme),
           const SizedBox(height: 20),
           _buildOverviewSection(textTheme),
+          const SizedBox(height: 10),
+          _buildBusinessHours(textTheme),
+          const SizedBox(height: 10),
+          _buildPaymentSection(textTheme),
+          const SizedBox(height: 10),
+          _buildTopStatus(textTheme),
+          Divider(),
+          _buildServiceOfferedSection(textTheme),
         ],
       ),
     );
@@ -203,6 +213,350 @@ class _PersonnelInfoSection extends StatelessWidget {
       ],
     );
   }
+
+  Widget _buildBusinessHours(TextTheme textTheme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Business hours', style: textTheme.titleSmall),
+        _BusinessHoursSection(
+          proCompleteDetails: proCompleteDetails,
+          textTheme: textTheme,
+        ),
+      ],
+    );
+  }
+}
+
+Widget _buildPaymentSection(TextTheme textTheme) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text('Payment methods', style: textTheme.titleSmall),
+      Text(
+        'This pro accepts payments via Apple Pay, Cash Credit card, PayPal, Stripe, Venomo and Zelle',
+      ),
+    ],
+  );
+}
+
+Widget _buildTopStatus(TextTheme textTheme) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text('Top Pro status', style: textTheme.titleSmall),
+      Text(
+        'Top Pros are among the highest rated, most popular professionals on Thumbtack',
+      ),
+      SizedBox(height: 20),
+      Container(
+        height: 200,
+        width: double.infinity,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+
+          children: [
+            Column(
+              spacing: 10,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  child: Icon(Icons.star_outline, size: 50),
+                ),
+                Text('2024'),
+              ],
+            ),
+            SizedBox(width: 20),
+            Column(
+              spacing: 10,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  child: Icon(Icons.star_outline, size: 50),
+                ),
+                Text('2023'),
+              ],
+            ),
+            SizedBox(width: 20),
+            Column(
+              spacing: 10,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  child: Icon(Icons.star_outline, size: 50),
+                ),
+                Text('2022'),
+              ],
+            ),
+            SizedBox(width: 20),
+            Column(
+              spacing: 10,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  child: Icon(Icons.star_outline, size: 50),
+                ),
+                Text('2021'),
+              ],
+            ),
+          ],
+        ),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomButton(
+            text: 'Message',
+            onPressed: () => print('message'),
+            icon: Icons.message_outlined,
+          ),
+          CustomButton(
+            text: 'Request a call',
+            onPressed: () => print('request call'),
+            icon: Icons.call_outlined,
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+Widget _buildServiceOfferedSection(TextTheme textTheme) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text('Service Offered', style: textTheme.titleSmall),
+      SizedBox(height: 10),
+
+      SizedBox(height: 10),
+      _serviceOfferedItem(
+        title: 'Wall material',
+        textTheme: textTheme,
+        isTitle: false,
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Drywall',
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Brick, concerete, or stone',
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Plaster',
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Wood',
+      ),
+      _serviceOfferedItem(
+        title: 'TV larger than 60 inches',
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: false,
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'No',
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Yes',
+      ),
+      _serviceOfferedItem(
+        title: 'Conceal cables/wires?',
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: false,
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Yes',
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'No',
+      ),
+      _serviceOfferedItem(
+        title: 'Type of mount',
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: false,
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Flat',
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Tilt',
+      ),
+
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Swivel',
+      ),
+
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Articulating',
+      ),
+      _serviceOfferedItem(
+        title: 'Peripheral devices to connect to the TV',
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: false,
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Cable/satellite box',
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'DVD/ Blue-ray player',
+      ),
+
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Gaming console',
+      ),
+      _serviceOfferedItem(
+        title: 'Sound system',
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: false,
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.done,
+        isTitle: true,
+        itemKey: 'Sound bar',
+      ),
+      _serviceOfferedItem(
+        textTheme: textTheme,
+        icon: Icons.close,
+        isTitle: true,
+        itemKey: "Doesn't offer: Stero sound system, surround sound",
+      ),
+    ],
+  );
+}
+
+class _serviceOfferedItem extends StatelessWidget {
+  String title;
+  TextTheme textTheme;
+  IconData icon;
+  String itemKey;
+  bool isTitle;
+  _serviceOfferedItem({
+    super.key,
+    this.title = 'sample',
+    required this.textTheme,
+    this.icon = Icons.abc,
+    this.itemKey = 'sample',
+    this.isTitle = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      spacing: 5,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        isTitle
+            ? SizedBox.shrink()
+            : Text(title, style: textTheme.titleSmall!.copyWith(fontSize: 16)),
+        isTitle
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(icon, color: Colors.green),
+                  Text(itemKey, style: textTheme.bodySmall),
+                ],
+              )
+            : SizedBox.shrink(),
+      ],
+    );
+  }
+}
+
+class _BusinessHoursSection extends StatelessWidget {
+  Map proCompleteDetails;
+  TextTheme textTheme;
+  _BusinessHoursSection({
+    super.key,
+    required this.proCompleteDetails,
+    required this.textTheme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 10,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [Text('Sun'), Text('8:00 am - 10:00 pm')],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [Text('Mon'), Text('8:00 am - 10:00 pm')],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [Text('Tues'), Text('8:00 am - 10:00 pm')],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [Text('Wed'), Text('8:00 am - 10:00 pm')],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [Text('Thurs'), Text('8:00 am - 10:00 pm')],
+          ),
+          SizedBox(height: 10),
+          Text('Times in Eastern Time Zone', style: textTheme.bodySmall),
+        ],
+      ),
+    );
+  }
 }
 
 class _OverviewSection extends StatelessWidget {
@@ -273,17 +627,24 @@ class _ExpandableTextState extends State<ExpandableText> {
     return RichText(
       text: TextSpan(
         children: [
-          TextSpan(text: widget.text, style: widget.textTheme.bodyMedium),
+          WidgetSpan(
+            child: Text(
+              widget.text,
+              style: widget.textTheme.bodyMedium,
+              maxLines: isExpanded ? 100 : 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
           TextSpan(
             text: isExpanded ? ' See Less' : ' See More',
-            style: const TextStyle(color: Colors.blue),
+            style: TextStyle(color: Colors.blue),
             recognizer: TapGestureRecognizer()
-              ..onTap = () => setState(() => isExpanded = !isExpanded),
+              ..onTap = () {
+                setState(() => isExpanded = !isExpanded);
+              },
           ),
         ],
       ),
-      maxLines: isExpanded ? null : 2,
-      overflow: TextOverflow.ellipsis,
     );
   }
 }
