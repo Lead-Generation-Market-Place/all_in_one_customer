@@ -54,6 +54,19 @@ class SingleServiceProfessionalController extends ChangeNotifier {
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius sit amet neque quis varius. Integer id pretium cursus. Nam volutpat sapien eu justo auctor aliquam.',
           },
         ],
+        'photos': [
+          'photo 1',
+          'photo 2',
+
+          'photo 3',
+          'photo 4',
+
+          'photo 5',
+          'photo 6',
+
+          'photo 7',
+          'photo 8',
+        ],
       };
       Logger().i(_proCompleteDetails);
     } catch (e) {

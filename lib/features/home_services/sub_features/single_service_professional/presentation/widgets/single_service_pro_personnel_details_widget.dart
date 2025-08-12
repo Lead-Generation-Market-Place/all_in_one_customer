@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:yelpax/core/constants/height.dart';
+import 'package:yelpax/core/constants/width.dart';
 import 'package:yelpax/core/utils/get_rating_label.dart';
 import 'package:yelpax/shared/widgets/custom_button.dart';
+import 'package:yelpax/shared/widgets/star_rating_widget.dart';
 
 class SingleServiceProPersonnelDetailsWidget extends StatelessWidget {
   final proDetails;
@@ -63,8 +65,79 @@ class _PersonnelInfoSection extends StatelessWidget {
           _buildTopStatus(textTheme),
           Divider(),
           _buildServiceOfferedSection(textTheme),
+          Divider(),
+          _buildProjectAndMedia(textTheme, proCompleteDetails),
+          Divider(height: 50),
+          _buildReviewSection(textTheme),
         ],
       ),
+    );
+  }
+
+  Widget _buildReviewSection(TextTheme textTheme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Reviews', style: textTheme.titleSmall),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Customers rated pro highly for ',
+                style: textTheme.bodySmall,
+              ),
+              TextSpan(
+                text: 'professionalism, work quality,',
+                style: textTheme.bodySmall!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              TextSpan(text: ' and ', style: textTheme.bodySmall),
+              TextSpan(
+                text: 'responsiveness.',
+                style: textTheme.bodySmall!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${getRatingLabel(proCompleteDetails['ratings'] ?? '')} ${proCompleteDetails['ratings'] ?? ''}',
+                  style: textTheme.titleMedium!.copyWith(color: Colors.green),
+                ),
+                StarRatingWidget(
+                  initialRating: proCompleteDetails['ratings'],
+                  size: 30,
+                ),
+                Text('${proCompleteDetails['starsCount'] ?? ''} reviews'),
+              ],
+            ),
+            VerticalDivider(),
+            Column(
+              children: [
+                Container(
+                  height: 100,
+                  width: 200,
+                  child: ListView.builder(
+                    reverse: true,
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                      return StarRatingWidget(initialRating: 2);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -471,6 +544,56 @@ Widget _buildServiceOfferedSection(TextTheme textTheme) {
       ),
     ],
   );
+}
+
+Widget _buildProjectAndMedia(TextTheme textTheme, Map proDetails) {
+  List photos = proDetails['photos'];
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text('Project and media', style: textTheme.titleSmall),
+      Text('${photos.length} photos'),
+      Container(
+        width: double.infinity,
+        height: 200,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return _projectAndMediaItem(proDetails: proDetails);
+          },
+          separatorBuilder: (context, index) {
+            return Divider();
+          },
+          itemCount: 8,
+        ),
+      ),
+    ],
+  );
+}
+
+class _projectAndMediaItem extends StatefulWidget {
+  Map proDetails;
+  _projectAndMediaItem({super.key, required this.proDetails});
+
+  @override
+  State<_projectAndMediaItem> createState() => __projectAndMediaItemState();
+}
+
+class __projectAndMediaItemState extends State<_projectAndMediaItem> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height(context) / 4,
+      width: width(context) / 1.8,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/splash_1.jpg'),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(7),
+      ),
+    );
+  }
 }
 
 class _serviceOfferedItem extends StatelessWidget {
