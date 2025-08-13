@@ -46,7 +46,31 @@ class SingleServiceProfessionalController extends ChangeNotifier {
         'extraService': ['Furniture', 'Packing', 'Storage'],
         'reviewsCompleteDetails': [
           {
-            'name': 'kak k.',
+            'name': 'sdfsd k.',
+            'reviewCount': '4',
+            'imageUrl': 'https://iili.io/FseVaVt.jpg',
+            'lastOnline': '3 weeks ago',
+            'reviewText':
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius sit amet neque quis varius. Integer id pretium cursus. Nam volutpat sapien eu justo auctor aliquam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius sit amet neque quis varius. Integer id pretium cursus. Nam volutpat sapien eu justo auctor aliquam.',
+          },
+          {
+            'name': 'ffdddd k.',
+            'reviewCount': '4',
+            'imageUrl': 'https://iili.io/FseVaVt.jpg',
+            'lastOnline': '3 weeks ago',
+            'reviewText':
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius sit amet neque quis varius. Integer id pretium cursus. Nam volutpat sapien eu justo auctor aliquam.',
+          },
+          {
+            'name': 'gbbbb k.',
+            'reviewCount': '4',
+            'imageUrl': 'https://iili.io/FseVaVt.jpg',
+            'lastOnline': '3 weeks ago',
+            'reviewText':
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius sit amet neque quis varius. Integer id pretium cursus. Nam volutpat sapien eu justo auctor aliquam.',
+          },
+          {
+            'name': 'sdfsdf k.',
             'reviewCount': '4',
             'imageUrl': 'https://iili.io/FseVaVt.jpg',
             'lastOnline': '3 weeks ago',

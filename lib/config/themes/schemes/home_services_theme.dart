@@ -61,28 +61,53 @@ final homeServicesTheme = ThemeData(
   ),
 
   inputDecorationTheme: InputDecorationTheme(
-    labelStyle: TextStyle(color: Colors.grey[800]),
-    hintStyle: TextStyle(color: Colors.grey[600]),
-    fillColor: Colors.white, // Light cyan background
+    labelStyle: TextStyle(
+      color: const Color.fromRGBO(158, 158, 158, 1),
+      fontSize: 11,
+    ),
+    hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+    fillColor: Colors.grey[100], // Light cyan background
+    contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
     iconColor: Colors.cyan[800],
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: Colors.grey[400]!),
+      borderSide: BorderSide.none,
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: Colors.red, width: 1.5),
     ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: Colors.cyan[800]!, width: 1.8),
-    ),
+    // focusedBorder: OutlineInputBorder(
+    //   borderRadius: BorderRadius.circular(12),
+    //   borderSide: BorderSide(color: Colors.cyan[800]!, width: 1.8),
+    // ),
     filled: true,
     errorStyle: const TextStyle(
       color: Colors.red,
       fontSize: 13,
       fontWeight: FontWeight.w500,
       height: 1.2,
+    ),
+  ),
+
+  dropdownMenuTheme: DropdownMenuThemeData(
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        gapPadding: 8,
+      ),
+    ),
+    menuStyle: MenuStyle(
+      backgroundColor: MaterialStateProperty.all(Colors.white),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    ),
+    textStyle: TextStyle(
+      letterSpacing: 0.4,
+      fontSize: 17,
+      fontWeight: FontWeight.normal,
+      color: Colors.grey[850],
     ),
   ),
 );

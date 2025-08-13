@@ -69,8 +69,82 @@ class _PersonnelInfoSection extends StatelessWidget {
           _buildProjectAndMedia(textTheme, proCompleteDetails),
           Divider(height: 50),
           _buildReviewSection(textTheme),
+          Divider(height: 50),
+          _buildReviews(textTheme),
         ],
       ),
+    );
+  }
+
+  Widget _buildReviews(TextTheme textTheme) {
+    return Column(
+      children: [
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Your trust means everything to us. ',
+                style: textTheme.bodySmall,
+              ),
+              TextSpan(
+                text: 'Learn about our review guidelines.',
+                style: textTheme.bodySmall!.copyWith(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(child: TextField()),
+            SizedBox(width: 10),
+            DropdownButton(
+              value: 'Highest rated',
+              borderRadius: BorderRadius.circular(12),
+
+              items: [
+                DropdownMenuItem(
+                  value: 'Highest rated',
+                  child: Text('Highest rated'),
+                ),
+                DropdownMenuItem(
+                  value: 'Lowest rated',
+                  child: Text('Lowest rated'),
+                ),
+                DropdownMenuItem(
+                  value: 'Newest first',
+                  child: Text('Newest first'),
+                ),
+                DropdownMenuItem(
+                  value: 'Older first',
+                  child: Text('Older first'),
+                ),
+              ],
+              onChanged: (value) => print(value),
+            ),
+          ],
+        ),
+        SizedBox(height: 20),
+        Container(
+          width: double.infinity,
+          height: 600,
+          child: ListView.separated(
+            itemBuilder: (context, index) {
+              return _singleReview(
+                textTheme: textTheme,
+                proCompleteDetails:
+                    proCompleteDetails['reviewsCompleteDetails'][index],
+              );
+            },
+            separatorBuilder: (context, index) => Divider(),
+            itemCount: 3,
+          ),
+        ),
+      ],
     );
   }
 
@@ -569,6 +643,43 @@ Widget _buildProjectAndMedia(TextTheme textTheme, Map proDetails) {
       ),
     ],
   );
+}
+
+class _singleReview extends StatelessWidget {
+  Map proCompleteDetails;
+  TextTheme textTheme;
+  _singleReview({
+    super.key,
+    required this.proCompleteDetails,
+    required this.textTheme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(proCompleteDetails['imageUrl']),
+            radius: 25,
+          ),
+          title: Text(proCompleteDetails['name'], style: textTheme.titleSmall),
+          subtitle: StarRatingWidget(initialRating: 3),
+          trailing: Column(
+            children: [
+              Text(
+                proCompleteDetails['lastOnline'],
+                style: textTheme.bodyMedium,
+              ),
+              Text('Hired on Yelpax', style: textTheme.bodyMedium),
+            ],
+          ),
+        ),
+        Text(proCompleteDetails['reviewText'], style: textTheme.bodySmall),
+      ],
+    );
+  }
 }
 
 class _projectAndMediaItem extends StatefulWidget {

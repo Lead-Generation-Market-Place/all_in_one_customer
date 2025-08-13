@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
@@ -5,8 +6,8 @@ import 'package:yelpax/app/presentation/shell/widgets/custom_bottom_nav.dart';
 import 'package:yelpax/config/themes/theme_mode_type.dart';
 import 'package:yelpax/config/themes/theme_provider.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
+import 'package:yelpax/shared/widgets/custom_input.dart';
 import 'package:yelpax/shared/widgets/custom_shimmer.dart';
-import 'package:yelpax/shared/widgets/sliver_appbar.dart';
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
 
@@ -40,6 +41,27 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Theme.of(context).primaryColor,
+        title: Text('Yelpax'),
+        elevation: 2.2,
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
+        actions: [
+          InkWell(child: Icon(Icons.settings_outlined)),
+          SizedBox(width: 10),
+          InkWell(child: Icon(Icons.notifications_outlined)),
+          SizedBox(width: 10),
+          InkWell(child: Icon(CupertinoIcons.cart)),
+          SizedBox(width: 10),
+          InkWell(child: Icon(Icons.question_mark_outlined)),
+          SizedBox(width: 10),
+          InkWell(child: Icon(CupertinoIcons.heart)),
+        ],
+      ),
+      drawer: Drawer(),
+      backgroundColor: Colors.white,
       body: _buildBody(),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 0,
@@ -49,76 +71,79 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   }
 
   Widget _buildBody() {
+    TextEditingController _searchController = TextEditingController();
     final _controller = Provider.of<HomeServicesController>(
       context,
       listen: false,
     );
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16),
       child: RefreshIndicator.adaptive(
         onRefresh: () => _controller.retry(),
-        child: CustomScrollView(
-          physics: BouncingScrollPhysics(),
-          slivers: [
-            buildSliverAppbar(context),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                const SizedBox(height: 16),
-                _buildSectionTitle('Categories'),
-                _buildPopularCategories(),
-                const SizedBox(height: 50),
-                _buildSectionTitle('Based on your activity'),
-                _buildActivityBasedCategories(),
-                _buildDivider(),
-                _buildSectionTitle('For your home'),
-                _buildAddressBasedCategory(),
-                _buildSectionTitle('Your goals', isNavigating: true),
-                _buildYourGoals(),
-                _buildDivider(),
-                _buildSectionTitle('Popular on Yelpax'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Trending now'),
-                _buildPopularCategories(),
-                _buildSectionTitle('Home upkeep', isNavigating: true),
-                _buildYourGoals(),
-                _buildDivider(),
-                _buildSectionTitle('More guides', isNavigating: true),
-                _buildMoreGuides(),
-                _buildDivider(),
-                _buildSectionTitle('Outdoor upkeep'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Essential Home Service'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Moving into a new home'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Caring for a pet'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Planing a wedding'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Home office essentials'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Virtual lessons'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Financial advising'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Online tutoring'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildGetInspiration(),
-                _buildDivider(),
-                _buildFooter(),
-              ]),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              CustomInput(
+                hint: 'Search...',
+                icon: Icons.search,
+                controller: _searchController,
+              ),
+              const SizedBox(height: 16),
+              _buildSectionTitle('Categories'),
+              _buildPopularCategories(),
+              const SizedBox(height: 50),
+              _buildSectionTitle('Based on your activity'),
+              _buildActivityBasedCategories(),
+              _buildDivider(),
+              _buildSectionTitle('For your home'),
+              _buildAddressBasedCategory(),
+              _buildSectionTitle('Your goals', isNavigating: true),
+              _buildYourGoals(),
+              _buildDivider(),
+              _buildSectionTitle('Popular on Yelpax'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Trending now'),
+              _buildPopularCategories(),
+              _buildSectionTitle('Home upkeep', isNavigating: true),
+              _buildYourGoals(),
+              _buildDivider(),
+              _buildSectionTitle('More guides', isNavigating: true),
+              _buildMoreGuides(),
+              _buildDivider(),
+              _buildSectionTitle('Outdoor upkeep'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Essential Home Service'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Moving into a new home'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Caring for a pet'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Planing a wedding'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Home office essentials'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Virtual lessons'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Financial advising'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Online tutoring'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildGetInspiration(),
+              _buildDivider(),
+              _buildFooter(),
+            ],
+          ),
         ),
       ),
     );
