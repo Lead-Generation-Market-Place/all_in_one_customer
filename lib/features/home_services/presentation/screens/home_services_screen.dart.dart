@@ -42,6 +42,9 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+        ),
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
         shadowColor: Theme.of(context).primaryColor,

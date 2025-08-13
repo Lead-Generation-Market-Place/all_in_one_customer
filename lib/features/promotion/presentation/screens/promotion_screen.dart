@@ -5,6 +5,7 @@ import 'package:yelpax/core/constants/height.dart';
 import 'package:yelpax/core/constants/width.dart';
 import 'package:yelpax/features/promotion/presentation/controllers/promotion_controller.dart';
 import 'package:yelpax/features/promotion/presentation/widgets/notice_banner.dart';
+import 'package:yelpax/shared/widgets/custom_input.dart';
 import 'package:yelpax/shared/widgets/custom_shimmer.dart';
 
 class PromotionScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
       context,
       listen: false,
     );
+    TextEditingController _searchController = TextEditingController();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -45,8 +47,14 @@ class _PromotionScreenState extends State<PromotionScreen> {
         body: RefreshIndicator.adaptive(
           onRefresh: () => _controller.retry(),
           child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
+                CustomInput(
+                  hint: 'Search...',
+                  icon: Icons.search_outlined,
+                  controller: _searchController,
+                ),
                 Container(
                   width: width(context) / 1.2,
                   height: height(context) / 15,
