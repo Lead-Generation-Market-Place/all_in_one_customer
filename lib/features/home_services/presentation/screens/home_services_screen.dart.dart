@@ -113,16 +113,16 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                     if (value.errorMessage.isNotEmpty) {
                       return Text(value.errorMessage);
                     }
-                    if (value.result.isEmpty) {
+                    if (value.professionals.isEmpty) {
                       return SizedBox.shrink();
                     }
                     return Container(
                       height: 300,
                       width: double.infinity,
                       child: ListView.builder(
-                        itemCount: value.result.length,
+                        itemCount: value.professionals.length,
                         itemBuilder: (context, index) =>
-                            buildSearchFieldData(value.result[index]),
+                            buildSearchFieldData(value.professionals[index]),
                       ),
                     );
                   },
