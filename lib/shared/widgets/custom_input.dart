@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class CustomInput extends StatefulWidget {
-  String hint;
-  IconData icon;
-  TextEditingController controller;
+  final String hint;
+  final IconData icon;
+  final TextEditingController controller;
+  final ValueChanged<String>? onChanged;
   CustomInput({
     super.key,
     required this.hint,
     required this.icon,
     required this.controller,
+    this.onChanged,
   });
 
   @override
@@ -23,6 +25,9 @@ class _CustomInputState extends State<CustomInput> {
         color: Theme.of(context).primaryColor,
         letterSpacing: 1.2,
       ),
+
+      onChanged: widget.onChanged,
+
       decoration: InputDecoration(
         prefixIcon: Icon(widget.icon, size: 20),
         hintText: widget.hint,

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/config/themes/theme_mode_type.dart';
+import 'package:yelpax/config/themes/theme_provider.dart';
 import 'package:yelpax/core/constants/height.dart';
 import 'package:yelpax/core/constants/width.dart';
 import 'package:yelpax/features/promotion/presentation/controllers/promotion_controller.dart';
@@ -16,6 +18,21 @@ class PromotionScreen extends StatefulWidget {
 }
 
 class _PromotionScreenState extends State<PromotionScreen> {
+  @override
+  void initState() {
+    _initializeData();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void _initializeData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final theme = Provider.of<ThemeProvider>(context, listen: false);
+
+      theme.setTheme(ThemeModeType.dark);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final _controller = Provider.of<PromotionController>(
