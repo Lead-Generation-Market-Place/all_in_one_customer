@@ -9,6 +9,7 @@ import 'package:yelpax/features/home_services/presentation/controllers/home_serv
 import 'package:yelpax/features/home_services/presentation/controllers/search_professional_controller.dart';
 import 'package:yelpax/features/home_services/presentation/screens/search_professional_screen.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/app_bar_widget.dart';
+import 'package:yelpax/features/home_services/presentation/widgets/promotion_banner_widget.dart';
 import 'package:yelpax/features/home_services/search_professional_di.dart';
 import 'package:yelpax/shared/widgets/custom_input.dart';
 import 'package:yelpax/shared/widgets/custom_shimmer.dart';
@@ -85,7 +86,9 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                 ],
               ),
               SearchProfessionalScreen(),
+
               const SizedBox(height: 16),
+              PromotionBannerWidget(),
               _buildSectionTitle('Categories'),
               _buildPopularCategories(),
               const SizedBox(height: 50),
