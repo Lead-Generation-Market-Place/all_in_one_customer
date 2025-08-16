@@ -56,6 +56,15 @@ class __searchProBodyState extends State<_searchProBody> {
     _searchProController.clearResult();
   }
 
+  void onClear() {
+    var _searchProController = Provider.of<SearchProfessionalController>(
+      context,
+      listen: false,
+    );
+    _searchProController.clearResult();
+    _searchController.clear();
+  }
+
   void onChanged(String value) {
     var _searchProController = Provider.of<SearchProfessionalController>(
       context,
@@ -69,7 +78,9 @@ class __searchProBodyState extends State<_searchProBody> {
       context,
       listen: false,
     );
-    controller.openCategory({'name': _searchController.text}, context);
+    if (formKey.currentState!.validate()) {
+      controller.openCategory({'name': _searchController.text}, context);
+    }
   }
 
   @override
@@ -91,9 +102,7 @@ class __searchProBodyState extends State<_searchProBody> {
             icon: Icons.search,
             controller: _searchController,
             suffixIcon: GestureDetector(
-              onTap: () {
-                _searchController.clear();
-              },
+              onTap: onClear,
               child: Icon(Icons.clear),
             ),
           ),
