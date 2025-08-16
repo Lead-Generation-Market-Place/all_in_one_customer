@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:yelpax/core/error/failures/failure.dart';
 import 'package:yelpax/features/home_services/domain/entities/professional.dart';
 import 'package:yelpax/features/home_services/domain/usecases/search_professional_usecase.dart';
+
+import '../../../../config/routes/router.dart';
 
 class SearchProfessionalController extends ChangeNotifier {
   final SearchProfessionalUsecase searchProfessionalUsecase;
@@ -28,6 +29,15 @@ class SearchProfessionalController extends ChangeNotifier {
     );
     isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> openCategory(Map categoryDetails, BuildContext context) async {
+    print(categoryDetails);
+    Navigator.pushNamed(
+      context,
+      AppRouter.serviceProfessionalsScreen,
+      arguments: categoryDetails,
+    );
   }
 
   void clearResult() {

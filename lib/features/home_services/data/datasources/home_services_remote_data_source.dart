@@ -6,14 +6,27 @@ abstract class HomeServicesRemoteDataSource {
 }
 
 class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
+  List categories = [
+    {"id": "1", "name": "Handy Man"},
+    {"id": "2", "name": "Home Cleaning"},
+    {"id": "3", "name": "Junk Removal"},
+    {"id": "4", "name": "Plumber"},
+    {"id": "5", "name": "TV Mounting"},
+  ];
+  List filteredList = [];
   @override
   Future<List<ProfessionalModel>> searchProfessionals(String query) async {
+    filteredList.clear();
+    categories.forEach((element) {
+      if (element['name'].toString().toLowerCase().contains(
+        query.toLowerCase(),
+      )) {
+        filteredList.add(element);
+      }
+    });
     try {
       final response = await Future.delayed(const Duration(seconds: 2), () {
-        return [
-          {"id": "1", "name": "John Doe", "serviceType": "Plumber"},
-          {"id": "2", "name": "Jane Smith", "serviceType": "Electrician"},
-        ];
+        return filteredList;
       });
 
       return response.map((json) => ProfessionalModel.fromJson(json)).toList();

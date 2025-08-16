@@ -60,7 +60,6 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   }
 
   Widget _buildBody() {
-    TextEditingController _searchController = TextEditingController();
     final _controller = Provider.of<HomeServicesController>(
       context,
       listen: false,
@@ -70,118 +69,76 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
       child: RefreshIndicator.adaptive(
         onRefresh: () => _controller.retry(),
         child: SingleChildScrollView(
-          child: ChangeNotifierProvider<SearchProfessionalController>(
-            create: (_) => searchProfessionalController(),
-
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    BackButton(
-                      onPressed: () => Navigator.pushReplacementNamed(
-                        context,
-                        AppRouter.home,
-                      ),
-                    ),
-                    Text(
-                      'Home Services',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                  ],
-                ),
-                Consumer<SearchProfessionalController>(
-                  builder: (context, searchController, child) {
-                    return CustomInput(
-                      onChanged: (value) {
-                        searchController.search(value);
-                        if (value.isEmpty) {
-                          searchController.clearResult();
-                        }
-                      },
-                      hint: 'Search...',
-                      icon: Icons.search,
-                      controller: _searchController,
-                    );
-                  },
-                ),
-                Consumer<SearchProfessionalController>(
-                  builder: (context, value, child) {
-                    if (value.isLoading) {
-                      return CircularProgressIndicator.adaptive();
-                    }
-                    if (value.errorMessage.isNotEmpty) {
-                      return Text(value.errorMessage);
-                    }
-                    if (value.professionals.isEmpty) {
-                      return SizedBox.shrink();
-                    }
-                    return Container(
-                      height: 300,
-                      width: double.infinity,
-                      child: ListView.builder(
-                        itemCount: value.professionals.length,
-                        itemBuilder: (context, index) =>
-                            buildSearchFieldData(value.professionals[index]),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 16),
-                _buildSectionTitle('Categories'),
-                _buildPopularCategories(),
-                const SizedBox(height: 50),
-                _buildSectionTitle('Based on your activity'),
-                _buildActivityBasedCategories(),
-                _buildDivider(),
-                _buildSectionTitle('For your home'),
-                _buildAddressBasedCategory(),
-                _buildSectionTitle('Your goals', isNavigating: true),
-                _buildYourGoals(),
-                _buildDivider(),
-                _buildSectionTitle('Popular on Yelpax'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Trending now'),
-                _buildPopularCategories(),
-                _buildSectionTitle('Home upkeep', isNavigating: true),
-                _buildYourGoals(),
-                _buildDivider(),
-                _buildSectionTitle('More guides', isNavigating: true),
-                _buildMoreGuides(),
-                _buildDivider(),
-                _buildSectionTitle('Outdoor upkeep'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Essential Home Service'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Moving into a new home'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Caring for a pet'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Planing a wedding'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Home office essentials'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Virtual lessons'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Financial advising'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Online tutoring'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildGetInspiration(),
-                _buildDivider(),
-                _buildFooter(),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  BackButton(
+                    onPressed: () =>
+                        Navigator.pushReplacementNamed(context, AppRouter.home),
+                  ),
+                  Text(
+                    'Home Services',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ],
+              ),
+              SearchProfessionalScreen(),
+              const SizedBox(height: 16),
+              _buildSectionTitle('Categories'),
+              _buildPopularCategories(),
+              const SizedBox(height: 50),
+              _buildSectionTitle('Based on your activity'),
+              _buildActivityBasedCategories(),
+              _buildDivider(),
+              _buildSectionTitle('For your home'),
+              _buildAddressBasedCategory(),
+              _buildSectionTitle('Your goals', isNavigating: true),
+              _buildYourGoals(),
+              _buildDivider(),
+              _buildSectionTitle('Popular on Yelpax'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Trending now'),
+              _buildPopularCategories(),
+              _buildSectionTitle('Home upkeep', isNavigating: true),
+              _buildYourGoals(),
+              _buildDivider(),
+              _buildSectionTitle('More guides', isNavigating: true),
+              _buildMoreGuides(),
+              _buildDivider(),
+              _buildSectionTitle('Outdoor upkeep'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Essential Home Service'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Moving into a new home'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Caring for a pet'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Planing a wedding'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Home office essentials'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Virtual lessons'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Financial advising'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Online tutoring'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildGetInspiration(),
+              _buildDivider(),
+              _buildFooter(),
+            ],
           ),
         ),
       ),
