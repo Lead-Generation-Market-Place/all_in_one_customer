@@ -3,22 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:yelpax/core/constants/height.dart';
 
 class PromotionBannerWidget extends StatefulWidget {
-  const PromotionBannerWidget({super.key});
+  final List<Widget> items; // promotions can be any widget (image, text, etc.)
+  final Duration autoScrollDuration;
+  final Duration animationDuration;
+
+  const PromotionBannerWidget({
+    super.key,
+    required this.items,
+    this.autoScrollDuration = const Duration(seconds: 3),
+    this.animationDuration = const Duration(milliseconds: 400),
+  });
 
   @override
   State<PromotionBannerWidget> createState() => _PromotionBannerWidgetState();
 }
 
 class _PromotionBannerWidgetState extends State<PromotionBannerWidget> {
-  late PageController _pageController;
-  late Timer _timer;
-
-  final List<Color> _colors = [
-    Colors.pink,
-    Colors.amber,
-    Colors.black,
-    Colors.green,
-  ];
+  late final PageController _pageController;
+  Timer? _timer;
   int _currentPage = 0;
 
   @override
@@ -26,24 +28,31 @@ class _PromotionBannerWidgetState extends State<PromotionBannerWidget> {
     super.initState();
     _pageController = PageController(initialPage: 0);
 
-    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-      if (_currentPage < _colors.length - 1) {
+    _startAutoScroll();
+  }
+
+  void _startAutoScroll() {
+    _timer?.cancel();
+    _timer = Timer.periodic(widget.autoScrollDuration, (timer) {
+      if (_currentPage < widget.items.length - 1) {
         _currentPage++;
       } else {
-        _currentPage = 0; // loop back to first page
+        _currentPage = 0;
       }
 
-      _pageController.animateToPage(
-        _currentPage,
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
-      );
+      if (_pageController.hasClients) {
+        _pageController.animateToPage(
+          _currentPage,
+          duration: widget.animationDuration,
+          curve: Curves.easeInOut,
+        );
+      }
     });
   }
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     _pageController.dispose();
     super.dispose();
   }
@@ -53,39 +62,50 @@ class _PromotionBannerWidgetState extends State<PromotionBannerWidget> {
     return Container(
       width: double.infinity,
       height: height(context) / 6,
-      decoration: BoxDecoration(
-        color: Colors.amber,
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           PageView.builder(
             controller: _pageController,
-            itemCount: _colors.length,
+            itemCount: widget.items.length,
+            onPageChanged: (index) {
+              setState(() => _currentPage = index);
+            },
             itemBuilder: (context, index) {
               return Container(
                 margin: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: _colors[index],
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
+                  child: widget.items[index],
                 ),
               );
             },
           ),
-          ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: _colors.length,
-            itemBuilder: (context, index) {
-              return _buildDots(Colors.orange);
-            },
+          // Dot indicators
+          Positioned(
+            bottom: 12,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                widget.items.length,
+                (index) => AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  width: _currentPage == index ? 12 : 8,
+                  height: _currentPage == index ? 12 : 8,
+                  decoration: BoxDecoration(
+                    color: _currentPage == index
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.grey.withOpacity(0.5),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
     );
-  }
-
-  Widget _buildDots(Color selected) {
-    return CircleAvatar(radius: 10, backgroundColor: selected);
   }
 }

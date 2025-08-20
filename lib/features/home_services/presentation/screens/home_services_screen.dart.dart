@@ -88,7 +88,24 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               SearchProfessionalScreen(),
 
               const SizedBox(height: 16),
-              PromotionBannerWidget(),
+              PromotionBannerWidget(
+                items: [
+                  Container(color: Colors.amber, width: 50, height: 50),
+                  Container(color: Colors.pink, width: 50, height: 50),
+                  Container(color: Colors.orange, width: 50, height: 50),
+                  Container(color: Colors.red, width: 50, height: 50),
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/splash_1.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               _buildSectionTitle('Categories'),
               _buildPopularCategories(),
               const SizedBox(height: 50),
