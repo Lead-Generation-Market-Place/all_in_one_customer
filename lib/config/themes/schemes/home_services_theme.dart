@@ -5,6 +5,16 @@ final homeServicesTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   useMaterial3: true,
   colorScheme: const ColorScheme.light(primary: Colors.cyan),
+  appBarTheme: AppBarTheme(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+    ),
+    backgroundColor: Colors.white,
+    surfaceTintColor: Colors.transparent,
+    shadowColor: Colors.cyan,
+    elevation: 2.2,
+    actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
+  ),
   dividerTheme: DividerThemeData(
     color: Colors.grey[300],
     indent: 8,

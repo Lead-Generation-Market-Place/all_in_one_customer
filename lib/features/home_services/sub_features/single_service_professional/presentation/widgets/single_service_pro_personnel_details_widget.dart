@@ -4,6 +4,7 @@ import 'package:yelpax/core/constants/height.dart';
 import 'package:yelpax/core/constants/width.dart';
 import 'package:yelpax/core/utils/get_rating_label.dart';
 import 'package:yelpax/shared/widgets/custom_button.dart';
+import 'package:yelpax/shared/widgets/custom_input.dart';
 import 'package:yelpax/shared/widgets/star_rating_widget.dart';
 
 class SingleServiceProPersonnelDetailsWidget extends StatelessWidget {
@@ -41,7 +42,7 @@ class _PersonnelInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-
+    TextEditingController _reviewController = TextEditingController();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -70,13 +71,16 @@ class _PersonnelInfoSection extends StatelessWidget {
           Divider(height: 50),
           _buildReviewSection(textTheme),
           Divider(height: 50),
-          _buildReviews(textTheme),
+          _buildReviews(textTheme, _reviewController),
         ],
       ),
     );
   }
 
-  Widget _buildReviews(TextTheme textTheme) {
+  Widget _buildReviews(
+    TextTheme textTheme,
+    TextEditingController _reviewController,
+  ) {
     return Column(
       children: [
         RichText(
@@ -100,7 +104,13 @@ class _PersonnelInfoSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: TextField()),
+            Expanded(
+              child: CustomInput(
+                hint: 'Review',
+                icon: Icons.person_outline,
+                controller: _reviewController,
+              ),
+            ),
             SizedBox(width: 10),
             DropdownButton(
               value: 'Highest rated',

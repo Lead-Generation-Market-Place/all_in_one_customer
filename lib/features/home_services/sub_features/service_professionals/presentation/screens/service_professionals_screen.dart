@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals/domain/entities/service_professional_entity.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/controllers/service_professionals_controller.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/widgets/professional_card_widget.dart';
+import 'package:yelpax/shared/widgets/custom_shimmer.dart';
 
 class ServiceProfessionalsScreen extends StatefulWidget {
   final dynamic serviceDetails;
@@ -53,7 +55,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
     TextTheme textTheme,
   ) {
     if (controller.professionalsLoading) {
-      return const Center(child: CircularProgressIndicator.adaptive());
+      return const Center(child: CustomShimmer());
     }
 
     if (controller.professionals.isEmpty) {

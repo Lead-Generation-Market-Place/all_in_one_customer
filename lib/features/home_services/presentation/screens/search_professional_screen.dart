@@ -5,6 +5,7 @@ import 'package:yelpax/features/home_services/presentation/controllers/home_serv
 import 'package:yelpax/features/home_services/presentation/controllers/search_professional_controller.dart';
 import 'package:yelpax/features/home_services/search_professional_di.dart';
 import 'package:yelpax/shared/widgets/custom_button.dart';
+import 'package:yelpax/shared/widgets/custom_shimmer.dart';
 import '../../../../shared/widgets/custom_input.dart';
 
 class SearchProfessionalScreen extends StatelessWidget {
@@ -137,7 +138,10 @@ class __searchProBodyState extends State<_searchProBody> {
               if (value.isLoading) {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator.adaptive(),
+                  child: CustomShimmer(
+                    layoutType: ShimmerLayoutType.list,
+                    itemCount: 2,
+                  ),
                 );
               }
               if (value.errorMessage.isNotEmpty) {
@@ -147,7 +151,7 @@ class __searchProBodyState extends State<_searchProBody> {
                 return SizedBox.shrink();
               }
               return Container(
-                height: 300,
+                height: 150,
                 width: double.infinity,
                 child: ListView.builder(
                   itemCount: value.professionals.length,

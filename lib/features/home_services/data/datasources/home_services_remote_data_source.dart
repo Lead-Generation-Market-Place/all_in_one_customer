@@ -9,6 +9,8 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
   List categories = [
     {"id": "1", "name": "Handy Man"},
     {"id": "2", "name": "Home Cleaning"},
+    {"id": "1", "name": "Handy Mainetnance"},
+    {"id": "1", "name": "Handy Repair"},
     {"id": "3", "name": "Junk Removal"},
     {"id": "4", "name": "Plumber"},
     {"id": "5", "name": "TV Mounting"},
