@@ -8,14 +8,20 @@ class SingleServiceProfessionalController extends ChangeNotifier {
   bool get proLoading => _proLoading;
   Map _proCompleteDetails = {};
   Map get proCompleteDetails => _proCompleteDetails;
+  bool _disposed = false;
 
   SingleServiceProfessionalController(this._proDetails) {
     getProCompleteDetails();
   }
+
+  void _safeNotify() {
+    if (!_disposed) notifyListeners();
+  }
+
   Future getProCompleteDetails() async {
     try {
       _proLoading = true;
-      notifyListeners();
+      _safeNotify();
       await Future.delayed(Duration(seconds: 8));
       _proCompleteDetails = {
         'name': 'alex',
@@ -97,14 +103,14 @@ class SingleServiceProfessionalController extends ChangeNotifier {
       debugPrint(e.toString());
     } finally {
       _proLoading = false;
-      notifyListeners();
+      _safeNotify();
     }
   }
 
   Future<void> retry() async {
     try {
       _proLoading = true;
-      notifyListeners();
+      _safeNotify();
 
       await Future.delayed(const Duration(seconds: 2));
 
@@ -147,7 +153,14 @@ class SingleServiceProfessionalController extends ChangeNotifier {
       debugPrint('Error on retry : $e');
     } finally {
       _proLoading = false;
-      notifyListeners();
+      _safeNotify();
     }
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    // TODO: implement dispose
+    super.dispose();
   }
 }

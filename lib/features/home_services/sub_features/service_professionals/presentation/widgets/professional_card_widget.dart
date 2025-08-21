@@ -169,9 +169,9 @@ Widget _buildDetailsOrQuotation() {
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       CustomButton(
-        onPressed: () => print('Message'),
-        text: 'Message',
-        icon: Icons.message_outlined,
+        onPressed: () => print('Details'),
+        text: 'Details',
+        icon: Icons.info_outline,
       ),
 
       CustomButton(
