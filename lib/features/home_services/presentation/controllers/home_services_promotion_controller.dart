@@ -4,7 +4,9 @@ import 'package:yelpax/features/home_services/domain/usecases/home_service_promo
 
 class HomeServicesPromotionController extends ChangeNotifier {
   HomeServicePromotionUsecase _usecase;
-  HomeServicesPromotionController(this._usecase);
+  HomeServicesPromotionController(this._usecase) {
+    getPromotions();
+  }
 
   bool _isPromotionLoading = false;
   bool get isPromotionLoading => _isPromotionLoading;
@@ -13,7 +15,7 @@ class HomeServicesPromotionController extends ChangeNotifier {
   String get failure => _failure;
 
   List<HomeServicesPromotionEntity> _promotions = [];
-  List get promotions => _promotions;
+  List<HomeServicesPromotionEntity> get promotions => _promotions;
 
   Future getPromotions() async {
     _isPromotionLoading = true;
@@ -29,6 +31,7 @@ class HomeServicesPromotionController extends ChangeNotifier {
         _promotions = success;
       },
     );
+    print('Data Fetched ${promotions}');
     _isPromotionLoading = false;
     notifyListeners();
   }

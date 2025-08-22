@@ -5,6 +5,7 @@ class HomeServicePromotionModel extends HomeServicesPromotionEntity {
     required super.id,
     required super.serviceName,
     required super.promotionName,
+    required super.promotionImage,
     required super.serviceProviders,
   });
 
@@ -13,6 +14,7 @@ class HomeServicePromotionModel extends HomeServicesPromotionEntity {
       id: json['id'] ?? 0,
       serviceName: json['serviceName'] ?? '',
       promotionName: json['promotionName'] ?? '',
+      promotionImage: json['promotionImage'],
       serviceProviders: json['serviceProviders'] ?? '',
     );
   }

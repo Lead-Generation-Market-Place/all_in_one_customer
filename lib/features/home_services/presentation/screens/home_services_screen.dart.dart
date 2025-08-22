@@ -506,6 +506,8 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
       }, context),
       child: Card(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               height: height(context) / 13,
@@ -517,14 +519,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                 ),
               ),
             ),
-            Container(
-              height: height(context) / 15,
-              width: width(context) / 1.8,
-              child: Text(
-                categoryName,
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-            ),
+            Text(categoryName, style: Theme.of(context).textTheme.titleSmall),
           ],
         ),
       ),
