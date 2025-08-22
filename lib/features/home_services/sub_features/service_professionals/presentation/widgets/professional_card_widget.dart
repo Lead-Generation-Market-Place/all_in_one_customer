@@ -69,8 +69,8 @@ Widget _buildProfessionalDetails(
       _buildNameAndRating(professional, textTheme),
       const SizedBox(height: 8),
       _buildAvailabilityInfo(professional, textTheme),
-      const SizedBox(height: 8),
-      _buildHiredCount(professional, textTheme),
+      // const SizedBox(height: 8),
+      // _buildHiredCount(professional, textTheme),
       const SizedBox(height: 8),
       _buildPriceInfo(professional, textTheme),
       const SizedBox(height: 8),
@@ -139,7 +139,10 @@ Widget _buildHiredCount(dynamic professional, TextTheme textTheme) {
 }
 
 Widget _buildPriceInfo(dynamic professional, TextTheme textTheme) {
-  return Text(professional['estimatedPrice'], style: textTheme.titleSmall);
+  return Text(
+    professional['estimatedPrice'],
+    style: textTheme.titleSmall?.copyWith(color: Colors.grey),
+  );
 }
 
 Widget _buildLastReview(
@@ -152,11 +155,11 @@ Widget _buildLastReview(
       children: [
         TextSpan(
           text: professional['lastReviewText'] ?? '',
-          style: textTheme.bodySmall,
+          style: textTheme.bodySmall?.copyWith(color: Colors.grey),
         ),
         TextSpan(
           text: ' See More',
-          style: TextStyle(color: Colors.blue),
+          style: TextStyle(color: Colors.blueAccent),
           recognizer: TapGestureRecognizer()..onTap = onTap,
         ),
       ],

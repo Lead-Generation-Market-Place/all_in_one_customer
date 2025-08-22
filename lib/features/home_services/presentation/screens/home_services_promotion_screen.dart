@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yelpax/features/home_services/get_promotions_di.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/home_services_promotion_controller.dart';
 
 import '../widgets/promotion_banner_widget.dart';
 
@@ -14,10 +17,17 @@ class _HomeServicesPromotionScreenState
     extends State<HomeServicesPromotionScreen> {
   @override
   Widget build(BuildContext context) {
-    return _buildPromotionSection();
+    return ChangeNotifierProvider<HomeServicesPromotionController>(
+      create: (context) => getPromotionDi(),
+      child: _buildPromotionSection(),
+    );
   }
 
   Widget _buildPromotionSection() {
+    return _buildPromotionWidget();
+  }
+
+  Widget _buildPromotionWidget() {
     return PromotionBannerWidget(
       items: [
         Container(color: Colors.amber, width: 50, height: 50),

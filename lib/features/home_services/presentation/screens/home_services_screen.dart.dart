@@ -499,15 +499,15 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     String imageUrl,
     HomeServicesController controller,
   ) {
-    return Card(
-      child: Column(
-        children: [
-          InkWell(
-            onTap: () => controller.openCategory({
-              'name': categoryName,
-              'imageUrl': imageUrl,
-            }, context),
-            child: Container(
+    return InkWell(
+      onTap: () => controller.openCategory({
+        'name': categoryName,
+        'imageUrl': imageUrl,
+      }, context),
+      child: Card(
+        child: Column(
+          children: [
+            Container(
               height: height(context) / 13,
               width: width(context) / 1.8,
               decoration: BoxDecoration(
@@ -517,9 +517,16 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                 ),
               ),
             ),
-          ),
-          Text(categoryName, style: Theme.of(context).textTheme.titleSmall),
-        ],
+            Container(
+              height: height(context) / 15,
+              width: width(context) / 1.8,
+              child: Text(
+                categoryName,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

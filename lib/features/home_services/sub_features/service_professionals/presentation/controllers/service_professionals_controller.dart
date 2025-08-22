@@ -53,10 +53,10 @@ class ServiceProfessionalsController extends ChangeNotifier {
           'isActive': false,
           'timesHired': 84,
           'estimatedPrice': '97\$ - \$113/hour',
-          'response': '~56',
+          'response': '~ 56',
           'starsCount': 33,
           'lastReviewText':
-              "lorem ipsum psdfsdg;asjdgksajd;gjdsa;kgjkdsjgasdkjh;kasdjh;ksdjgjsdfsdkfj;skjdfksdjf",
+              "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         },
         {
           'name': 'pablo',
@@ -64,11 +64,11 @@ class ServiceProfessionalsController extends ChangeNotifier {
           'isActive': true,
           'timesHired': 20,
           'estimatedPrice': '47\$ - \$113/hour',
-          'response': '~43',
+          'response': '~ 43',
           'starsCount': 32,
 
           'lastReviewText':
-              "lorem ipsum psdfsdg;asjdgksajd;gjdsa;kgjkdsjgasdkjh;kasdjh;ksdjgjsdfsdkfj;skjdfksdjf",
+              "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         },
         {
           'name': 'yameen',
@@ -76,11 +76,11 @@ class ServiceProfessionalsController extends ChangeNotifier {
           'isActive': true,
           'timesHired': 4,
           'estimatedPrice': '37\$ - \$13/hour',
-          'response': '~22',
+          'response': '~ 22',
           'starsCount': 50,
 
           'lastReviewText':
-              "lorem ipsum psdfsdg;asjdgksajd;gjdsa;kgjkdsjgasdkjh;kasdjh;ksdjgjsdfsdkfj;skjdfksdjf",
+              "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         },
       ];
     } catch (e) {

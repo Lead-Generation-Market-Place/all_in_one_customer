@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../core/utils/app_restart.dart';
 
 class UnexpectedErrorScreen extends StatelessWidget {
@@ -21,7 +20,7 @@ class UnexpectedErrorScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              Text(message),
+              Text('Something bad happend in \n ${message}'),
 
               const SizedBox(height: 12),
               const Text("Please restart the app or contact support."),
