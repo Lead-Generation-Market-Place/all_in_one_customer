@@ -6,6 +6,7 @@ import 'package:yelpax/core/utils/get_rating_label.dart';
 import 'package:yelpax/shared/widgets/custom_button.dart';
 import 'package:yelpax/shared/widgets/custom_input.dart';
 import 'package:yelpax/shared/widgets/star_rating_widget.dart';
+import 'package:yelpax/shared/widgets/styled_asterisk_name.dart';
 
 class SingleServiceProPersonnelDetailsWidget extends StatelessWidget {
   final proDetails;
@@ -234,10 +235,15 @@ class _PersonnelInfoSection extends StatelessWidget {
         ),
         Expanded(
           child: ListTile(
-            title: Text(
-              proDetails['name'],
-              style: Theme.of(context).textTheme.titleLarge,
+            title: RichText(
+              text: TextSpan(
+                children: StyledAsteriskName(
+                  proDetails['name'],
+                  Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
             ),
+
             subtitle: Text(
               'Typically responds in about ${proDetails['response']}',
               style: Theme.of(context).textTheme.bodyMedium,

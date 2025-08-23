@@ -48,7 +48,7 @@ class ServiceProfessionalsController extends ChangeNotifier {
 
       _professionals = [
         {
-          'name': 'alex',
+          'name': 'Brand Construction Company',
           'ratings': 4.9,
           'isActive': false,
           'timesHired': 84,
@@ -59,7 +59,7 @@ class ServiceProfessionalsController extends ChangeNotifier {
               "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         },
         {
-          'name': 'pablo',
+          'name': 'Seven Guys Construction',
           'ratings': 3.8,
           'isActive': true,
           'timesHired': 20,
@@ -71,7 +71,7 @@ class ServiceProfessionalsController extends ChangeNotifier {
               "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         },
         {
-          'name': 'yameen',
+          'name': 'New Construction Company',
           'ratings': 2.0,
           'isActive': true,
           'timesHired': 4,

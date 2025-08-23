@@ -12,22 +12,22 @@ class HomeServicesPromotionRemoteDataSourceImpl
       "id": "1",
       "serviceName": "Handy Man",
       "promotionName": "Free Repairing",
-      "promotionImage": "assets/images/handy_man.webp",
-      "serviceProviders": "20",
+      "promotionImage": "assets/images/handy_man.jpg",
+      "serviceProviders": "All 20",
     },
     {
       "id": "2",
       "serviceName": "Home Cleaning",
       "promotionName": "40% Discount on First Hire",
-      "promotionImage": "assets/images/house_cleaning.webp",
-      "serviceProviders": "100",
+      "promotionImage": "assets/images/home_cleaning.jpg",
+      "serviceProviders": "All 100",
     },
     {
       "id": "1",
       "serviceName": "Junk Removal",
       "promotionName": "Free Truck Expense",
-      "promotionImage": "assets/images/junk_removal.webp",
-      "serviceProviders": "34",
+      "promotionImage": "assets/images/junk_removal.jpg",
+      "serviceProviders": "All 34",
     },
   ];
 

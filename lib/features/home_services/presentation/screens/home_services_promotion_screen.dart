@@ -114,6 +114,9 @@ class _HomeServicesPromotionScreenState
         color: Colors.blue,
         image: DecorationImage(
           image: AssetImage(entity.promotionImage),
+
+          onError: (exception, stackTrace) =>
+              print('Exception $exception stackTrace $stackTrace'),
           fit: BoxFit.cover,
         ),
       ),

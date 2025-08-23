@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:yelpax/shared/widgets/custom_button.dart';
+import 'package:yelpax/shared/widgets/styled_asterisk_name.dart';
 import '../../../../../../core/utils/get_rating_label.dart';
 import '../../../../../../shared/widgets/star_rating_widget.dart';
 
@@ -73,8 +74,8 @@ Widget _buildProfessionalDetails(
       // _buildHiredCount(professional, textTheme),
       const SizedBox(height: 8),
       _buildPriceInfo(professional, textTheme),
-      const SizedBox(height: 8),
-      _buildLastReview(professional, textTheme, onTap),
+      // const SizedBox(height: 8),
+      // _buildLastReview(professional, textTheme, onTap),
       const SizedBox(height: 8),
       _buildDetailsOrQuotation(),
     ],
@@ -85,25 +86,30 @@ Widget _buildNameAndRating(dynamic professional, TextTheme textTheme) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
-        professional['name'],
-        style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+      RichText(
+        text: TextSpan(
+          children: StyledAsteriskName(
+            professional['name'],
+            textTheme.titleSmall,
+          ),
+        ),
       ),
+
       const SizedBox(height: 4),
       Row(
         children: [
           Text(
             getRatingLabel(professional['ratings']),
-            style: textTheme.bodyMedium,
+            style: textTheme.bodySmall,
           ),
           const Spacer(),
-          Text(professional['ratings'].toString(), style: textTheme.bodyMedium),
+          Text(professional['ratings'].toString(), style: textTheme.bodySmall),
           const SizedBox(width: 4),
           StarRatingWidget(initialRating: professional['ratings'], size: 20),
           const SizedBox(width: 4),
           Text(
             '(${professional['starsCount'] ?? 0})',
-            style: textTheme.bodyMedium,
+            style: textTheme.bodySmall,
           ),
         ],
       ),
@@ -119,7 +125,7 @@ Widget _buildAvailabilityInfo(dynamic professional, TextTheme textTheme) {
             const SizedBox(width: 4),
             Text(
               'Online Now',
-              style: textTheme.bodyMedium?.copyWith(
+              style: textTheme.bodySmall?.copyWith(
                 color: CupertinoColors.activeGreen,
               ),
             ),
@@ -127,7 +133,7 @@ Widget _buildAvailabilityInfo(dynamic professional, TextTheme textTheme) {
         )
       : Text(
           'Response in ${professional['response']} min',
-          style: textTheme.bodyMedium,
+          style: textTheme.bodySmall,
         );
 }
 
@@ -175,12 +181,14 @@ Widget _buildDetailsOrQuotation() {
         onPressed: () => print('Details'),
         text: 'Details',
         icon: Icons.info_outline,
+        size: CustomButtonSize.small,
       ),
 
       CustomButton(
         text: 'Quotation',
         onPressed: () => print('Quotation'),
         icon: Icons.request_quote_outlined,
+        size: CustomButtonSize.small,
       ),
     ],
   );

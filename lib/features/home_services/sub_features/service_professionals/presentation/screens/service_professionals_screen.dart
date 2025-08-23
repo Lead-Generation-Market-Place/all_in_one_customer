@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/controllers/service_professionals_controller.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/widgets/professional_card_widget.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/widgets/professional_filter_widget.dart';
 import 'package:yelpax/shared/widgets/custom_shimmer.dart';
 
 class ServiceProfessionalsScreen extends StatefulWidget {
@@ -78,7 +79,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
       children: [
         _buildHeader(controller, textTheme),
         const SizedBox(height: 8),
-        _buildCriteriaText(textTheme),
+        _buildCriteriaTextAndFilter(textTheme),
         const SizedBox(height: 8),
         _buildProfessionalsList(controller, theme, textTheme),
       ],
@@ -98,12 +99,20 @@ class _ServiceProfessionalsView extends StatelessWidget {
     );
   }
 
-  Widget _buildCriteriaText(TextTheme textTheme) {
+  Widget _buildCriteriaTextAndFilter(TextTheme textTheme) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Text(
-        'Our Criteria',
-        style: textTheme.bodyLarge?.copyWith(color: CupertinoColors.systemGrey),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Our Criteria',
+            style: textTheme.bodyLarge?.copyWith(
+              color: CupertinoColors.systemGrey,
+            ),
+          ),
+          ProfessionalFilterWidget(),
+        ],
       ),
     );
   }
