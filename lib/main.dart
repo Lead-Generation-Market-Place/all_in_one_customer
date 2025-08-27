@@ -42,7 +42,6 @@ void main() {
         Level.error,
         "Dart Server Error occured on $error on Stack \n $stack",
       );
-
       navigatorKey.currentState!.push(
         MaterialPageRoute(
           builder: (context) => UnexpectedErrorScreen(message: 'message'),

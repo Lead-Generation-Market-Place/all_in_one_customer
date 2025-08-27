@@ -17,7 +17,7 @@ class CustomButton extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final double? width;
   final double? height;
-
+  final Color? bgColor;
   const CustomButton({
     Key? key,
     required this.text,
@@ -31,6 +31,7 @@ class CustomButton extends StatelessWidget {
     this.margin,
     this.width,
     this.height,
+    this.bgColor
   }) : super(key: key);
 
   @override
@@ -126,12 +127,12 @@ class CustomButton extends StatelessWidget {
 
     switch (type) {
       case CustomButtonType.primary:
-        return theme.colorScheme.primary;
+        return bgColor ?? theme.colorScheme.primary;
       case CustomButtonType.secondary:
-        return theme.colorScheme.secondary;
+        return bgColor ?? theme.colorScheme.secondary;
       case CustomButtonType.outline:
       case CustomButtonType.text:
-        return theme.colorScheme.surface; // ← Instead of transparent
+        return bgColor ?? theme.colorScheme.surface; // ← Instead of transparent
     }
   }
 

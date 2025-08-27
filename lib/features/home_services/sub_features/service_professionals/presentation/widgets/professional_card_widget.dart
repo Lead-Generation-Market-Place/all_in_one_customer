@@ -147,7 +147,7 @@ Widget _buildHiredCount(dynamic professional, TextTheme textTheme) {
 Widget _buildPriceInfo(dynamic professional, TextTheme textTheme) {
   return Text(
     professional['estimatedPrice'],
-    style: textTheme.titleSmall?.copyWith(color: Colors.grey),
+    style: textTheme.titleSmall?.copyWith(color: Colors.grey,fontSize: 14),
   );
 }
 

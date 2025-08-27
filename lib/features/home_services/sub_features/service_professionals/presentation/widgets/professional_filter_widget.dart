@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:yelpax/shared/widgets/custom_button.dart';
 
-class ProfessionalFilterWidget extends StatefulWidget {
-  @override
-  State<ProfessionalFilterWidget> createState() =>
-      _ProfessionalFilterWidgetState();
-}
-
-class _ProfessionalFilterWidgetState extends State<ProfessionalFilterWidget> {
+class ProfessionalFilterWidget extends StatelessWidget {
+  String selectedService;
+  ProfessionalFilterWidget({required this.selectedService});
   // bool isVerified = false; // ✅ fixed
-  // bool isAvailable = false; // ✅ fixed
-
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -20,10 +14,12 @@ class _ProfessionalFilterWidgetState extends State<ProfessionalFilterWidget> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         builder: (context) {
-          bool isVerified = false;
-          bool isAvailable = false;
-                  RangeValues selectedRange = RangeValues(5, 20);
-           return StatefulBuilder(
+          bool allProfessionals = false;
+          bool companies = false;
+          bool title=false;
+          RangeValues selectedRange = RangeValues(5, 20);
+          
+          return StatefulBuilder(
             builder: (context, setState) {
               return Padding(
                 padding: const EdgeInsets.all(16),
@@ -36,43 +32,53 @@ class _ProfessionalFilterWidgetState extends State<ProfessionalFilterWidget> {
                     ),
                     const SizedBox(height: 10),
                     CheckboxListTile(
-                      title: const Text("Verified Only"),
-                      value: isVerified,
+                      title: const Text("All Professionals"),
+                      value: allProfessionals,
                       onChanged: (value) {
                         setState(() {
-                          isVerified = value ?? false;
+                          allProfessionals = value ?? false;
                         });
                       },
                     ),
                     CheckboxListTile(
-                      title: const Text("Available Now"),
-                      value: isAvailable,
+                      title: const Text("Companies"),
+                      value: companies,
                       onChanged: (value) {
                         setState(() {
-                          isAvailable = value ?? false;
+                          companies = value ?? false;
                         });
                       },
                     ),
-
-RangeSlider(
-  values: selectedRange,
-  min: 0,
-  max: 50,
-  divisions: 50,
-  labels: RangeLabels(
-    '${selectedRange.start.round()} km',
-    '${selectedRange.end.round()} km',
-  ),
-  onChanged: (values) {
-    setState(() {
-      selectedRange = values;
-    });
-  },
-),
+                    CheckboxListTile(
+                      title: Text(selectedService),
+                      value: title,
+                      onChanged: (value) {
+                        setState(() {
+                          title = value ?? false;
+                        });
+                      },
+                    ),
+                    // RangeSlider(
+                    //   values: selectedRange,
+                    //   min: 0,
+                    //   max: 50,
+                    //   divisions: 50,
+                    //   labels: RangeLabels(
+                    //     '${selectedRange.start.round()} km',
+                    //     '${selectedRange.end.round()} km',
+                    //   ),
+                    //   onChanged: (values) {
+                    //     setState(() {
+                    //       selectedRange = values;
+                    //     });
+                    //   },
+                    // ),
+                    SizedBox(height: 10),
                     CustomButton(
                       text: 'Apply',
                       onPressed: () => Navigator.pop(context),
                     ),
+                    SizedBox(height: 10),
                   ],
                 ),
               );
