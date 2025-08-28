@@ -100,6 +100,10 @@ class ServiceProfessionalsController extends ChangeNotifier {
     );
   }
 
+  Future<void> openQuestionFlow(String questionId, BuildContext context) async {
+    Navigator.pushNamed(context, AppRouter.questionFlowScreen);
+  }
+
   @override
   void dispose() {
     _professionals = [];

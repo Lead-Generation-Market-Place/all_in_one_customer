@@ -3,6 +3,7 @@ import 'package:yelpax/app/presentation/shell/main_shell_screen.dart';
 import 'package:yelpax/core/error/widgets/unknown_route_screen.dart';
 import 'package:yelpax/features/grocery/presentation/screens/grocery_screen_homepage.dart';
 import 'package:yelpax/features/home_services/presentation/screens/home_services_screen.dart.dart';
+import 'package:yelpax/features/home_services/sub_features/question_flows/presentation/screens/question_flow_screen.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/screens/service_professionals_screen.dart';
 import 'package:yelpax/features/home_services/sub_features/single_service_professional/presentation/screens/single_service_professional_screen.dart';
 import 'package:yelpax/features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -25,6 +26,7 @@ class AppRouter {
       '/serviceProfessionalsScreen';
   static const String singleServiceProfessionalScreen =
       '/singleServiceProfessionalScreen';
+  static const String questionFlowScreen = '/questionFlowScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -59,6 +61,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) =>
               const UnknowRouteScreen(message: 'Unknown Route Screen'),
+        );
+      case questionFlowScreen:
+        return MaterialPageRoute(
+          builder: (_) => const QuestionFlowScreen(),
         );
 
       default:
