@@ -52,6 +52,16 @@ class QuestionFlowRemoteDatasourceImpl implements QuestionFlowRemoteDatasource {
       type: QuestionType.text,
       isRequired: false,
     ),
+    Question(
+      id:'6',
+      text: 'What is your gender',
+      type: QuestionType.radio,
+      isRequired: true,
+      options: [
+        Option(id: 'm', label: 'Male'),
+        Option(id: 'f', label: 'Female'),
+      ]
+    )
   ];
 
   @override
@@ -73,7 +83,7 @@ class QuestionFlowRemoteDatasourceImpl implements QuestionFlowRemoteDatasource {
   @override
   Future<List<QuestionFlowModel>> getQuestionFlow(String flowId) async {
     try {
-      await Future.delayed(Duration(seconds: 3));
+      await Future.delayed(Duration(seconds: 1));
       
       // Return a list of QuestionFlowModel (to match List<QuestionFlowEntity> expectation)
       return [

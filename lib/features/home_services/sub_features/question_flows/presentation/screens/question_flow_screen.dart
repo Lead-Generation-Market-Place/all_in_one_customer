@@ -17,7 +17,6 @@ class _QuestionFlowScreenState extends State<QuestionFlowScreen> {
     return ChangeNotifierProvider(
       create: (context) => questionFlowDi(),
       child: Scaffold(
-      appBar: AppBar(),
       body: questionFlowBody()),
     );
   }
@@ -44,7 +43,7 @@ class _questionFlowBodyState extends State<questionFlowBody> {
           return Text('Error Occured ${value.errorMessage}');
         }
         
-        return QuestionFlowWidget(value.questions);
+        return QuestionFlowWidget();
       },
     );
   }

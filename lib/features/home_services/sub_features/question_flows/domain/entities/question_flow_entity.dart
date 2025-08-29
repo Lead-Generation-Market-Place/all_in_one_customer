@@ -1,4 +1,4 @@
-enum QuestionType { text, multipleChoice, number }
+enum QuestionType { text, multipleChoice, number, radio }
 
 class Question {
   final String id;
