@@ -25,11 +25,13 @@ class QuestionFlowController extends ChangeNotifier {
 
     result.fold(
       (left) {
+        print('Error occured ${left.message}');
         _errorMessage = left.message;
         _isLoadingQuestion = false;
         notifyListeners();
       },
       (right) {
+        print('data loaded successfull ${right}');
         _questions = right;
         _isLoadingQuestion = false;
         notifyListeners();
