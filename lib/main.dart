@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -43,7 +42,6 @@ void main() {
         Level.error,
         "Dart Server Error occured on $error on Stack \n $stack",
       );
-
       navigatorKey.currentState!.push(
         MaterialPageRoute(
           builder: (context) => UnexpectedErrorScreen(message: 'message'),

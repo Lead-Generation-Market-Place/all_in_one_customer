@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yelpax/config/themes/theme_mode_type.dart';
+import 'package:yelpax/config/themes/theme_provider.dart';
+import 'package:yelpax/config/themes/themes.dart';
 import '../../../features/promotion/presentation/screens/promotion_screen.dart';
 import 'widgets/custom_bottom_nav.dart';
 
@@ -59,7 +63,6 @@ class CategoriesScreen extends StatefulWidget {
 class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   void initState() {
-    print('categories init state initilaized');
     super.initState();
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-enum ShimmerLayoutType { list, grid, horizontalList }
+enum ShimmerLayoutType { list, grid, horizontalList, single }
 
 class CustomShimmer extends StatelessWidget {
   final double? height;
@@ -54,6 +54,8 @@ class CustomShimmer extends StatelessWidget {
         return _buildGridShimmer(height, width, count, context);
       case ShimmerLayoutType.horizontalList:
         return _buildHorizontalListShimmer(height, width, count, context);
+      case ShimmerLayoutType.single:
+        return _buildSingleShimmer(context);
     }
   }
 
@@ -164,6 +166,20 @@ class CustomShimmer extends StatelessWidget {
           crossAxisSpacing: 8,
         ),
         itemBuilder: (context, index) => _buildGridCardShimmer(context),
+      ),
+    );
+  }
+
+  Widget _buildSingleShimmer(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Theme.of(context).primaryColor,
+      highlightColor: Colors.white,
+      child: Container(
+        margin: margin ?? const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     );
   }

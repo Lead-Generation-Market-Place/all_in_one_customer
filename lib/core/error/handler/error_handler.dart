@@ -13,6 +13,7 @@ class ErrorHandler {
     if (e is ValidationException) return ValidationFailure(e.message);
     if (e is CacheException) return CacheFailure(e.message);
     if (e is SocketException) return NoInternetFailure(e.message);
+    if(e is NotFoundException )return NotFoundFailure(e.message);
     return GenericFailure('Unexpected error occurred');
   }
 }

@@ -26,3 +26,6 @@ class CacheFailure extends Failure {
 class NoInternetFailure extends Failure {
   const NoInternetFailure(String message) : super(message);
 }
+class NotFoundFailure extends Failure{
+  const NotFoundFailure (String message):super(message);
+}

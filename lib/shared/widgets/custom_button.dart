@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../core/constants/app_colors.dart';
-
 enum CustomButtonType { primary, secondary, outline, text }
 
 enum CustomButtonSize { small, medium, large }
@@ -19,7 +17,7 @@ class CustomButton extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final double? width;
   final double? height;
-
+  final Color? bgColor;
   const CustomButton({
     Key? key,
     required this.text,
@@ -33,6 +31,7 @@ class CustomButton extends StatelessWidget {
     this.margin,
     this.width,
     this.height,
+    this.bgColor
   }) : super(key: key);
 
   @override
@@ -48,31 +47,19 @@ class CustomButton extends StatelessWidget {
         child: InkWell(
           onTap: isDisabled ? null : onPressed,
           borderRadius: BorderRadius.circular(12),
-          splashColor: isDisabled ? Colors.transparent : null,
-          highlightColor: isDisabled ? Colors.transparent : null,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           child: Ink(
             decoration: BoxDecoration(
-              color: _getBackgroundColor(isDisabled),
+              color: _getBackgroundColor(context, isDisabled),
               borderRadius: BorderRadius.circular(12),
-              border: type == CustomButtonType.outline && !isDisabled
-                  ? Border.all(color: Theme.of(context).primaryColor)
-                  : type == CustomButtonType.outline && isDisabled
-                  ? Border.all(color: Theme.of(context).primaryColorLight)
-                  : null,
-              boxShadow: type != CustomButtonType.text && !isDisabled
-                  ? [
-                      BoxShadow(
-                        color: Theme.of(context).shadowColor,
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ]
-                  : null,
+              border: _getBorder(context, isDisabled),
+              // / boxShadow: _getBoxShadow(context, isDisabled),
             ),
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: _buildContent(isDisabled),
+                child: _buildContent(context, isDisabled),
               ),
             ),
           ),
@@ -81,7 +68,7 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(bool isDisabled) {
+  Widget _buildContent(BuildContext context, bool isDisabled) {
     if (isLoading) {
       return SizedBox(
         height: _getLoaderSize(),
@@ -93,7 +80,7 @@ class CustomButton extends StatelessWidget {
       );
     }
 
-    final textStyle = _getTextStyle(isDisabled);
+    final textStyle = _getTextStyle(context, isDisabled);
     final iconSize = _getIconSize();
 
     if (icon != null) {
@@ -101,60 +88,88 @@ class CustomButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon!, size: iconSize, color: textStyle.color),
+          Icon(icon!, size: iconSize, color: Colors.white),
           if (text.isNotEmpty) const SizedBox(width: 8),
-          Text(text, style: textStyle),
+          Text(text, style: TextStyle(color: Colors.white)),
         ],
       );
     }
 
-    return Text(text, style: textStyle);
+    return Text(text, style: textStyle.copyWith(color: Colors.white));
   }
 
-  Color _getBackgroundColor(bool isDisabled) {
-    if (isLoading) {
-      return AppColors.primaryBlue;
+  // Resolve ButtonStyle from ThemeData
+  ButtonStyle? _resolveStyle(BuildContext context) {
+    final theme = Theme.of(context);
+    switch (type) {
+      case CustomButtonType.primary:
+        return theme.elevatedButtonTheme.style;
+      case CustomButtonType.secondary:
+        return theme.elevatedButtonTheme.style;
+      case CustomButtonType.outline:
+        return theme.outlinedButtonTheme.style;
+      case CustomButtonType.text:
+        return theme.textButtonTheme.style;
     }
+  }
 
+  Color _getBackgroundColor(BuildContext context, bool isDisabled) {
+    final theme = Theme.of(context);
+    final style = _resolveStyle(context);
+    final resolvedColor = style?.backgroundColor?.resolve(_states(isDisabled));
+
+    if (resolvedColor != null) return resolvedColor;
+
+    // Fallbacks based on type
     if (isDisabled) {
-      return type == CustomButtonType.text
-          ? Colors.transparent
-          : AppColors.neutral200;
+      return theme.disabledColor;
     }
 
     switch (type) {
       case CustomButtonType.primary:
-        return AppColors.primaryBlue;
+        return bgColor ?? theme.colorScheme.primary;
       case CustomButtonType.secondary:
-        return AppColors.secondaryBlue;
+        return bgColor ?? theme.colorScheme.secondary;
       case CustomButtonType.outline:
       case CustomButtonType.text:
-        return Colors.transparent;
+        return bgColor ?? theme.colorScheme.surface; // ← Instead of transparent
     }
   }
 
-  TextStyle _getTextStyle(bool isDisabled) {
-    final baseStyle = TextStyle(
-      fontWeight: FontWeight.w600,
-      fontSize: _getFontSize(),
-    );
+  TextStyle _getTextStyle(BuildContext context, bool isDisabled) {
+    final style = _resolveStyle(context);
+    final textStyle =
+        style?.textStyle?.resolve(_states(isDisabled)) ??
+        Theme.of(context).textTheme.labelLarge;
 
-    if (isDisabled) {
-      return baseStyle.copyWith(
-        color: type == CustomButtonType.text
-            ? AppColors.neutral400
-            : AppColors.neutral500,
-      );
-    }
+    return textStyle?.copyWith(fontSize: _getFontSize()) ??
+        TextStyle(fontSize: _getFontSize());
+  }
 
-    switch (type) {
-      case CustomButtonType.primary:
-      case CustomButtonType.secondary:
-        return baseStyle.copyWith(color: Colors.white);
-      case CustomButtonType.outline:
-      case CustomButtonType.text:
-        return baseStyle.copyWith(color: AppColors.primaryBlue);
-    }
+  Border? _getBorder(BuildContext context, bool isDisabled) {
+    final style = _resolveStyle(context);
+    final side = style?.side?.resolve(_states(isDisabled));
+
+    return side != null
+        ? Border.all(color: side.color, width: side.width)
+        : null;
+  }
+
+  // List<BoxShadow>? _getBoxShadow(BuildContext context, bool isDisabled) {
+  //   final theme = Theme.of(context);
+  //   if (type == CustomButtonType.text || isDisabled) return null;
+  //
+  //   return [
+  //     BoxShadow(
+  //
+  //       blurRadius: 8,
+  //       offset: const Offset(0, 4),
+  //     ),
+  //   ];
+  // }
+
+  Set<MaterialState> _states(bool isDisabled) {
+    return isDisabled ? {MaterialState.disabled} : {};
   }
 
   double _getHeight() {
@@ -200,11 +215,4 @@ class CustomButton extends StatelessWidget {
         return 48;
     }
   }
-
-  static styleFrom({
-    required Color backgroundColor,
-    required Color foregroundColor,
-    required int elevation,
-    required BorderSide side,
-  }) {}
 }

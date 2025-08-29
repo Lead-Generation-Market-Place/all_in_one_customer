@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/app/presentation/shell/widgets/custom_bottom_nav.dart';
+import 'package:yelpax/config/routes/router.dart';
 import 'package:yelpax/config/themes/theme_mode_type.dart';
 import 'package:yelpax/config/themes/theme_provider.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
+import 'package:yelpax/features/home_services/presentation/screens/home_services_promotion_screen.dart';
+import 'package:yelpax/features/home_services/presentation/screens/search_professional_screen.dart';
+import 'package:yelpax/features/home_services/presentation/widgets/app_bar_widget.dart';
 import 'package:yelpax/shared/widgets/custom_shimmer.dart';
-import 'package:yelpax/shared/widgets/sliver_appbar.dart';
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
 
@@ -40,6 +43,12 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        child: AppBarWidget(),
+        preferredSize: Size.fromHeight(height(context) / 15),
+      ),
+      drawer: Drawer(),
+      backgroundColor: Colors.white,
       body: _buildBody(),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 0,
@@ -54,71 +63,74 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
       listen: false,
     );
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16),
       child: RefreshIndicator.adaptive(
         onRefresh: () => _controller.retry(),
-        child: CustomScrollView(
-          physics: BouncingScrollPhysics(),
-          slivers: [
-            buildSliverAppbar(context),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                const SizedBox(height: 16),
-                _buildSectionTitle('Categories'),
-                _buildPopularCategories(),
-                const SizedBox(height: 50),
-                _buildSectionTitle('Based on your activity'),
-                _buildActivityBasedCategories(),
-                _buildDivider(),
-                _buildSectionTitle('For your home'),
-                _buildAddressBasedCategory(),
-                _buildSectionTitle('Your goals', isNavigating: true),
-                _buildYourGoals(),
-                _buildDivider(),
-                _buildSectionTitle('Popular on Yelpax'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Trending now'),
-                _buildPopularCategories(),
-                _buildSectionTitle('Home upkeep', isNavigating: true),
-                _buildYourGoals(),
-                _buildDivider(),
-                _buildSectionTitle('More guides', isNavigating: true),
-                _buildMoreGuides(),
-                _buildDivider(),
-                _buildSectionTitle('Outdoor upkeep'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Essential Home Service'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Moving into a new home'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Caring for a pet'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Planing a wedding'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Home office essentials'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Virtual lessons'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Financial advising'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildSectionTitle('Online tutoring'),
-                _buildPopularCategories(),
-                _buildDivider(),
-                _buildGetInspiration(),
-                _buildDivider(),
-                _buildFooter(),
-              ]),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  BackButton(
+                    onPressed: () =>
+                        Navigator.pushReplacementNamed(context, AppRouter.home),
+                  ),
+                  Text(
+                    'Home Services',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ],
+              ),
+              SearchProfessionalScreen(),
+              const SizedBox(height: 16),
+              HomeServicesPromotionScreen(),
+              _buildPopularCategories(),
+              const SizedBox(height: 50),
+              _buildActivityBasedCategories(),
+              _buildDivider(),
+              _buildAddressBasedCategory(),
+              _buildYourGoals(),
+              _buildDivider(),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildPopularCategories(),
+              _buildYourGoals(),
+              _buildDivider(),
+              _buildMoreGuides(),
+              _buildDivider(),
+              // _buildSectionTitle('Outdoor upkeep'),
+              // _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildSectionTitle('Essential Home Service'),
+              // _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildSectionTitle('Moving into a new home'),
+              // _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildSectionTitle('Caring for a pet'),
+              // _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildSectionTitle('Planing a wedding'),
+              // _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildSectionTitle('Home office essentials'),
+              // _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildSectionTitle('Virtual lessons'),
+              // _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildSectionTitle('Financial advising'),
+              // _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildSectionTitle('Online tutoring'),
+              // _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildGetInspiration(),
+              // _buildDivider(),
+              // _buildFooter(),
+            ],
+          ),
         ),
       ),
     );
@@ -127,11 +139,15 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget _buildSectionTitle(String title, {bool isNavigating = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium,
-          textAlign: TextAlign.left,
+        Padding(
+          padding: const EdgeInsets.only(top: 8, left: 8),
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.titleMedium,
+            textAlign: TextAlign.left,
+          ),
         ),
         isNavigating
             ? IconButton(
@@ -159,7 +175,11 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           );
         }
 
-        return _buildHorizontalCategoryList(controller.categories, controller);
+        return _buildHorizontalCategoryList(
+          'Popular on Yelpax',
+          controller.categories,
+          controller,
+        );
       },
     );
   }
@@ -189,22 +209,30 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   }
 
   Widget _buildHorizontalCategoryList(
+    String sectionTitle,
     List categories,
     HomeServicesController controller,
   ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      width: width(context),
-      height: height(context) / 6,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        itemBuilder: (context, index) => _buildCategoryItem(
-          context,
-          categories[index],
-          'assets/images/y_logo.png',
-          controller,
-        ),
+    return Card(
+      child: Column(
+        children: [
+          _buildSectionTitle(sectionTitle),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            width: width(context),
+            height: height(context) / 6,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (context, index) => _buildCategoryItem(
+                context,
+                categories[index],
+                'assets/images/y_logo.png',
+                controller,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -243,7 +271,11 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           );
         }
         if (value.isAddressExists) {
-          return _buildHorizontalCategoryList(value.categories, value);
+          return _buildHorizontalCategoryList(
+            'For Your Home',
+            value.categories,
+            value,
+          );
         }
         return Column(
           children: [
@@ -467,15 +499,17 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     String imageUrl,
     HomeServicesController controller,
   ) {
-    return Card(
-      child: Column(
-        children: [
-          InkWell(
-            onTap: () => controller.openCategory({
-              'name': categoryName,
-              'imageUrl': imageUrl,
-            }, context),
-            child: Container(
+    return InkWell(
+      onTap: () => controller.openCategory({
+        'name': categoryName,
+        'imageUrl': imageUrl,
+      }, context),
+      child: Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
               height: height(context) / 13,
               width: width(context) / 1.8,
               decoration: BoxDecoration(
@@ -485,9 +519,9 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                 ),
               ),
             ),
-          ),
-          Text(categoryName, style: Theme.of(context).textTheme.titleSmall),
-        ],
+            Text(categoryName, style: Theme.of(context).textTheme.titleSmall),
+          ],
+        ),
       ),
     );
   }
