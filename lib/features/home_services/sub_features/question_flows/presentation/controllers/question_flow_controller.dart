@@ -1,6 +1,7 @@
 // question_flow_controller.dart
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:yelpax/core/constants/app_constants.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/domain/entities/question_flow_entity.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/domain/usecases/question_flow_usecase.dart';
@@ -44,15 +45,19 @@ class QuestionFlowController extends ChangeNotifier {
 
     result.fold(
       (failure) {
-        print('Error occurred ${failure.message}');
+         SmartDialog.showToast(
+        'Error occurred ${failure.message}',
+        animationTime: Duration(seconds: 5),
+      );
         _errorMessage = failure.message;
         _isLoadingQuestion = false;
         notifyListeners();
       },
       (questionFlows) {
-        print('Data loaded successfully ${questionFlows}');
+        SmartDialog.showToast('Question Flow Loaded Successfully');
         _questions = questionFlows;
         _isLoadingQuestion = false;
+        
         // Initialize the answers map once we have the questions
         _userAnswers.addAll(
           Map.fromIterable(
@@ -110,8 +115,11 @@ class QuestionFlowController extends ChangeNotifier {
 
   void _finishFlow() {
     if (kDebugMode) {
-      print("Flow completed! Answers: $_userAnswers");
-    navigatorKey.currentState!.pop();
+      SmartDialog.showToast(
+        'Submitted answers are: $_userAnswers',
+        animationTime: Duration(seconds: 5),
+      );
+      navigatorKey.currentState!.pop();
     }
     _isLoading = true;
     notifyListeners();

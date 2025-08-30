@@ -125,7 +125,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
                 onPressed: () => sendQuotationToProfessionals(
                   context,
                   controller.serviceDetails['name'],
-                  controller
+                  controller,
                 ),
               ),
               ProfessionalFilterWidget(
@@ -153,13 +153,18 @@ class _ServiceProfessionalsView extends StatelessWidget {
           return ProfessionalCardWidget(
             professional: professional,
             onTap: () => controller.openCategory(professional, context),
+            onOpenQuotation:()=> controller.openQuestionFlow('01',context),
           );
         },
       ),
     );
   }
 
-  sendQuotationToProfessionals(BuildContext context, String title,ServiceProfessionalsController controller) {
+  sendQuotationToProfessionals(
+    BuildContext context,
+    String title,
+    ServiceProfessionalsController controller,
+  ) {
     showDialog(
       context: context,
       builder: (context) {
@@ -181,7 +186,11 @@ class _ServiceProfessionalsView extends StatelessWidget {
           actions: [
             CustomButton(
               text: 'Confirm',
-              onPressed: () => controller.openQuestionFlow('01', context),
+              onPressed: () {
+                Navigator.pop(context);
+                controller.openQuestionFlow('01', context);
+              },
+
               size: CustomButtonSize.small,
             ),
             SizedBox(height: 10),
