@@ -202,7 +202,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
             child: const Icon(Icons.refresh),
           );
         }
-        print(controller.categories.length);
+        //    print(controller.categories.length);
         return _buildGridCategoryList(controller.categories, controller);
       },
     );
@@ -227,7 +227,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               itemBuilder: (context, index) => _buildCategoryItem(
                 context,
                 categories[index],
-                'assets/images/y_logo.png',
+                "https://images.pexels.com/photos/12725415/pexels-photo-12725415.jpeg",
                 controller,
               ),
             ),
@@ -241,22 +241,29 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     List categories,
     HomeServicesController controller,
   ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      width: width(context),
-      height: height(context) / 2.5,
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        scrollDirection: Axis.vertical,
-        itemCount: categories.length,
-        itemBuilder: (context, index) => _buildCategoryItem(
-          context,
-          categories[index],
-          'assets/images/y_logo.png',
-          controller,
-        ),
+    return Card(
+      child: Column(
+        children: [
+          _buildSectionTitle('Activity Based Services'),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            width: width(context),
+            height: height(context) / 2.5,
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              scrollDirection: Axis.vertical,
+              itemCount: categories.length,
+              itemBuilder: (context, index) => _buildCategoryItem(
+                context,
+                categories[index],
+                'https://images.pexels.com/photos/7609119/pexels-photo-7609119.jpeg',
+                controller,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -319,7 +326,10 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                     color: Theme.of(context).secondaryHeaderColor,
                     width: width(context),
                     height: height(context) / 5,
-                    child: Image.asset('assets/images/y_logo.png'),
+                    child: Image.network(
+                      'https://images.pexels.com/photos/4246109/pexels-photo-4246109.jpeg',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   _buildSectionTitle('Keep things clean'),
                   Container(
@@ -400,7 +410,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                         color: Colors.pink,
                         image: const DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage('assets/images/splash_1.jpg'),
+                          image: NetworkImage('https://images.pexels.com/photos/6196688/pexels-photo-6196688.jpeg'),
                         ),
                       ),
                     ),
@@ -505,22 +515,24 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
         'imageUrl': imageUrl,
       }, context),
       child: Card(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: height(context) / 13,
-              width: width(context) / 1.8,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(imageUrl),
-                  onError: (exception, stackTrace) => CircleAvatar(),
-                ),
-              ),
+        child: Container(
+          alignment: Alignment.bottomCenter,
+          height: height(context) / 13,
+          width: width(context) / 1.8,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(7),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(imageUrl),
+              onError: (exception, stackTrace) => CircleAvatar(),
             ),
-            Text(categoryName, style: Theme.of(context).textTheme.titleSmall),
-          ],
+          ),
+          child: Text(
+            categoryName,
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall!.copyWith(color: Colors.white),
+          ),
         ),
       ),
     );
@@ -533,7 +545,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget _buildCardForGoals(List category, int index) {
     return Card(
       child: ListTile(
-        leading: Image.asset('assets/images/y_logo.png'),
+        leading: Image.network('https://images.pexels.com/photos/4239031/pexels-photo-4239031.jpeg',fit: BoxFit.cover,),
         title: Text(
           category[index],
           style: Theme.of(context).textTheme.titleSmall,
