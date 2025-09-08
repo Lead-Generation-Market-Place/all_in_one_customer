@@ -1,4 +1,4 @@
-import 'package:yelpax/features/signin/domain/entities/signin_entity.dart';
+import '../../domain/entities/signin_entity.dart';
 
 class SigninModel extends SigninEntity {
   SigninModel({required super.token, required super.email});

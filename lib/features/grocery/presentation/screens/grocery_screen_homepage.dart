@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/config/themes/theme_mode_type.dart';
-import 'package:yelpax/config/themes/theme_provider.dart';
+import '../../../../config/themes/theme_mode_type.dart';
+import '../../../../config/themes/theme_provider.dart';
 
 class GroceryScreenHomepage extends StatefulWidget {
   const GroceryScreenHomepage({super.key});

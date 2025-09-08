@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:yelpax/core/constants/app_constants.dart';
+import '../constants/app_constants.dart';
 
 enum DioMethod { post, get, put, delete }
 

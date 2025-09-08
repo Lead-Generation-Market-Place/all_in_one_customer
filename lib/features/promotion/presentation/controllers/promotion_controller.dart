@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
-import 'package:yelpax/config/routes/router.dart';
+
+import '../../../../config/routes/router.dart';
 
 class PromotionController extends ChangeNotifier {
   bool _refreshLoading = false;

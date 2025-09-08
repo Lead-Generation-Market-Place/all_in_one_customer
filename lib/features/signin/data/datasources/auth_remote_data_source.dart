@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:yelpax/features/signin/data/models/signin_model.dart';
+import '../models/signin_model.dart';
 
 import '../../../../core/network/api_service.dart';
 

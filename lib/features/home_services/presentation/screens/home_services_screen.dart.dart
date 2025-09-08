@@ -1,15 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/app/presentation/shell/widgets/custom_bottom_nav.dart';
-import 'package:yelpax/config/routes/router.dart';
-import 'package:yelpax/config/themes/theme_mode_type.dart';
-import 'package:yelpax/config/themes/theme_provider.dart';
-import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
-import 'package:yelpax/features/home_services/presentation/screens/home_services_promotion_screen.dart';
-import 'package:yelpax/features/home_services/presentation/screens/search_professional_screen.dart';
-import 'package:yelpax/features/home_services/presentation/widgets/app_bar_widget.dart';
-import 'package:yelpax/shared/widgets/custom_shimmer.dart';
+import '../../../../app/presentation/shell/widgets/custom_bottom_nav.dart';
+import '../../../../config/routes/router.dart';
+import '../../../../config/themes/theme_mode_type.dart';
+import '../../../../config/themes/theme_provider.dart';
+import '../controllers/home_services_controller.dart';
+import 'home_services_promotion_screen.dart';
+import 'search_professional_screen.dart';
+import '../widgets/app_bar_widget.dart';
+import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
 
@@ -85,20 +86,20 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               SearchProfessionalScreen(),
               const SizedBox(height: 16),
               HomeServicesPromotionScreen(),
-              _buildPopularCategories(),
+             // _buildPopularCategories(),
               const SizedBox(height: 50),
-              _buildActivityBasedCategories(),
-              _buildDivider(),
-              _buildAddressBasedCategory(),
-              _buildYourGoals(),
-              _buildDivider(),
-              _buildPopularCategories(),
-              _buildDivider(),
-              _buildPopularCategories(),
-              _buildYourGoals(),
-              _buildDivider(),
-              _buildMoreGuides(),
-              _buildDivider(),
+            //   _buildActivityBasedCategories(),
+              // _buildDivider(),
+               _buildAddressBasedCategory(),
+               _buildYourGoals(),
+              // _buildDivider(),
+              // _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildPopularCategories(),
+              // _buildYourGoals(),
+              // _buildDivider(),
+              // _buildMoreGuides(),
+              // _buildDivider(),
               // _buildSectionTitle('Outdoor upkeep'),
               // _buildPopularCategories(),
               // _buildDivider(),
@@ -226,8 +227,8 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               itemCount: categories.length,
               itemBuilder: (context, index) => _buildCategoryItem(
                 context,
-                categories[index],
-                "https://images.pexels.com/photos/12725415/pexels-photo-12725415.jpeg",
+                categories[index]['name'],
+                categories[index]['imageUrl'],
                 controller,
               ),
             ),
@@ -257,8 +258,8 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               itemCount: categories.length,
               itemBuilder: (context, index) => _buildCategoryItem(
                 context,
-                categories[index],
-                'https://images.pexels.com/photos/7609119/pexels-photo-7609119.jpeg',
+                categories[index]['name'],
+                categories[index]['imageUrl'],
                 controller,
               ),
             ),
@@ -410,7 +411,9 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                         color: Colors.pink,
                         image: const DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage('https://images.pexels.com/photos/6196688/pexels-photo-6196688.jpeg'),
+                          image: NetworkImage(
+                            'https://images.pexels.com/photos/6196688/pexels-photo-6196688.jpeg',
+                          ),
                         ),
                       ),
                     ),
@@ -514,25 +517,26 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
         'name': categoryName,
         'imageUrl': imageUrl,
       }, context),
-      child: Card(
-        child: Container(
-          alignment: Alignment.bottomCenter,
-          height: height(context) / 13,
-          width: width(context) / 1.8,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: NetworkImage(imageUrl),
-              onError: (exception, stackTrace) => CircleAvatar(),
-            ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ClipRRect(
+        
+          borderRadius: BorderRadiusGeometry.circular(12),
+          child: CachedNetworkImage(
+          
+            height: height(context) / 13,
+            width: width(context) / 1.8,
+            imageUrl: imageUrl,
+            fit: BoxFit.cover,
+            errorWidget: (context, url, error) =>
+                Icon(Icons.error_outline_outlined),
+            progressIndicatorBuilder: (context, url, progress) =>
+                SizedBox(
+                  
+                  child: LinearProgressIndicator(value: progress.progress)),
+          
           ),
-          child: Text(
-            categoryName,
-            style: Theme.of(
-              context,
-            ).textTheme.titleSmall!.copyWith(color: Colors.white),
-          ),
+            
         ),
       ),
     );
@@ -545,9 +549,12 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget _buildCardForGoals(List category, int index) {
     return Card(
       child: ListTile(
-        leading: Image.network('https://images.pexels.com/photos/4239031/pexels-photo-4239031.jpeg',fit: BoxFit.cover,),
+        leading: Image.network(
+          category[index]['imageUrl'],
+          fit: BoxFit.cover,
+        ),
         title: Text(
-          category[index],
+          category[index]['name'],
           style: Theme.of(context).textTheme.titleSmall,
         ),
         subtitle: Text(

@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/config/themes/theme_mode_type.dart';
-import 'package:yelpax/config/themes/theme_provider.dart';
-import 'package:yelpax/core/constants/height.dart';
-import 'package:yelpax/core/constants/width.dart';
-import 'package:yelpax/features/promotion/presentation/controllers/promotion_controller.dart';
-import 'package:yelpax/features/promotion/presentation/widgets/notice_banner.dart';
-import 'package:yelpax/shared/widgets/custom_input.dart';
-import 'package:yelpax/shared/widgets/custom_shimmer.dart';
+import '../../../../config/themes/theme_mode_type.dart';
+import '../../../../config/themes/theme_provider.dart';
+import '../../../../core/constants/height.dart';
+import '../../../../core/constants/width.dart';
+import '../controllers/promotion_controller.dart';
+import '../widgets/notice_banner.dart';
+import '../../../../shared/widgets/custom_input.dart';
+import '../../../../shared/widgets/custom_shimmer.dart';
 
 class PromotionScreen extends StatefulWidget {
   const PromotionScreen({super.key});

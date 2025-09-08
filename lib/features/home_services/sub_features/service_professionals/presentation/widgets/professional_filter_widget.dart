@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/shared/widgets/custom_button.dart';
+import '../../../../../../shared/widgets/custom_button.dart';
 
 class ProfessionalFilterWidget extends StatelessWidget {
   String selectedService;

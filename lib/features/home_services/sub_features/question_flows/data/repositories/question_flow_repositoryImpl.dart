@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:yelpax/core/error/exceptions/exceptions.dart';
-import 'package:yelpax/core/error/failures/failure.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/data/datasources/question_flow_remote_datasource.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/domain/entities/question_flow_entity.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/domain/repositories/question_flow_repository.dart';
+import '../../../../../../core/error/exceptions/exceptions.dart';
+import '../../../../../../core/error/failures/failure.dart';
+import '../datasources/question_flow_remote_datasource.dart';
+import '../../domain/entities/question_flow_entity.dart';
+import '../../domain/repositories/question_flow_repository.dart';
 
 class QuestionFlowRepositoryimpl implements QuestionFlowRepository{
   QuestionFlowRemoteDatasource datasource;

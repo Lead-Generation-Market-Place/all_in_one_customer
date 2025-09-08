@@ -1,4 +1,4 @@
-import 'package:yelpax/features/signin/domain/entities/signin_entity.dart';
+import '../entities/signin_entity.dart';
 
 import '../repositories/auth_repository.dart';
 

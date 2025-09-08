@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/controllers/service_professionals_controller.dart';
-import 'package:yelpax/shared/widgets/custom_button.dart';
-import 'package:yelpax/shared/widgets/styled_asterisk_name.dart';
+import '../controllers/service_professionals_controller.dart';
+import '../../../../../../shared/widgets/custom_button.dart';
+import '../../../../../../shared/widgets/styled_asterisk_name.dart';
 import '../../../../../../core/utils/get_rating_label.dart';
 import '../../../../../../shared/widgets/star_rating_widget.dart';
 

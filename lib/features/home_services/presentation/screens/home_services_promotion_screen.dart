@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/core/constants/height.dart';
-import 'package:yelpax/core/constants/width.dart';
-import 'package:yelpax/features/home_services/domain/entities/home_services_promotion_entity.dart';
-import 'package:yelpax/features/home_services/get_promotions_di.dart';
-import 'package:yelpax/features/home_services/presentation/controllers/home_services_promotion_controller.dart';
-import 'package:yelpax/shared/widgets/custom_shimmer.dart';
+import '../../../../core/constants/height.dart';
+import '../../../../core/constants/width.dart';
+import '../../domain/entities/home_services_promotion_entity.dart';
+import '../../get_promotions_di.dart';
+import '../controllers/home_services_promotion_controller.dart';
+import '../../../../shared/widgets/custom_shimmer.dart';
 
 import '../widgets/promotion_banner_widget.dart';
 

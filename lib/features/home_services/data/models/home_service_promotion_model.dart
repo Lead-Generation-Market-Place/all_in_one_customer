@@ -1,4 +1,4 @@
-import 'package:yelpax/features/home_services/domain/entities/home_services_promotion_entity.dart';
+import '../../domain/entities/home_services_promotion_entity.dart';
 
 class HomeServicePromotionModel extends HomeServicesPromotionEntity {
   HomeServicePromotionModel({

@@ -1,5 +1,5 @@
-import 'package:yelpax/core/error/exceptions/exceptions.dart';
-import 'package:yelpax/features/home_services/data/models/professional_model.dart';
+import '../../../../core/error/exceptions/exceptions.dart';
+import '../models/professional_model.dart';
 
 abstract class HomeServicesRemoteDataSource {
   Future<List<ProfessionalModel>> searchProfessionals(String query);

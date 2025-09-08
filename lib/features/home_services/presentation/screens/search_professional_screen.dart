@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/features/home_services/domain/entities/professional.dart';
-import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
-import 'package:yelpax/features/home_services/presentation/controllers/search_professional_controller.dart';
-import 'package:yelpax/features/home_services/search_professional_di.dart';
-import 'package:yelpax/shared/widgets/custom_button.dart';
-import 'package:yelpax/shared/widgets/custom_shimmer.dart';
+import '../../domain/entities/professional.dart';
+import '../controllers/home_services_controller.dart';
+import '../controllers/search_professional_controller.dart';
+import '../../search_professional_di.dart';
+import '../../../../shared/widgets/custom_button.dart';
+import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../shared/widgets/custom_input.dart';
 
 class SearchProfessionalScreen extends StatelessWidget {

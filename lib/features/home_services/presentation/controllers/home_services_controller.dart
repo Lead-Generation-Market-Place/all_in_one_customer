@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:yelpax/config/routes/router.dart';
+import '../../../../config/routes/router.dart';
 
 class HomeServicesController extends ChangeNotifier {
   HomeServicesController() {}
@@ -45,13 +45,42 @@ class HomeServicesController extends ChangeNotifier {
       _categoryLoading = true;
       notifyListeners();
       await Future.delayed(Duration(seconds: 4));
-      categories.add('Handy Man');
-      categories.add('Home Cleaning');
-      categories.add('Junk Removal');
-      categories.add('Plumber');
-      categories.add('TV Mounting');
-      categories.add('Applicance service specialists');
-      categories.add('See All');
+
+      categories.add({
+        'name': 'Handy Man',
+        'imageUrl':
+            'https://images.pexels.com/photos/12725415/pexels-photo-12725415.jpeg',
+      });
+      categories.add({
+        'name': 'Home Cleaning',
+        'imageUrl':
+            'https://images.pexels.com/photos/4239146/pexels-photo-4239146.jpeg',
+      });
+      categories.add({
+        'name': 'Junk Removal',
+        'imageUrl':
+            'https://images.pexels.com/photos/2409022/pexels-photo-2409022.jpeg',
+      });
+      categories.add({
+        'name': 'Plumber',
+        'imageUrl':
+            'https://images.pexels.com/photos/33699778/pexels-photo-33699778.jpeg',
+      });
+      categories.add({
+        'name': 'TV Mounting',
+        'imageUrl':
+            'https://images.pexels.com/photos/7546319/pexels-photo-7546319.jpeg',
+      });
+      categories.add({
+        'name': 'Applicance service specialists',
+        'imageUrl':
+            'https://images.pexels.com/photos/7979605/pexels-photo-7979605.jpeg',
+      });
+      categories.add({
+        'name': 'See All',
+        'imageUrl':
+            'https://images.pexels.com/photos/6185434/pexels-photo-6185434.jpeg',
+      });
       // _isAddressExists = true;
     } catch (e) {
       _categories = [];

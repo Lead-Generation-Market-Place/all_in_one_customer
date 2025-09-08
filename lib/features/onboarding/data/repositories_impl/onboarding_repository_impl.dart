@@ -1,4 +1,4 @@
-import 'package:yelpax/features/onboarding/data/datasources/onboarding_local_data_source.dart';
+import '../datasources/onboarding_local_data_source.dart';
 
 import '../../domain/repositories/onboarding_repository.dart';
 

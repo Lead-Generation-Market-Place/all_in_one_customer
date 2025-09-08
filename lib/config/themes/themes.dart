@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/config/themes/schemes/grocery_theme.dart';
+import 'schemes/grocery_theme.dart';
 
 import 'schemes/food_theme.dart';
 import 'theme_mode_type.dart';

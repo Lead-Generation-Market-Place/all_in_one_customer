@@ -4,19 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/config/localization/l10n/l10n.dart';
-import 'package:yelpax/config/localization/locale_provider.dart';
+import 'config/localization/l10n/l10n.dart';
+import 'config/localization/locale_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:yelpax/config/routes/router.dart';
-import 'package:yelpax/config/themes/theme_provider.dart';
-import 'package:yelpax/core/constants/app_constants.dart';
-import 'package:yelpax/core/utils/app_restart.dart';
-import 'package:yelpax/providers/providers.dart';
-import 'package:yelpax/shared/screens/unexpected_error_screen.dart';
-import 'package:yelpax/shared/screens/unexpected_release_mode_error.dart';
+import 'config/routes/router.dart';
+import 'config/themes/theme_provider.dart';
+import 'core/constants/app_constants.dart';
+import 'core/utils/app_restart.dart';
+import 'providers/providers.dart';
+import 'shared/screens/unexpected_error_screen.dart';
+import 'shared/screens/unexpected_release_mode_error.dart';
 import 'generated/app_localizations.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   runZonedGuarded(
@@ -27,7 +26,8 @@ void main() {
           return UnexpectedReleaseModeError(message: details.toString());
         }
         return MaterialApp(
-          navigatorKey: navigatorKey,
+          navigatorKey: AppConstants.navigateKeyword,
+          
           home: UnexpectedErrorScreen(message: details.toString()),
         );
       };
@@ -42,7 +42,7 @@ void main() {
         Level.error,
         "Dart Server Error occured on $error on Stack \n $stack",
       );
-      navigatorKey.currentState!.push(
+      AppConstants.navigateKeyword.currentState!.push(
         MaterialPageRoute(
           builder: (context) => UnexpectedErrorScreen(message: 'message'),
         ),
@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [FlutterSmartDialog.observer],
       builder: FlutterSmartDialog.init(),
       initialRoute: AppRouter.splash,
-      navigatorKey: navigatorKey,
+      navigatorKey: AppConstants.navigateKeyword,
       onGenerateRoute: AppRouter.generateRoute,
       onUnknownRoute: (settings) => AppRouter.unknownRoute(settings),
       locale: provider.locale,

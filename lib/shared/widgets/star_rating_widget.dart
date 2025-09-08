@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/core/constants/width.dart';
+import '../../core/constants/width.dart';
 
 class StarRatingWidget extends StatefulWidget {
   final double maxStars;

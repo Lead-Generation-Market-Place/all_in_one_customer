@@ -5,7 +5,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:yelpax/core/constants/app_constants.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/domain/entities/question_flow_entity.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/domain/usecases/question_flow_usecase.dart';
-import 'package:yelpax/main.dart';
+
 
 class QuestionFlowController extends ChangeNotifier {
   final QuestionFlowUsecase _usecase;
@@ -119,7 +119,7 @@ class QuestionFlowController extends ChangeNotifier {
         'Submitted answers are: $_userAnswers',
         animationTime: Duration(seconds: 5),
       );
-      navigatorKey.currentState!.pop();
+      AppConstants.navigateKeyword.currentState!.pop();
     }
     _isLoading = true;
     notifyListeners();

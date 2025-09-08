@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/app/presentation/shell/widgets/custom_bottom_nav.dart';
-import 'package:yelpax/config/routes/router.dart';
+
+import 'app/presentation/shell/widgets/custom_bottom_nav.dart';
+import 'config/routes/router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

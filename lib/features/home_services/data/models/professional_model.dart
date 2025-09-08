@@ -1,4 +1,4 @@
-import 'package:yelpax/features/home_services/domain/entities/professional.dart';
+import '../../domain/entities/professional.dart';
 
 class ProfessionalModel extends Professional {
   const ProfessionalModel({required super.id, required super.name});

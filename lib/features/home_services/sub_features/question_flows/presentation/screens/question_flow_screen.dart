@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/presentation/widgets/question_flow_widget.dart';
+import '../widgets/question_flow_widget.dart';
 
 class QuestionFlowScreen extends StatefulWidget {
   const QuestionFlowScreen({super.key});

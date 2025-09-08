@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/features/signin/domain/entities/signin_entity.dart';
+import '../../domain/entities/signin_entity.dart';
 import '../../domain/usecases/sign_in_usecase.dart';
 
 class SignInController extends ChangeNotifier {

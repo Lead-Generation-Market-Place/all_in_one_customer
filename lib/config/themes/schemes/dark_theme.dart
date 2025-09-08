@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/core/constants/app_colors.dart';
+import '../../../core/constants/app_colors.dart';
 
 final darkTheme = ThemeData(
   brightness: Brightness.dark,

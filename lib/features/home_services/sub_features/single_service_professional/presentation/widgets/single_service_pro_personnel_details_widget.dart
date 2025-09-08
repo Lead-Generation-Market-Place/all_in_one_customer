@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:yelpax/core/constants/height.dart';
-import 'package:yelpax/core/constants/width.dart';
-import 'package:yelpax/core/utils/get_rating_label.dart';
-import 'package:yelpax/shared/widgets/custom_button.dart';
-import 'package:yelpax/shared/widgets/custom_input.dart';
-import 'package:yelpax/shared/widgets/star_rating_widget.dart';
-import 'package:yelpax/shared/widgets/styled_asterisk_name.dart';
+import '../../../../../../core/constants/height.dart';
+import '../../../../../../core/constants/width.dart';
+import '../../../../../../core/utils/get_rating_label.dart';
+import '../../../../../../shared/widgets/custom_button.dart';
+import '../../../../../../shared/widgets/custom_input.dart';
+import '../../../../../../shared/widgets/star_rating_widget.dart';
+import '../../../../../../shared/widgets/styled_asterisk_name.dart';
 
 class SingleServiceProPersonnelDetailsWidget extends StatelessWidget {
   final proDetails;
