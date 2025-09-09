@@ -111,7 +111,7 @@ class __searchProBodyState extends State<_searchProBody> {
           CustomInput(
             validator: (p0) {
               if (p0 == null || p0.isEmpty) return 'Enter Zip Code';
-
+    
               return null;
             },
             hint: 'Zip Code',
@@ -127,9 +127,9 @@ class __searchProBodyState extends State<_searchProBody> {
           SizedBox(height: 20),
           CustomButton(
             type: CustomButtonType.primary,
-
+    
             text: 'Search',
-
+    
             onPressed: onSearch,
           ),
           SizedBox(height: 10),

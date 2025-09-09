@@ -56,6 +56,7 @@ class _ItHomeScreenState extends State<ItHomeScreen> {
 
   Widget _buildBody() {
     return Container(
+      padding: const EdgeInsets.all(16),
       child: RefreshIndicator.adaptive(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,12 +68,13 @@ class _ItHomeScreenState extends State<ItHomeScreen> {
                       Navigator.pushReplacementNamed(context, AppRouter.home),
                 ),
                 Text(
-                  'Home Services',
+                  'IT Services',
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
-                ItSearchWidget(),
               ],
             ),
+             const SizedBox(height: 16),
+                ItSearchWidget(),
           ],
         ),
         onRefresh: () async {

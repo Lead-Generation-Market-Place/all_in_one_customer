@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/core/constants/height.dart';
+import 'package:yelpax/core/constants/width.dart';
 import 'package:yelpax/features/it/presentation/controllers/it_home_controller.dart';
 import '../../../../shared/widgets/custom_button.dart';
 import '../../../../shared/widgets/custom_shimmer.dart';
@@ -96,7 +98,7 @@ class __searchProBodyState extends State<_searchProBody> {
               }
               return null;
             },
-            hint: 'Which Service do you need',
+            hint: 'Search any IT Service',
             icon: Icons.search,
             controller: _searchController,
             suffixIcon: GestureDetector(
@@ -104,29 +106,13 @@ class __searchProBodyState extends State<_searchProBody> {
               child: Icon(Icons.clear),
             ),
           ),
-          SizedBox(height: 10),
-          CustomInput(
-            validator: (p0) {
-              if (p0 == null || p0.isEmpty) return 'Enter Zip Code';
-
-              return null;
-            },
-            hint: 'Zip Code',
-            icon: Icons.location_on_outlined,
-            controller: _zipController,
-            suffixIcon: GestureDetector(
-              onTap: () {
-                _zipController.clear();
-              },
-              child: Icon(Icons.clear),
-            ),
-          ),
+          
           SizedBox(height: 20),
           CustomButton(
             type: CustomButtonType.primary,
-
+      
             text: 'Search',
-
+      
             onPressed: onSearch,
           ),
           SizedBox(height: 10),
