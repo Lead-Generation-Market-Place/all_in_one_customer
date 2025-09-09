@@ -39,11 +39,9 @@ class PromotionController extends ChangeNotifier {
       case 'Grocery':
         return Navigator.pushNamed(context, AppRouter.grocery);
       case 'Home Services':
-        return Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRouter.homeServices,
-          (route) => false,
-        );
+        return Navigator.pushNamed(context, AppRouter.homeServices);
+      case 'IT':
+        return Navigator.pushNamed(context, AppRouter.itHomeScreen);
     }
   }
 

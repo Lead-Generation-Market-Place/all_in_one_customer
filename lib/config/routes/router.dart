@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yelpax/features/it/presentation/screens/it_home_screen.dart';
 import '../../app/presentation/shell/main_shell_screen.dart';
 import '../../core/error/widgets/unknown_route_screen.dart';
 import '../../features/grocery/presentation/screens/grocery_screen_homepage.dart';
@@ -27,6 +28,7 @@ class AppRouter {
   static const String singleServiceProfessionalScreen =
       '/singleServiceProfessionalScreen';
   static const String questionFlowScreen = '/questionFlowScreen';
+  static const String itHomeScreen = '/itHomeScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -63,9 +65,9 @@ class AppRouter {
               const UnknowRouteScreen(message: 'Unknown Route Screen'),
         );
       case questionFlowScreen:
-        return MaterialPageRoute(
-          builder: (_) => const QuestionFlowScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const QuestionFlowScreen());
+      case itHomeScreen:
+        return MaterialPageRoute(builder: (_) => const ItHomeScreen());
 
       default:
         return MaterialPageRoute(
