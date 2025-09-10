@@ -1,6 +1,6 @@
 import 'package:yelpax/core/error/exceptions/exceptions.dart';
-import 'package:yelpax/features/it/data/models/it_services_model.dart';
-import 'package:yelpax/features/it/domain/entities/it_services_entity.dart';
+import 'package:yelpax/features/it_services/data/models/it_services_model.dart';
+import 'package:yelpax/features/it_services/domain/entities/it_services_entity.dart';
 
 abstract class ItServicesRemoteDatasource {
   Future<List<ItServicesEntity>> onChanged(String query);

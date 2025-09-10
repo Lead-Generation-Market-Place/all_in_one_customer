@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/core/constants/height.dart';
-import 'package:yelpax/core/constants/width.dart';
-import 'package:yelpax/features/it/presentation/controllers/it_home_controller.dart';
+import 'package:yelpax/features/it_services/it_services_di.dart';
+import 'package:yelpax/features/it_services/presentation/controllers/it_services_controller.dart';
 import '../../../../shared/widgets/custom_button.dart';
 import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../shared/widgets/custom_input.dart';
@@ -13,7 +12,7 @@ class ItSearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ItHomeController(),
+      create: (_) => itServicesDi(),
       child: const _searchProBody(),
     );
   }
@@ -49,7 +48,7 @@ class __searchProBodyState extends State<_searchProBody> {
   void onCompleteCategory(String name) {
     _searchController.text = name;
 
-    var _searchProController = Provider.of<ItHomeController>(
+    var _searchProController = Provider.of<ItServicesController>(
       context,
       listen: false,
     );
@@ -57,7 +56,7 @@ class __searchProBodyState extends State<_searchProBody> {
   }
 
   void onClear() {
-    var _searchProController = Provider.of<ItHomeController>(
+    var _searchProController = Provider.of<ItServicesController>(
       context,
       listen: false,
     );
@@ -65,16 +64,16 @@ class __searchProBodyState extends State<_searchProBody> {
     _searchController.clear();
   }
 
-  // void onChanged(String value) {
-  //   var _searchProController = Provider.of<ItHomeController>(
-  //     context,
-  //     listen: false,
-  //   );
-  //   _searchProController.search(value);
-  // }
+  void onChanged(String value) {
+    var _searchProController = Provider.of<ItServicesController>(
+      context,
+      listen: false,
+    );
+    _searchProController.onChanged(value);
+  }
 
   void onSearch() {
-    var controller = Provider.of<ItHomeController>(
+    var controller = Provider.of<ItServicesController>(
       context,
       listen: false,
     );
@@ -91,7 +90,7 @@ class __searchProBodyState extends State<_searchProBody> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CustomInput(
-          //  onChanged: (value) => onChanged(value),
+            onChanged: (value) => onChanged(value),
             validator: (p0) {
               if (p0 == null || p0.isEmpty) {
                 return 'Enter Service';
@@ -116,7 +115,7 @@ class __searchProBodyState extends State<_searchProBody> {
             onPressed: onSearch,
           ),
           SizedBox(height: 10),
-          Consumer<ItHomeController>(
+          Consumer<ItServicesController>(
             builder: (context, value, child) {
               if (value.isLoading) {
                 return Padding(

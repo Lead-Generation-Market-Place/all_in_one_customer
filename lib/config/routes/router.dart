@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/features/it/presentation/screens/it_home_screen.dart';
+import 'package:yelpax/features/it_services/presentation/screens/it_home_screen.dart';
 import '../../app/presentation/shell/main_shell_screen.dart';
 import '../../core/error/widgets/unknown_route_screen.dart';
 import '../../features/grocery/presentation/screens/grocery_screen_homepage.dart';

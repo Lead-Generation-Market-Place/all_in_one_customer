@@ -1,4 +1,4 @@
-import 'package:yelpax/features/it/domain/entities/it_services_entity.dart';
+import 'package:yelpax/features/it_services/domain/entities/it_services_entity.dart';
 
 class ItServicesModel extends ItServicesEntity {
   ItServicesModel({

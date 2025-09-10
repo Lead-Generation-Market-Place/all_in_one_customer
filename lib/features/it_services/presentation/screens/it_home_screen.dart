@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/features/it/presentation/widgets/it_search_widget.dart';
+import 'package:yelpax/features/it_services/presentation/widgets/it_search_widget.dart';
 
 import '../../../../app/presentation/shell/widgets/custom_bottom_nav.dart';
 import '../../../../config/routes/router.dart';
