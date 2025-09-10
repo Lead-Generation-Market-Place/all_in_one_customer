@@ -54,12 +54,14 @@ class ItServicesRemoteDatasourceImpl implements ItServicesRemoteDatasource {
   List filteredList = [];
   @override
   Future<List<ItServicesModel>> onChanged(String query) async {
+    print(query);
     filteredList.clear();
     itCategories.forEach((element) {
 
-      if (element['name'].toString().toLowerCase().contains(
+      if ( element['name'].toString().toLowerCase().contains(
         query.toLowerCase(),
       )) {
+      
         filteredList.add(element);
       }
     });
@@ -67,7 +69,9 @@ class ItServicesRemoteDatasourceImpl implements ItServicesRemoteDatasource {
       final response=await Future.delayed(Duration(seconds: 1),(){
         return filteredList;
       });
+    print(filteredList);
       return response.map((e) => ItServicesModel.fromMap(e),).toList();
+    
     } catch (e) {
       throw ServerException(e.toString());
     }

@@ -24,6 +24,7 @@ class ItServicesController extends ChangeNotifier {
   }
 
   Future<void> onChanged(String query) async {
+  //  print(query);
     _isLoading = true;
     notifyListeners();
 

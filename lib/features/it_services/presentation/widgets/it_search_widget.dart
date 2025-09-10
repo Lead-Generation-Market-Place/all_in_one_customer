@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/features/it_services/domain/entities/it_services_entity.dart';
 import 'package:yelpax/features/it_services/it_services_di.dart';
 import 'package:yelpax/features/it_services/presentation/controllers/it_services_controller.dart';
 import '../../../../shared/widgets/custom_button.dart';
@@ -138,7 +139,7 @@ class __searchProBodyState extends State<_searchProBody> {
                 child: ListView.builder(
                   itemCount: value.itServices.length,
                   itemBuilder: (context, index) =>
-                      _buildSearchFieldData(),
+                      _buildSearchFieldData(value.itServices[index]),
                 ),
               );
             },
@@ -148,12 +149,12 @@ class __searchProBodyState extends State<_searchProBody> {
     );
   }
 
-  Widget _buildSearchFieldData() {
+  Widget _buildSearchFieldData(ItServicesEntity entity) {
     return Center(
       child: ListTile(
       //  onTap: () => onCompleteCategory(pro.name),
-        leading: CircleAvatar(child: Text('1')),
-        title: Text('Software Development'),
+        leading: CircleAvatar(child: Text(entity.id)),
+        title: Text(entity.name),
       ),
     );
   }
