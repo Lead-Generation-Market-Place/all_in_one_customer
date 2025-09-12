@@ -88,26 +88,26 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               HomeServicesPromotionScreen(),
               _buildPopularCategories(),
               const SizedBox(height: 50),
-               _buildActivityBasedCategories(),
-               _buildDivider(),
-               _buildAddressBasedCategory(),
-               _buildYourGoals(),
-               _buildDivider(),
-               _buildPopularCategories(),
-               _buildDivider(),
-             //  _buildPopularCategories(),
-               _buildYourGoals(),
-           //   // _buildDivider(),
-               _buildMoreGuides(),
-               _buildDivider(),
-               _buildSectionTitle('Outdoor upkeep'),
-               _buildPopularCategories(),
-               _buildDivider(),
-               _buildSectionTitle('Essential Home Service'),
-               _buildPopularCategories(),
-               _buildDivider(),
-               _buildSectionTitle('Moving into a new home'),
-               _buildPopularCategories(),
+              _buildActivityBasedCategories(),
+              _buildDivider(),
+              _buildAddressBasedCategory(),
+              _buildYourGoals(),
+              _buildDivider(),
+              _buildPopularCategories(),
+              _buildDivider(),
+              //  _buildPopularCategories(),
+              _buildYourGoals(),
+              //   // _buildDivider(),
+              _buildMoreGuides(),
+              _buildDivider(),
+              _buildSectionTitle('Outdoor upkeep'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Essential Home Service'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Moving into a new home'),
+              _buildPopularCategories(),
               // _buildDivider(),
               // _buildSectionTitle('Caring for a pet'),
               // _buildPopularCategories(),
@@ -126,10 +126,10 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               // _buildDivider(),
               // _buildSectionTitle('Online tutoring'),
               // _buildPopularCategories(),
-               _buildDivider(),
-               _buildGetInspiration(),
-               _buildDivider(),
-               _buildFooter(),
+              _buildDivider(),
+              _buildGetInspiration(),
+              _buildDivider(),
+              _buildFooter(),
             ],
           ),
         ),
@@ -506,41 +506,55 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   }
 
   //static widgets
-  Widget _buildCategoryItem(
-    BuildContext context,
-    String categoryName,
-    String imageUrl,
-    HomeServicesController controller,
-  ) {
-    return InkWell(
-      onTap: () => controller.openCategory({
-        'name': categoryName,
-        'imageUrl': imageUrl,
-      }, context),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ClipRRect(
-        
-          borderRadius: BorderRadiusGeometry.circular(12),
-          child: CachedNetworkImage(
-          
-            height: height(context) / 13,
-            width: width(context) / 1.8,
-            imageUrl: imageUrl,
-            fit: BoxFit.cover,
-            errorWidget: (context, url, error) =>
-                Icon(Icons.error_outline_outlined),
-            progressIndicatorBuilder: (context, url, progress) =>
-                SizedBox(
-                  
-                  child: LinearProgressIndicator(value: progress.progress)),
-          
-          ),
-            
+Widget _buildCategoryItem(
+  BuildContext context,
+  String categoryName,
+  String imageUrl,
+  HomeServicesController controller,
+) {
+  return InkWell(
+    onTap: () => controller.openCategory(
+      {'name': categoryName, 'imageUrl': imageUrl},
+      context,
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            CachedNetworkImage(
+              height: height(context) ,
+              width: width(context) / 1.8,
+              imageUrl: imageUrl,
+              fit: BoxFit.cover,
+              errorWidget: (context, url, error) =>
+                  const Icon(Icons.error_outline_outlined),
+              progressIndicatorBuilder: (context, url, progress) => SizedBox(
+                child: LinearProgressIndicator(value: progress.progress),
+              ),
+            ),
+            Container(
+
+              width: width(context)/1.8,
+              color: Colors.black.withOpacity(0.4),
+              padding: const EdgeInsets.all(6),
+              child: Text(
+                categoryName,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildDivider() {
     return Container(margin: const EdgeInsets.all(24), child: Divider());
@@ -549,10 +563,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget _buildCardForGoals(List category, int index) {
     return Card(
       child: ListTile(
-        leading: Image.network(
-          category[index]['imageUrl'],
-          fit: BoxFit.cover,
-        ),
+        leading: Image.network(category[index]['imageUrl'], fit: BoxFit.cover),
         title: Text(
           category[index]['name'],
           style: Theme.of(context).textTheme.titleSmall,

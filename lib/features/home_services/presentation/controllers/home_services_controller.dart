@@ -17,12 +17,20 @@ class HomeServicesController extends ChangeNotifier {
   bool get refreshLoading => _refreshLoading;
 
   Future<void> openCategory(Map categoryDetails, BuildContext context) async {
-    print(categoryDetails);
-    Navigator.pushNamed(
-      context,
-      AppRouter.serviceProfessionalsScreen,
-      arguments: categoryDetails,
-    );
+    print(categoryDetails['name']);
+    if (categoryDetails['name'] == 'See All') {
+      Navigator.pushNamed(
+        context,
+        AppRouter.seeAllServices,
+        arguments: _categories,
+      );
+    } else {
+      Navigator.pushNamed(
+        context,
+        AppRouter.serviceProfessionalsScreen,
+        arguments: categoryDetails,
+      );
+    }
   }
 
   Future<void> retry() async {

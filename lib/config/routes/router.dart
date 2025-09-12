@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yelpax/features/home_services/presentation/screens/see_all_services_screen.dart';
 import 'package:yelpax/features/it_services/presentation/screens/it_home_screen.dart';
 import '../../app/presentation/shell/main_shell_screen.dart';
 import '../../core/error/widgets/unknown_route_screen.dart';
@@ -22,6 +23,7 @@ class AppRouter {
   static const String featured = '/featured';
   static const String grocery = '/grocery';
   static const String homeServices = '/homeservices';
+  static const String seeAllServices='/seeallservices';
   static const String unknownRouteScreen = '/unknownRouteScreen';
   static const String serviceProfessionalsScreen =
       '/serviceProfessionalsScreen';
@@ -48,6 +50,9 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const GroceryScreenHomepage());
       case homeServices:
         return MaterialPageRoute(builder: (_) => const HomeServicesScreen());
+      case seeAllServices:
+        final _seeAllArgs=settings.arguments??{};
+        return MaterialPageRoute(builder: (_) =>  SeeAllServicesScreen(services: _seeAllArgs),);
       case serviceProfessionalsScreen:
         final _arg = settings.arguments ?? {};
         return MaterialPageRoute(
