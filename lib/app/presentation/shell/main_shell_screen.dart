@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../../config/themes/theme_mode_type.dart';
-import '../../../config/themes/theme_provider.dart';
-import '../../../config/themes/themes.dart';
 import '../../../features/promotion/presentation/screens/promotion_screen.dart';
 import 'widgets/custom_bottom_nav.dart';
 

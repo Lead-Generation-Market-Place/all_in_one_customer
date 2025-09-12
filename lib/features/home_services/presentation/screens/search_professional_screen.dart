@@ -15,13 +15,12 @@ class SearchProfessionalScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => searchProfessionalController(),
-      child: const _searchProBody(),
+      child:  _searchProBody(),
     );
   }
 }
 
 class _searchProBody extends StatefulWidget {
-  const _searchProBody({super.key});
 
   @override
   State<_searchProBody> createState() => __searchProBodyState();
@@ -35,7 +34,6 @@ class __searchProBodyState extends State<_searchProBody> {
   void initState() {
     _searchController = TextEditingController();
     _zipController = TextEditingController();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -43,7 +41,6 @@ class __searchProBodyState extends State<_searchProBody> {
   void dispose() {
     _searchController.dispose();
     _zipController.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 

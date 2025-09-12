@@ -96,8 +96,8 @@ class QuestionPage extends StatelessWidget {
           initialValue: currentAnswer as String? ?? '',
           onChanged: onAnswerSubmitted,
         );
-      default:
-        return Text('Question type "$type" not implemented');
+      // default:
+      //   return Text('Question type "$type" not implemented');
     }
   }
 }

@@ -69,49 +69,4 @@ class _ProfessionalFilterWidgetState extends State<ProfessionalFilterWidget> {
     );
   }
 
-  sendQuotationToProfessionals(
-    BuildContext context,
-    String title,
-    ServiceProfessionalsController controller,
-  ) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        TextTheme textTheme = Theme.of(context).textTheme;
-        return AlertDialog(
-          content: RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Send Quotation to 5 ',
-                  style: textTheme.bodyMedium,
-                ),
-                TextSpan(text: title, style: textTheme.titleSmall),
-                TextSpan(text: ' Companies', style: textTheme.bodyMedium),
-              ],
-            ),
-          ),
-          actions: [
-            CustomButton(
-              text: 'Confirm',
-              onPressed: () {
-                Navigator.pop(context);
-                controller.openQuestionFlow('01', context);
-              },
-
-              size: CustomButtonSize.small,
-            ),
-            SizedBox(height: 10),
-            CustomButton(
-              text: 'Cancel',
-              bgColor: Colors.red,
-              size: CustomButtonSize.small,
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }

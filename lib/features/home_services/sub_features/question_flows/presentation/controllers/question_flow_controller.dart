@@ -2,10 +2,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:yelpax/config/routes/router.dart';
 import 'package:yelpax/core/constants/app_constants.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/domain/entities/question_flow_entity.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/domain/usecases/question_flow_usecase.dart';
-
 
 class QuestionFlowController extends ChangeNotifier {
   final QuestionFlowUsecase _usecase;
@@ -18,6 +18,7 @@ class QuestionFlowController extends ChangeNotifier {
   bool _isLoading = false;
   List<QuestionFlowEntity> _questions = [];
   String _errorMessage = '';
+  bool _isQuestionFlowCompleted = false;
 
   // Flow State
   final PageController pageController = PageController();
@@ -30,6 +31,7 @@ class QuestionFlowController extends ChangeNotifier {
   bool get isLoading => _isLoading;
   List<QuestionFlowEntity> get questions => _questions;
   String get errorMessage => _errorMessage;
+  bool get isQuestionFlowCompleted => _isQuestionFlowCompleted;
 
   int get currentPageIndex => _currentPageIndex;
   int get totalQuestions =>
@@ -45,10 +47,10 @@ class QuestionFlowController extends ChangeNotifier {
 
     result.fold(
       (failure) {
-         SmartDialog.showToast(
-        'Error occurred ${failure.message}',
-        animationTime: Duration(seconds: 5),
-      );
+        SmartDialog.showToast(
+          'Error occurred ${failure.message}',
+          animationTime: Duration(seconds: 5),
+        );
         _errorMessage = failure.message;
         _isLoadingQuestion = false;
         notifyListeners();
@@ -57,7 +59,7 @@ class QuestionFlowController extends ChangeNotifier {
         SmartDialog.showToast('Question Flow Loaded Successfully');
         _questions = questionFlows;
         _isLoadingQuestion = false;
-        
+
         // Initialize the answers map once we have the questions
         _userAnswers.addAll(
           Map.fromIterable(
@@ -119,13 +121,19 @@ class QuestionFlowController extends ChangeNotifier {
         'Submitted answers are: $_userAnswers',
         animationTime: Duration(seconds: 5),
       );
-      AppConstants.navigateKeyword.currentState!.pop();
     }
+    _isQuestionFlowCompleted = true;
     _isLoading = true;
     notifyListeners();
     // TODO: Here you would call another usecase to submit the final answers.
     // For example: _usecase.submitAnswers(_userAnswers);
     // Then handle the result, set _isLoading to false, etc.
+  }
+
+  void submitFlow(String option) {//a flow where submit to send 5 or one professional and get back
+    AppConstants.navigateKeyword.currentState!.pushNamed(AppRouter.homeServices);
+    _isQuestionFlowCompleted = false;
+    SmartDialog.showToast('Quotation Will Send To $option');
   }
 
   @override

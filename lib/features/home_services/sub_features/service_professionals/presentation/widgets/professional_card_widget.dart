@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../controllers/service_professionals_controller.dart';
 import '../../../../../../shared/widgets/custom_button.dart';
 import '../../../../../../shared/widgets/styled_asterisk_name.dart';
 import '../../../../../../core/utils/get_rating_label.dart';
