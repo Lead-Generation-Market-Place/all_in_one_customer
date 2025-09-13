@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:yelpax/features/home_services/sub_features/single_service_professional/presentation/widgets/single_service_pro_video_ratings.dart';
 import '../../../../../../core/constants/height.dart';
 import '../../../../../../core/constants/width.dart';
 import '../../../../../../core/utils/get_rating_label.dart';
@@ -155,6 +156,7 @@ class _PersonnelInfoSection extends StatelessWidget {
             itemCount: 3,
           ),
         ),
+        SingleServiceProVideoRatings(),
       ],
     );
   }
