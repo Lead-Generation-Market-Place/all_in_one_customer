@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:yelpax/core/network/endpoints.dart';
 import '../models/signin_model.dart';
 

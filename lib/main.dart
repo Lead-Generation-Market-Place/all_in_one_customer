@@ -15,6 +15,7 @@ import 'providers/providers.dart';
 import 'shared/screens/unexpected_error_screen.dart';
 import 'shared/screens/unexpected_release_mode_error.dart';
 import 'generated/app_localizations.dart';
+import 'core/injection_container.dart' as di;
 
 
 void main() {
@@ -27,10 +28,10 @@ void main() {
         }
         return MaterialApp(
           navigatorKey: AppConstants.navigateKeyword,
-          
           home: UnexpectedErrorScreen(message: details.toString()),
         );
       };
+      di.init();// injecting the containers
       runApp(
         RestartWidget(
           child: MultiProvider(providers: appProviders, child: const MyApp()),
