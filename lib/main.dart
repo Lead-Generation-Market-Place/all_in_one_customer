@@ -20,7 +20,7 @@ import 'core/injection_container.dart' as di;
 
 void main() {
   runZonedGuarded(
-    () {
+    () async{
       WidgetsFlutterBinding.ensureInitialized();
       ErrorWidget.builder = (FlutterErrorDetails details) {
         if (kReleaseMode) {
@@ -31,7 +31,7 @@ void main() {
           home: UnexpectedErrorScreen(message: details.toString()),
         );
       };
-      di.init();// injecting the containers for clean architecture
+   await di.init();// injecting the containers for clean architecture
       runApp(
         RestartWidget(
           child: MultiProvider(providers: appProviders, child: const MyApp()),
@@ -78,6 +78,7 @@ class MyApp extends StatelessWidget {
       ],
       title: AppConstants.app_name,
       theme: themeProvider.themeData,
+      
     );
   }
 }

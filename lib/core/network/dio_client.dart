@@ -1,7 +1,9 @@
 // core/network/dio_client.dart
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
-
+import 'package:yelpax/core/auth/auth_manager.dart';
+import 'package:yelpax/core/network/auth_interceptor.dart';
+import 'package:yelpax/core/injection_container.dart' as di;
 class DioClient {
   final Dio dio;
   final Logger logger;
@@ -11,6 +13,7 @@ class DioClient {
   }
 
   void _setupInterceptors() {
+    dio.interceptors.add(AuthInterceptor(authManager: di.getIt<AuthManager>()));
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         logger.i('🌍 REQUEST: ${options.method} ${options.uri}');

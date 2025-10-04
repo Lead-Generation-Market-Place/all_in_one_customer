@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:yelpax/core/auth/auth_manager.dart';
 import 'package:yelpax/core/network/endpoints.dart';
 import 'package:yelpax/core/storage/secure_storage_service.dart';
 import 'package:yelpax/features/signin/data/datasources/auth_remote_data_source.dart';
@@ -25,6 +26,7 @@ Future<void> init() async {
   getIt.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImpl(connectivity: getIt<Connectivity>()),
   );
+  //! core secure storage
   getIt.registerLazySingleton<LocalStorageService>(
     () => SecureStorageService(),
   );
@@ -45,6 +47,9 @@ Future<void> init() async {
   getIt.registerFactory<SignInController>(
     () => SignInController(signInUseCase: getIt<SignInUseCase>()),
   );
+
+//auth manager or wrapper
+  getIt.registerLazySingleton<AuthManager>(() => AuthManager(getIt<AuthRepository>()),);
 
   //! Dio Client
   getIt.registerLazySingleton(
