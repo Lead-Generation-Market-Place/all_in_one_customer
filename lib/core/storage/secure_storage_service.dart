@@ -15,7 +15,7 @@ class SecureStorageService implements LocalStorageService {
   final FlutterSecureStorage _secureStorage;
 
   SecureStorageService({FlutterSecureStorage? secureStorage})
-      : _secureStorage = secureStorage ?? const FlutterSecureStorage();
+    : _secureStorage = secureStorage ?? const FlutterSecureStorage();
 
   @override
   Future<void> saveToken(String token) async {
