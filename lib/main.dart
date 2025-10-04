@@ -31,7 +31,7 @@ void main() {
           home: UnexpectedErrorScreen(message: details.toString()),
         );
       };
-      di.init();// injecting the containers
+      di.init();// injecting the containers for clean architecture
       runApp(
         RestartWidget(
           child: MultiProvider(providers: appProviders, child: const MyApp()),

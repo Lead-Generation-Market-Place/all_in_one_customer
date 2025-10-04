@@ -4,11 +4,11 @@ import '../models/signin_model.dart';
 import '../../../../core/network/dio_client.dart';
 
 class AuthRemoteDataSource {
-    DioClient? dioClient;
-
-  Future<SigninModel> signIn(String email, String password) async {
+   final  DioClient dioClient;
+   AuthRemoteDataSource({required this.dioClient});
+   Future<SigninModel> signIn(String email, String password) async {
    
-    final response=await dioClient!.post(
+    final response=await dioClient.post(
       Endpoints.login,
       data: {
         'email':email,

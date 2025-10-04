@@ -37,7 +37,7 @@ class OnboardingScreen extends StatelessWidget {
                   if (context.mounted) {
                     Navigator.pushReplacementNamed(
                       context,
-                      AppRouter.home,
+                      AppRouter.signIn,
                     ); //later will be changed to login because and there the data will check if the user is logged in navigate to homescreen else navigate to login screen but for now we are testing.
                   }
                 },
@@ -51,7 +51,7 @@ class OnboardingScreen extends StatelessWidget {
                     if (context.mounted) {
                       Navigator.pushReplacementNamed(
                         context,
-                        AppRouter.home,
+                        AppRouter.signIn,
                       ); //same as above testing purpose.
                     }
                   } else {
