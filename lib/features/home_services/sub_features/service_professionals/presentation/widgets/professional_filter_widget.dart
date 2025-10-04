@@ -1,92 +1,72 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yelpax/shared/widgets/custom_button.dart';
+import 'package:yelpax/core/constants/height.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/controllers/service_professionals_controller.dart';
 
-class ProfessionalFilterWidget extends StatelessWidget {
-  String selectedService;
-  ProfessionalFilterWidget({required this.selectedService});
+import '../../../../../../shared/widgets/custom_button.dart';
+
+class ProfessionalFilterWidget extends StatefulWidget {
+  TextTheme textTheme;
+  ServiceProfessionalsController controller;
+
+  ProfessionalFilterWidget({required this.textTheme, required this.controller});
+
+  @override
+  State<ProfessionalFilterWidget> createState() =>
+      _ProfessionalFilterWidgetState();
+}
+
+class _ProfessionalFilterWidgetState extends State<ProfessionalFilterWidget> {
   // bool isVerified = false; // ✅ fixed
+  String selectedChip = '';
+
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () => showModalBottomSheet(
-        context: context,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        builder: (context) {
-          bool allProfessionals = false;
-          bool companies = false;
-          bool title=false;
-          RangeValues selectedRange = RangeValues(5, 20);
-          
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Filter Professionals",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 10),
-                    CheckboxListTile(
-                      title: const Text("All Professionals"),
-                      value: allProfessionals,
-                      onChanged: (value) {
-                        setState(() {
-                          allProfessionals = value ?? false;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: const Text("Companies"),
-                      value: companies,
-                      onChanged: (value) {
-                        setState(() {
-                          companies = value ?? false;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: Text(selectedService),
-                      value: title,
-                      onChanged: (value) {
-                        setState(() {
-                          title = value ?? false;
-                        });
-                      },
-                    ),
-                    // RangeSlider(
-                    //   values: selectedRange,
-                    //   min: 0,
-                    //   max: 50,
-                    //   divisions: 50,
-                    //   labels: RangeLabels(
-                    //     '${selectedRange.start.round()} km',
-                    //     '${selectedRange.end.round()} km',
-                    //   ),
-                    //   onChanged: (values) {
-                    //     setState(() {
-                    //       selectedRange = values;
-                    //     });
-                    //   },
-                    // ),
-                    SizedBox(height: 10),
-                    CustomButton(
-                      text: 'Apply',
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    SizedBox(height: 10),
-                  ],
-                ),
-              );
-            },
-          );
-        },
+    return Container(
+      width: double.infinity,
+      height: height(context)/18,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      
+      child: ListView(
+       
+        scrollDirection: Axis.horizontal,
+        children: [
+          Wrap(
+            spacing: 10,
+            children: [
+              ChoiceChip(
+                label: Text('Companies'),
+                selected: selectedChip == 'companies',
+                onSelected: (value) {
+                  setState(() {
+                    selectedChip = 'companies';
+                  });
+                },
+              ),
+              ChoiceChip(
+                label: Text(widget.controller.serviceDetails['name']),
+                selected:
+                    selectedChip == widget.controller.serviceDetails['name'],
+                onSelected: (value) {
+                  setState(() {
+                    selectedChip = widget.controller.serviceDetails['name'];
+                  });
+                },
+              ),
+              ChoiceChip(
+                label: Text('All Professionals'),
+                selected: selectedChip == 'allProfessionals',
+                onSelected: (value) {
+                  setState(() {
+                    selectedChip = 'allProfessionals';
+                  });
+                },
+              ),
+            ],
+          ),
+        ],
       ),
-      icon: Icon(Icons.tune),
     );
   }
+
 }

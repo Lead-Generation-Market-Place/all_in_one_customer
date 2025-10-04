@@ -1,15 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/app/presentation/shell/widgets/custom_bottom_nav.dart';
-import 'package:yelpax/config/routes/router.dart';
-import 'package:yelpax/config/themes/theme_mode_type.dart';
-import 'package:yelpax/config/themes/theme_provider.dart';
-import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
-import 'package:yelpax/features/home_services/presentation/screens/home_services_promotion_screen.dart';
-import 'package:yelpax/features/home_services/presentation/screens/search_professional_screen.dart';
-import 'package:yelpax/features/home_services/presentation/widgets/app_bar_widget.dart';
-import 'package:yelpax/shared/widgets/custom_shimmer.dart';
+import '../../../../app/presentation/shell/widgets/custom_bottom_nav.dart';
+import '../../../../config/routes/router.dart';
+import '../../../../config/themes/theme_mode_type.dart';
+import '../../../../config/themes/theme_provider.dart';
+import '../controllers/home_services_controller.dart';
+import 'home_services_promotion_screen.dart';
+import 'search_professional_screen.dart';
+import '../widgets/app_bar_widget.dart';
+import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
 
@@ -94,19 +95,19 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               _buildDivider(),
               _buildPopularCategories(),
               _buildDivider(),
-              _buildPopularCategories(),
+              //  _buildPopularCategories(),
               _buildYourGoals(),
-              _buildDivider(),
+              //   // _buildDivider(),
               _buildMoreGuides(),
               _buildDivider(),
-              // _buildSectionTitle('Outdoor upkeep'),
-              // _buildPopularCategories(),
-              // _buildDivider(),
-              // _buildSectionTitle('Essential Home Service'),
-              // _buildPopularCategories(),
-              // _buildDivider(),
-              // _buildSectionTitle('Moving into a new home'),
-              // _buildPopularCategories(),
+              _buildSectionTitle('Outdoor upkeep'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Essential Home Service'),
+              _buildPopularCategories(),
+              _buildDivider(),
+              _buildSectionTitle('Moving into a new home'),
+              _buildPopularCategories(),
               // _buildDivider(),
               // _buildSectionTitle('Caring for a pet'),
               // _buildPopularCategories(),
@@ -125,10 +126,10 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               // _buildDivider(),
               // _buildSectionTitle('Online tutoring'),
               // _buildPopularCategories(),
-              // _buildDivider(),
-              // _buildGetInspiration(),
-              // _buildDivider(),
-              // _buildFooter(),
+              _buildDivider(),
+              _buildGetInspiration(),
+              _buildDivider(),
+              _buildFooter(),
             ],
           ),
         ),
@@ -202,7 +203,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
             child: const Icon(Icons.refresh),
           );
         }
-        print(controller.categories.length);
+        //    print(controller.categories.length);
         return _buildGridCategoryList(controller.categories, controller);
       },
     );
@@ -226,8 +227,8 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               itemCount: categories.length,
               itemBuilder: (context, index) => _buildCategoryItem(
                 context,
-                categories[index],
-                'assets/images/y_logo.png',
+                categories[index]['name'],
+                categories[index]['imageUrl'],
                 controller,
               ),
             ),
@@ -241,22 +242,29 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     List categories,
     HomeServicesController controller,
   ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      width: width(context),
-      height: height(context) / 2.5,
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        scrollDirection: Axis.vertical,
-        itemCount: categories.length,
-        itemBuilder: (context, index) => _buildCategoryItem(
-          context,
-          categories[index],
-          'assets/images/y_logo.png',
-          controller,
-        ),
+    return Card(
+      child: Column(
+        children: [
+          _buildSectionTitle('Activity Based Services'),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            width: width(context),
+            height: height(context) / 2.5,
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              scrollDirection: Axis.vertical,
+              itemCount: categories.length,
+              itemBuilder: (context, index) => _buildCategoryItem(
+                context,
+                categories[index]['name'],
+                categories[index]['imageUrl'],
+                controller,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -319,7 +327,10 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                     color: Theme.of(context).secondaryHeaderColor,
                     width: width(context),
                     height: height(context) / 5,
-                    child: Image.asset('assets/images/y_logo.png'),
+                    child: Image.network(
+                      'https://images.pexels.com/photos/4246109/pexels-photo-4246109.jpeg',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   _buildSectionTitle('Keep things clean'),
                   Container(
@@ -400,7 +411,9 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                         color: Colors.pink,
                         image: const DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage('assets/images/splash_1.jpg'),
+                          image: NetworkImage(
+                            'https://images.pexels.com/photos/6196688/pexels-photo-6196688.jpeg',
+                          ),
                         ),
                       ),
                     ),
@@ -493,38 +506,55 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   }
 
   //static widgets
-  Widget _buildCategoryItem(
-    BuildContext context,
-    String categoryName,
-    String imageUrl,
-    HomeServicesController controller,
-  ) {
-    return InkWell(
-      onTap: () => controller.openCategory({
-        'name': categoryName,
-        'imageUrl': imageUrl,
-      }, context),
-      child: Card(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+Widget _buildCategoryItem(
+  BuildContext context,
+  String categoryName,
+  String imageUrl,
+  HomeServicesController controller,
+) {
+  return InkWell(
+    onTap: () => controller.openCategory(
+      {'name': categoryName, 'imageUrl': imageUrl},
+      context,
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
-            Container(
-              height: height(context) / 13,
+            CachedNetworkImage(
+              height: height(context) ,
               width: width(context) / 1.8,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(imageUrl),
-                  onError: (exception, stackTrace) => CircleAvatar(),
-                ),
+              imageUrl: imageUrl,
+              fit: BoxFit.cover,
+              errorWidget: (context, url, error) =>
+                  const Icon(Icons.error_outline_outlined),
+              progressIndicatorBuilder: (context, url, progress) => SizedBox(
+                child: LinearProgressIndicator(value: progress.progress),
               ),
             ),
-            Text(categoryName, style: Theme.of(context).textTheme.titleSmall),
+            Container(
+
+              width: width(context)/1.8,
+              color: Colors.black.withOpacity(0.4),
+              padding: const EdgeInsets.all(6),
+              child: Text(
+                categoryName,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildDivider() {
     return Container(margin: const EdgeInsets.all(24), child: Divider());
@@ -533,9 +563,9 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget _buildCardForGoals(List category, int index) {
     return Card(
       child: ListTile(
-        leading: Image.asset('assets/images/y_logo.png'),
+        leading: Image.network(category[index]['imageUrl'], fit: BoxFit.cover),
         title: Text(
-          category[index],
+          category[index]['name'],
           style: Theme.of(context).textTheme.titleSmall,
         ),
         subtitle: Text(

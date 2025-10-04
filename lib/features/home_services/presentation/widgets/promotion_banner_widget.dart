@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:yelpax/core/constants/height.dart';
+import '../../../../core/constants/height.dart';
 
 class PromotionBannerWidget extends StatefulWidget {
   final List<Widget> items; // promotions can be any widget (image, text, etc.)

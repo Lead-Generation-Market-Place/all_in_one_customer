@@ -1,5 +1,5 @@
-import 'package:yelpax/core/error/exceptions/exceptions.dart';
-import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
+import '../../../../core/error/exceptions/exceptions.dart';
+import '../models/home_service_promotion_model.dart';
 
 abstract class HomeServicesPromotionRemoteDataSource {
   Future<List<HomeServicePromotionModel>> searchPromotions();

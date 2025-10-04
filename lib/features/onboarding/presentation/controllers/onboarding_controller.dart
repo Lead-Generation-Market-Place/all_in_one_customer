@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:yelpax/features/onboarding/domain/usecases/get_onboarding_completed_usecase.dart';
-import 'package:yelpax/features/onboarding/domain/usecases/set_onboarding_completed_usecase.dart';
+import '../../domain/usecases/get_onboarding_completed_usecase.dart';
+import '../../domain/usecases/set_onboarding_completed_usecase.dart';
 
 class OnboardingController extends ChangeNotifier {
   final GetOnboardingCompletedUsecase _isOnboardingCompleted;

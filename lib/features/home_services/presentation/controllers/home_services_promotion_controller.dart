@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:yelpax/features/home_services/domain/entities/home_services_promotion_entity.dart';
-import 'package:yelpax/features/home_services/domain/usecases/home_service_promotion_usecase.dart';
+import '../../domain/entities/home_services_promotion_entity.dart';
+import '../../domain/usecases/home_service_promotion_usecase.dart';
 
 class HomeServicesPromotionController extends ChangeNotifier {
   HomeServicePromotionUsecase _usecase;

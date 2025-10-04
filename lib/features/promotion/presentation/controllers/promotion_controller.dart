@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
-import 'package:yelpax/config/routes/router.dart';
+
+import '../../../../config/routes/router.dart';
 
 class PromotionController extends ChangeNotifier {
   bool _refreshLoading = false;
@@ -38,11 +39,9 @@ class PromotionController extends ChangeNotifier {
       case 'Grocery':
         return Navigator.pushNamed(context, AppRouter.grocery);
       case 'Home Services':
-        return Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRouter.homeServices,
-          (route) => false,
-        );
+        return Navigator.pushNamed(context, AppRouter.homeServices);
+      case 'IT':
+        return Navigator.pushNamed(context, AppRouter.itHomeScreen);
     }
   }
 

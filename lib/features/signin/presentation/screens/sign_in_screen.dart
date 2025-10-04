@@ -39,8 +39,7 @@ class SignInScreen extends StatelessWidget {
                 controller.error!,
                 style: const TextStyle(color: Colors.red),
               ),
-            if (controller.user != null)
-              Text("Welcome, ${controller.user!.email}"),
+            
           ],
         ),
       ),

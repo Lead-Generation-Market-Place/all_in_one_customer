@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:yelpax/shared/widgets/custom_button.dart';
-import 'package:yelpax/shared/widgets/styled_asterisk_name.dart';
+import '../../../../../../shared/widgets/custom_button.dart';
+import '../../../../../../shared/widgets/styled_asterisk_name.dart';
 import '../../../../../../core/utils/get_rating_label.dart';
 import '../../../../../../shared/widgets/star_rating_widget.dart';
 
 class ProfessionalCardWidget extends StatelessWidget {
   Map professional;
   GestureTapCallback onTap;
+  VoidCallback onOpenQuotation;
   ProfessionalCardWidget({
     super.key,
     required this.professional,
     required this.onTap,
+    required this.onOpenQuotation,
   });
 
   @override
@@ -34,6 +36,7 @@ class ProfessionalCardWidget extends StatelessWidget {
                   professional,
                   textTheme,
                   onTap,
+                  onOpenQuotation
                 ),
               ),
             ],
@@ -63,6 +66,7 @@ Widget _buildProfessionalDetails(
   dynamic professional,
   TextTheme textTheme,
   GestureTapCallback onTap,
+  VoidCallback onOpenQuotation
 ) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +81,7 @@ Widget _buildProfessionalDetails(
       // const SizedBox(height: 8),
       // _buildLastReview(professional, textTheme, onTap),
       const SizedBox(height: 8),
-      _buildDetailsOrQuotation(),
+      _buildDetailsOrQuotation(onOpenQuotation),
     ],
   );
 }
@@ -173,7 +177,7 @@ Widget _buildLastReview(
   );
 }
 
-Widget _buildDetailsOrQuotation() {
+Widget _buildDetailsOrQuotation(VoidCallback onOpenQuotation) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -186,7 +190,7 @@ Widget _buildDetailsOrQuotation() {
 
       CustomButton(
         text: 'Quotation',
-        onPressed: () => print('Quotation'),
+        onPressed: onOpenQuotation,
         icon: Icons.request_quote_outlined,
         size: CustomButtonSize.small,
       ),

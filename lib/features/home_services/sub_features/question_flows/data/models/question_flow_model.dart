@@ -1,4 +1,4 @@
-import 'package:yelpax/features/home_services/sub_features/question_flows/domain/entities/question_flow_entity.dart';
+import '../../domain/entities/question_flow_entity.dart';
 
 class QuestionFlowModel extends QuestionFlowEntity {
   QuestionFlowModel({required super.questions, required super.currentStep});

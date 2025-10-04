@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/controllers/service_professionals_controller.dart';
-import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/widgets/professional_card_widget.dart';
-import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/widgets/professional_filter_widget.dart';
-import 'package:yelpax/shared/widgets/custom_button.dart';
-import 'package:yelpax/shared/widgets/custom_shimmer.dart';
+import '../controllers/service_professionals_controller.dart';
+import '../widgets/professional_card_widget.dart';
+import '../widgets/professional_filter_widget.dart';
+import '../../../../../../shared/widgets/custom_shimmer.dart';
 
 class ServiceProfessionalsScreen extends StatefulWidget {
   final dynamic serviceDetails;
@@ -81,7 +80,8 @@ class _ServiceProfessionalsView extends StatelessWidget {
       children: [
         _buildHeader(controller, textTheme),
         const SizedBox(height: 8),
-        _buildCriteriaTextAndFilter(textTheme, context, controller),
+        ProfessionalFilterWidget(textTheme: textTheme, controller: controller),
+        const Divider(),
         const SizedBox(height: 8),
         _buildProfessionalsList(controller, theme, textTheme),
       ],
@@ -94,46 +94,18 @@ class _ServiceProfessionalsView extends StatelessWidget {
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Text(
-        'Top 3 matching ${controller.serviceDetails['name']}',
-        style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _buildCriteriaTextAndFilter(
-    TextTheme textTheme,
-    BuildContext context,
-    ServiceProfessionalsController controller,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Our Criteria',
-            style: textTheme.bodyLarge?.copyWith(
-              color: CupertinoColors.systemGrey,
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(text: 'Top ', style: textTheme.bodyMedium),
+            TextSpan(text: '3', style: textTheme.titleSmall),
+            TextSpan(text: ' matching ', style: textTheme.bodyMedium),
+            TextSpan(
+              text: controller.serviceDetails['name'],
+              style: textTheme.titleSmall,
             ),
-          ),
-          Row(
-            children: [
-              CustomButton(
-                size: CustomButtonSize.small,
-                text: 'Request Qutation',
-                onPressed: () => sendQuotationToProfessionals(
-                  context,
-                  controller.serviceDetails['name'],
-                  controller
-                ),
-              ),
-              ProfessionalFilterWidget(
-                selectedService: controller.serviceDetails['name'],
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -153,47 +125,10 @@ class _ServiceProfessionalsView extends StatelessWidget {
           return ProfessionalCardWidget(
             professional: professional,
             onTap: () => controller.openCategory(professional, context),
+            onOpenQuotation: () => controller.openQuestionFlow('01', context),
           );
         },
       ),
-    );
-  }
-
-  sendQuotationToProfessionals(BuildContext context, String title,ServiceProfessionalsController controller) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        TextTheme textTheme = Theme.of(context).textTheme;
-        return AlertDialog(
-          content: RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Send Quotation to 5 ',
-                  style: textTheme.bodyMedium,
-                ),
-                TextSpan(text: title, style: textTheme.titleSmall),
-                TextSpan(text: ' Companies', style: textTheme.bodyMedium),
-              ],
-            ),
-          ),
-          actions: [
-            CustomButton(
-              text: 'Confirm',
-              onPressed: () => controller.openQuestionFlow('01', context),
-              size: CustomButtonSize.small,
-            ),
-            SizedBox(height: 10),
-            CustomButton(
-              text: 'Cancel',
-              bgColor: Colors.red,
-              size: CustomButtonSize.small,
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
     );
   }
 }

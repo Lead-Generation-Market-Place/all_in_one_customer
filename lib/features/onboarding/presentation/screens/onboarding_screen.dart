@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/config/routes/router.dart';
 import '../controllers/onboarding_controller.dart';
 import '../widgets/onboarding_widget.dart';
 
@@ -34,7 +35,10 @@ class OnboardingScreen extends StatelessWidget {
                 onPressed: () async {
                   await controller.markCompleted();
                   if (context.mounted) {
-                    Navigator.pushReplacementNamed(context, '/login');
+                    Navigator.pushReplacementNamed(
+                      context,
+                      AppRouter.signIn,
+                    ); //later will be changed to login because and there the data will check if the user is logged in navigate to homescreen else navigate to login screen but for now we are testing.
                   }
                 },
                 child: const Text('Skip'),
@@ -45,7 +49,10 @@ class OnboardingScreen extends StatelessWidget {
                   if (isLast) {
                     await controller.markCompleted();
                     if (context.mounted) {
-                      Navigator.pushReplacementNamed(context, '/login');
+                      Navigator.pushReplacementNamed(
+                        context,
+                        AppRouter.signIn,
+                      ); //same as above testing purpose.
                     }
                   } else {
                     controller.onNextPage();

@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:yelpax/features/home_services/domain/entities/professional.dart';
-import 'package:yelpax/features/home_services/domain/usecases/search_professional_usecase.dart';
+import '../../domain/entities/professional.dart';
+import '../../domain/usecases/search_professional_usecase.dart';
 
 import '../../../../config/routes/router.dart';
 

@@ -1,6 +1,6 @@
-import 'package:yelpax/core/error/exceptions/exceptions.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/data/models/question_flow_model.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/domain/entities/question_flow_entity.dart';
+import '../../../../../../core/error/exceptions/exceptions.dart';
+import '../models/question_flow_model.dart';
+import '../../domain/entities/question_flow_entity.dart';
 
 abstract class QuestionFlowRemoteDatasource {
   Future<List<QuestionFlowModel>> getQuestionFlow(String flowId);

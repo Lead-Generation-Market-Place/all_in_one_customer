@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/features/home_services/domain/entities/professional.dart';
-import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
-import 'package:yelpax/features/home_services/presentation/controllers/search_professional_controller.dart';
-import 'package:yelpax/features/home_services/search_professional_di.dart';
-import 'package:yelpax/shared/widgets/custom_button.dart';
-import 'package:yelpax/shared/widgets/custom_shimmer.dart';
+import '../../domain/entities/professional.dart';
+import '../controllers/home_services_controller.dart';
+import '../controllers/search_professional_controller.dart';
+import '../../search_professional_di.dart';
+import '../../../../shared/widgets/custom_button.dart';
+import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../shared/widgets/custom_input.dart';
 
 class SearchProfessionalScreen extends StatelessWidget {
@@ -15,13 +15,12 @@ class SearchProfessionalScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => searchProfessionalController(),
-      child: const _searchProBody(),
+      child:  _searchProBody(),
     );
   }
 }
 
 class _searchProBody extends StatefulWidget {
-  const _searchProBody({super.key});
 
   @override
   State<_searchProBody> createState() => __searchProBodyState();
@@ -35,7 +34,6 @@ class __searchProBodyState extends State<_searchProBody> {
   void initState() {
     _searchController = TextEditingController();
     _zipController = TextEditingController();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -43,7 +41,6 @@ class __searchProBodyState extends State<_searchProBody> {
   void dispose() {
     _searchController.dispose();
     _zipController.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -111,7 +108,7 @@ class __searchProBodyState extends State<_searchProBody> {
           CustomInput(
             validator: (p0) {
               if (p0 == null || p0.isEmpty) return 'Enter Zip Code';
-
+    
               return null;
             },
             hint: 'Zip Code',
@@ -127,9 +124,9 @@ class __searchProBodyState extends State<_searchProBody> {
           SizedBox(height: 20),
           CustomButton(
             type: CustomButtonType.primary,
-
+    
             text: 'Search',
-
+    
             onPressed: onSearch,
           ),
           SizedBox(height: 10),

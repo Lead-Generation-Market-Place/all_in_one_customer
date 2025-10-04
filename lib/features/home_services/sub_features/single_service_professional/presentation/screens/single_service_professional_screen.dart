@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/features/home_services/sub_features/single_service_professional/presentation/controllers/single_service_professional_controller.dart';
-import 'package:yelpax/features/home_services/sub_features/single_service_professional/presentation/widgets/single_service_pro_personnel_details_widget.dart';
+import '../controllers/single_service_professional_controller.dart';
+import '../widgets/single_service_pro_personnel_details_widget.dart';
 
 class SingleServiceProfessionalScreen extends StatefulWidget {
   var proDetails;

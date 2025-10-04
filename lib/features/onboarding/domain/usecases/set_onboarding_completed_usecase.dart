@@ -1,4 +1,4 @@
-import 'package:yelpax/features/onboarding/domain/repositories/onboarding_repository.dart';
+import '../repositories/onboarding_repository.dart';
 
 class SetOnboardingCompletedUsecase {
   final OnboardingRepository _repository;

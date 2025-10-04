@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/features/signin/domain/entities/signin_entity.dart';
+import '../../domain/entities/signin_entity.dart';
 import '../../domain/usecases/sign_in_usecase.dart';
 
 class SignInController extends ChangeNotifier {
   final SignInUseCase signInUseCase;
 
-  SignInController(this.signInUseCase);
+  SignInController({required this.signInUseCase});
 
   bool isLoading = false;
   String? error;
@@ -17,9 +17,11 @@ class SignInController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      user = await signInUseCase(email, password);
+      var uu = await signInUseCase.call(email, password);
+      print('user logged in successfully');
     } catch (e) {
       error = e.toString();
+      print(e);
     } finally {
       isLoading = false;
       notifyListeners();
