@@ -8,6 +8,7 @@ abstract class LocalStorageService {
   Future<String?> getToken();
   Future<void> saveUser(SigninModel userModel);
   Future<SigninModel?> getUser();
+  Future<void> saveUserId(String id);
   Future<void> clearAll();
 }
 
