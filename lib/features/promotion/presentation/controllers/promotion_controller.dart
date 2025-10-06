@@ -42,6 +42,7 @@ class PromotionController extends ChangeNotifier {
         return Navigator.pushNamed(context, AppRouter.homeServices);
       case 'IT':
         return Navigator.pushNamed(context, AppRouter.itHomeScreen);
+     
     }
   }
 

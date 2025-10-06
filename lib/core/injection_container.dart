@@ -30,6 +30,19 @@ Future<void> init() async {
   getIt.registerLazySingleton<LocalStorageService>(
     () => SecureStorageService(),
   );
+  //! Dio Client
+  getIt.registerLazySingleton(
+    () => Dio(
+      BaseOptions(
+        baseUrl: Endpoints.baseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+      ),
+    ),
+  );
+  getIt.registerLazySingleton(
+    () => DioClient(dio: getIt<Dio>(), logger: getIt<Logger>()),
+  );
   //login feature
   getIt.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSource(dioClient: getIt<DioClient>()),
@@ -41,28 +54,16 @@ Future<void> init() async {
       networkInfo: getIt<NetworkInfo>(),
     ),
   );
+
+  //auth manager or wrapper
+  getIt.registerLazySingleton<AuthManager>(
+    () => AuthManager(getIt<AuthRepository>()),
+  );
+
   getIt.registerLazySingleton<SignInUseCase>(
     () => SignInUseCase(repository: getIt<AuthRepository>()),
   );
   getIt.registerFactory<SignInController>(
     () => SignInController(signInUseCase: getIt<SignInUseCase>()),
-  );
-
-//auth manager or wrapper
-  getIt.registerLazySingleton<AuthManager>(() => AuthManager(getIt<AuthRepository>()),);
-
-  //! Dio Client
-  getIt.registerLazySingleton(
-    () => Dio(
-      BaseOptions(
-        baseUrl: Endpoints.baseUrl,
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-      ),
-    ),
-  );
-
-  getIt.registerLazySingleton(
-    () => DioClient(dio: getIt<Dio>(), logger: getIt<Logger>()),
   );
 }

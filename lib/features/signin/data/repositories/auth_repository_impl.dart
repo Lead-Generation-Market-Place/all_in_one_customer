@@ -1,10 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:yelpax/core/error/exceptions/exceptions.dart';
 import 'package:yelpax/core/error/failures/failure.dart';
 import 'package:yelpax/core/error/handler/error_handler.dart';
 import 'package:yelpax/core/network/network_info.dart';
 import 'package:yelpax/core/storage/secure_storage_service.dart';
-import 'package:yelpax/features/signin/domain/entities/signin_entity.dart';
 
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_remote_data_source.dart';
@@ -26,7 +24,9 @@ class AuthRepositoryImpl implements AuthRepository {
     String password,
   ) async {
     if (!await networkInfo.isConnected) {
+    
       return Left(NoInternetFailure('No Internet Connection!'));
+      
     }
     try {
       final signInModel = await remoteDataSource.signIn(email, password);
@@ -36,9 +36,11 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(signInModel);
     } catch (e) {
       if (e is Exception) {
+        print('Error on network');
         final failure = ErrorHandler.mapExceptionToFailure(e);
         return Left(failure);
       } else {
+     
         return Left(GenericFailure('An unknown error occurred.'));
       }
     }

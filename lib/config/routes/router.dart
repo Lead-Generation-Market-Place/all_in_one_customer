@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:yelpax/core/constants/app_constants.dart';
 import 'package:yelpax/features/home_services/presentation/screens/see_all_services_screen.dart';
 import 'package:yelpax/features/it_services/presentation/screens/it_home_screen.dart';
+import 'package:yelpax/features/settings/presentation/screens/settings_screen.dart';
 import '../../app/presentation/shell/main_shell_screen.dart';
 import '../../core/error/widgets/unknown_route_screen.dart';
 import '../../features/grocery/presentation/screens/grocery_screen_homepage.dart';
@@ -15,7 +17,7 @@ import '../../features/splash/presentation/splash_screen.dart';
 
 class AppRouter {
   static const String splash = '/';
-  static const String login = '/login';
+//  static const String login = '/login';
   static const String signIn = '/SignIn';
   static const String home = '/home'; //test screen
   static const String main_shell_screen = '/mainshellscreen';
@@ -31,6 +33,7 @@ class AppRouter {
       '/singleServiceProfessionalScreen';
   static const String questionFlowScreen = '/questionFlowScreen';
   static const String itHomeScreen = '/itHomeScreen';
+  static const String settingsScreen='/settingsScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -73,11 +76,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const QuestionFlowScreen());
       case itHomeScreen:
         return MaterialPageRoute(builder: (_) => const ItHomeScreen());
-
+      case settingsScreen:
+        return MaterialPageRoute(builder: (_) => const SettingsScreen(),);
       default:
-        return MaterialPageRoute(
-          builder: (_) => const UnknowRouteScreen(message: "Unknown Route!"),
-        );
+        return unknownRoute(settings);
     }
   }
 
@@ -85,7 +87,11 @@ class AppRouter {
   static Route<dynamic> unknownRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) =>
-          UnknowRouteScreen(message: 'Screen not found: ${settings.name}'),
+          UnknowRouteScreen(message: 'Screen not found: ${settings}',onRetry: ()=>onRetry(),),
     );
+  }
+  
+ static onRetry(){
+    return AppConstants.navigateKeyword.currentState?.pushNamedAndRemoveUntil(AppRouter.splash, (route) => false,);
   }
 }

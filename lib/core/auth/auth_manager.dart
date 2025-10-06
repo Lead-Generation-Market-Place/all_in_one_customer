@@ -1,5 +1,6 @@
 // core/auth/auth_manager.dart
 import 'package:flutter/material.dart';
+import 'package:yelpax/config/routes/router.dart';
 import 'package:yelpax/core/constants/app_constants.dart';
 import 'package:yelpax/features/signin/domain/entities/signin_entity.dart';
 import 'package:yelpax/features/signin/domain/repositories/auth_repository.dart';
@@ -148,14 +149,22 @@ class AuthManager with ChangeNotifier {
   void _navigateToLogin() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (AppConstants.navigateKeyword.currentState != null) {
-        AppConstants.navigateKeyword.currentState!.pushNamedAndRemoveUntil(
-          '/login', // Update this to your actual login route
+        AppConstants.navigateKeyword.currentState?.pushNamedAndRemoveUntil(
+          AppRouter.signIn, 
           (route) => false,
         );
       }
     });
   }
 
+Future<void> handleTokenExpired() async {
+  await _authRepository.signOut();
+  _isLoggedIn = false;
+  _currentUser = null;
+  _error = 'Session expired. Please login again.';
+  notifyListeners();
+  _navigateToLogin();
+}
   // Force logout (e.g., when token is invalid)
   // Future<void> forceLogout() async {
   //   await _authRepository.
