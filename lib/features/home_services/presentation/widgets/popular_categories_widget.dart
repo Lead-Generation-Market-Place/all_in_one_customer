@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/core/constants/asset_constants.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/section_title_widget.dart';
 
 import '../../../../core/constants/height.dart';
@@ -20,7 +21,7 @@ class PopularCategoriesWidget extends StatelessWidget {
           );
         }
 
-        if (controller.homeServices == null) {
+        if (controller.homeServices.isEmpty) {
           return InkWell(
             onTap: () => controller.getCategories(),
             child: const Icon(Icons.refresh),
@@ -53,13 +54,22 @@ Widget _buildHorizontalCategoryList(
           height: height(context) / 6,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: services.length,
+            itemCount: services.length + 1,
             itemBuilder: (context, index) {
+              if (index == services.length) {
+                return _buildCategoryItem(
+                  context,
+                  'See All',
+                  AssetConstants.SeeAllServicesPic,
+                  'dummy_id',
+                );
+              }
               final service = services[index];
               return _buildCategoryItem(
                 context,
                 service.service_name,
                 service.subcategory_id,
+                service.id,
               );
             },
           ),
@@ -72,15 +82,14 @@ Widget _buildHorizontalCategoryList(
 //static widgets
 Widget _buildCategoryItem(
   BuildContext context,
-  String categoryName,
+  String name,
   String imageUrl,
+  String id,
 ) {
   final controller = context.read<HomeServicesController>();
   return InkWell(
-    onTap: () => controller.openCategory({
-      'name': categoryName,
-      'imageUrl': imageUrl,
-    }, context),
+    onTap: () =>
+        controller.openService({'name': name, 'imageUrl': imageUrl, 'id': id}),
     child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: ClipRRect(
@@ -92,9 +101,9 @@ Widget _buildCategoryItem(
               height: height(context),
               width: width(context) / 1.8,
               imageUrl: imageUrl,
-              
+
               fit: BoxFit.cover,
-              errorWidget: (context, url, error) =>_buildErrorWidget(),
+              errorWidget: (context, url, error) => _buildErrorWidget(),
               progressIndicatorBuilder: (context, url, progress) => SizedBox(
                 child: LinearProgressIndicator(value: progress.progress),
               ),
@@ -104,7 +113,7 @@ Widget _buildCategoryItem(
               color: Colors.black.withOpacity(0.4),
               padding: const EdgeInsets.all(6),
               child: Text(
-                categoryName,
+                name,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -119,9 +128,8 @@ Widget _buildCategoryItem(
   );
 }
 
-
-Widget _buildErrorWidget(){
- return Container(
- 
-  child: const Icon(Icons.error_outline_outlined,color: Colors.red,));
+Widget _buildErrorWidget() {
+  return Container(
+    child: const Icon(Icons.error_outline_outlined, color: Colors.red),
+  );
 }

@@ -6,4 +6,6 @@ import '../entities/professional.dart';
 abstract class HomeServicesRepository {
   Future<Either<Failure, List<Professional>>> searchProfessionals(String query);
   Future<Either<Failure,List<HomeServicesEntity>>>getHomeServices();
+  
+
 }

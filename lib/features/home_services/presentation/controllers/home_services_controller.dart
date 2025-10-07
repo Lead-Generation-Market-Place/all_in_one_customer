@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:yelpax/core/constants/app_constants.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_usecase.dart';
 import '../../../../config/routes/router.dart';
@@ -14,13 +15,13 @@ class HomeServicesController extends ChangeNotifier {
   String? _error;
   String _searchQuery = '';
 
-  //Real Getters
+  // Getters
   List<HomeServicesEntity> get homeServices => _homeServices;
   bool get isLoading => _isLoading;
   String? get error => _error;
   String get searchQuery => _searchQuery;
 
-  //Real Fetch Methods
+  // Fetch home services Methods
   Future<void> fetchHomeServices() async {
     _isLoading = true;
     notifyListeners();
@@ -39,6 +40,21 @@ class HomeServicesController extends ChangeNotifier {
     );
   }
 
+//opening a service from home screen of home services
+  Future<void> openService(Map service) async {
+    if (service['name'] == 'See All') {
+      AppConstants.navigateKeyword.currentState?.pushNamed(
+        AppRouter.seeAllServices,
+        arguments: _categories,
+      );
+    } else {
+      AppConstants.navigateKeyword.currentState?.pushNamed(
+        AppRouter.serviceProfessionalsScreen,
+        arguments: service,
+      );
+    }
+  }
+
   bool _categoryLoading = false;
   bool _isAddressExists = false;
   List _categories = [];
@@ -49,23 +65,6 @@ class HomeServicesController extends ChangeNotifier {
   List get categories => _categories;
   bool _refreshLoading = false;
   bool get refreshLoading => _refreshLoading;
-
-  Future<void> openCategory(Map categoryDetails, BuildContext context) async {
-    print(categoryDetails['name']);
-    if (categoryDetails['name'] == 'See All') {
-      Navigator.pushNamed(
-        context,
-        AppRouter.seeAllServices,
-        arguments: _categories,
-      );
-    } else {
-      Navigator.pushNamed(
-        context,
-        AppRouter.serviceProfessionalsScreen,
-        arguments: categoryDetails,
-      );
-    }
-  }
 
   Future<void> retry() async {
     _refreshLoading = true;
