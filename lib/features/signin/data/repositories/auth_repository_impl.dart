@@ -30,7 +30,7 @@ class AuthRepositoryImpl implements AuthRepository {
     }
     try {
       final signInModel = await remoteDataSource.signIn(email, password);
-      await localStorageService.saveToken(signInModel.token);
+      await localStorageService.saveToken(signInModel.tokens.accessToken);//storing access token
       await localStorageService.saveUser(signInModel);
       await localStorageService.saveUserId(signInModel.user.id);
       return Right(signInModel);

@@ -1,7 +1,7 @@
 class SigninEntity {
-  String token;
+  Tokens tokens;
   User user;
-  SigninEntity({required this.token, required this.user});
+  SigninEntity({required this.tokens, required this.user});
 }
 
 class User {
@@ -9,4 +9,10 @@ class User {
   String username;
   String email;
   User({required this.id, required this.username, required this.email});
+}
+
+class Tokens {
+  String accessToken;
+  String refreshToken;
+  Tokens({required this.accessToken, required this.refreshToken});
 }

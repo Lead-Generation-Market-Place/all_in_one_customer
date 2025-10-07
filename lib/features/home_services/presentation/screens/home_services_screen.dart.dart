@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
+import 'package:yelpax/features/home_services/presentation/widgets/popular_categories_widget.dart';
+import 'package:yelpax/features/home_services/presentation/widgets/section_title_widget.dart';
 import '../../../../app/presentation/shell/widgets/custom_bottom_nav.dart';
 import '../../../../config/routes/router.dart';
 import '../../../../config/themes/theme_mode_type.dart';
@@ -85,28 +87,28 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               //   SearchProfessionalScreen(),
               const SizedBox(height: 16),
               HomeServicesPromotionScreen(),
-              _buildPopularCategories(),
+              PopularCategoriesWidget(),
               const SizedBox(height: 50),
-              _buildActivityBasedCategories(),
+         //     _buildActivityBasedCategories(),
               _buildDivider(),
-              _buildAddressBasedCategory(),
+         //     _buildAddressBasedCategory(),
               _buildYourGoals(),
-              _buildDivider(),
-              _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildPopularCategories(),
               _buildDivider(),
               //  _buildPopularCategories(),
               _buildYourGoals(),
               //   // _buildDivider(),
               _buildMoreGuides(),
               _buildDivider(),
-              _buildSectionTitle('Outdoor upkeep'),
-              _buildPopularCategories(),
-              _buildDivider(),
-              _buildSectionTitle('Essential Home Service'),
-              _buildPopularCategories(),
-              _buildDivider(),
-              _buildSectionTitle('Moving into a new home'),
-              _buildPopularCategories(),
+          //    _buildSectionTitle('Outdoor upkeep'),
+              //     _buildPopularCategories(),
+              //     _buildDivider(),
+              //     _buildSectionTitle('Essential Home Service'),
+              //     _buildPopularCategories(),
+              // _buildDivider(),
+              // _buildSectionTitle('Moving into a new home'),
+              // _buildPopularCategories(),
               // _buildDivider(),
               // _buildSectionTitle('Caring for a pet'),
               // _buildPopularCategories(),
@@ -136,171 +138,94 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     );
   }
 
-  Widget _buildSectionTitle(String title, {bool isNavigating = false}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  // Widget _buildActivityBasedCategories() {
+  //   return Consumer<HomeServicesController>(
+  //     builder: (context, controller, _) {
+  //       if (controller.categoryLoading) {
+  //         return CustomShimmer(
+  //           layoutType: ShimmerLayoutType.grid,
+  //           height: height(context) / 2,
+  //           crossAxisCount: 2,
+  //           itemCount: 6,
+  //         );
+  //       }
 
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 8, left: 8),
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium,
-            textAlign: TextAlign.left,
-          ),
-        ),
-        isNavigating
-            ? IconButton(
-                onPressed: () => print(title),
-                icon: Icon(Icons.arrow_forward_ios_outlined),
-              )
-            : SizedBox.shrink(),
-      ],
-    );
-  }
+  //       if (controller.categories == null) {
+  //         return InkWell(
+  //           onTap: () => controller.getCategories(),
+  //           child: const Icon(Icons.refresh),
+  //         );
+  //       }
+  //       //    print(controller.categories.length);
+  //       return _buildGridCategoryList(controller.categories, controller);
+  //     },
+  //   );
+  // }
 
-  Widget _buildPopularCategories() {
-    return Consumer<HomeServicesController>(
-      builder: (context, controller, _) {
-        if (controller.isLoading) {
-          return const CustomShimmer(
-            layoutType: ShimmerLayoutType.horizontalList,
-          );
-        }
+  // Widget _buildGridCategoryList(
+  //   List categories,
+  //   HomeServicesController controller,
+  // ) {
+  //   return Card(
+  //     child: Column(
+  //       children: [
+  //         _buildSectionTitle('Activity Based Services'),
+  //         Container(
+  //           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+  //           width: width(context),
+  //           height: height(context) / 2.5,
+  //           child: GridView.builder(
+  //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //               crossAxisCount: 2,
+  //             ),
+  //             scrollDirection: Axis.vertical,
+  //             itemCount: categories.length,
+  //             itemBuilder: (context, index) => _buildCategoryItem(
+  //               context,
+  //               categories[index]['name'],
+  //               categories[index]['imageUrl'],
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-        if (controller.homeServices == null) {
-          return InkWell(
-            onTap: () => controller.getCategories(),
-            child: const Icon(Icons.refresh),
-          );
-        }
-
-        return _buildHorizontalCategoryList(
-          'Popular on Yelpax',
-          controller.homeServices,
-        );
-      },
-    );
-  }
-
-  Widget _buildActivityBasedCategories() {
-    return Consumer<HomeServicesController>(
-      builder: (context, controller, _) {
-        if (controller.categoryLoading) {
-          return CustomShimmer(
-            layoutType: ShimmerLayoutType.grid,
-            height: height(context) / 2,
-            crossAxisCount: 2,
-            itemCount: 6,
-          );
-        }
-
-        if (controller.categories == null) {
-          return InkWell(
-            onTap: () => controller.getCategories(),
-            child: const Icon(Icons.refresh),
-          );
-        }
-        //    print(controller.categories.length);
-        return _buildGridCategoryList(controller.categories, controller);
-      },
-    );
-  }
-
-  Widget _buildHorizontalCategoryList(
-    String sectionTitle,
-    List<HomeServicesEntity> services,
-  ) {
-    return Card(
-      child: Column(
-        children: [
-          _buildSectionTitle(sectionTitle),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            width: width(context),
-            height: height(context) / 6,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: services.length,
-              itemBuilder: (context, index) {
-                final service = services[index];
-                return _buildCategoryItem(
-                  context,
-                  service.service_name,
-                  service.subcategory_id,
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGridCategoryList(
-    List categories,
-    HomeServicesController controller,
-  ) {
-    return Card(
-      child: Column(
-        children: [
-          _buildSectionTitle('Activity Based Services'),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            width: width(context),
-            height: height(context) / 2.5,
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              scrollDirection: Axis.vertical,
-              itemCount: categories.length,
-              itemBuilder: (context, index) => _buildCategoryItem(
-                context,
-                categories[index]['name'],
-                categories[index]['imageUrl'],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAddressBasedCategory() {
-    return Consumer<HomeServicesController>(
-      builder: (context, value, child) {
-        if (value.categoryLoading) {
-          return CustomShimmer(
-            layoutType: ShimmerLayoutType.list,
-            itemCount: 3,
-          );
-        }
-        if (value.isAddressExists) {
-          return _buildHorizontalCategoryList(
-            'For Your Home',
-            value.homeServices,
-          );
-        }
-        return Column(
-          children: [
-            Text(
-              'Add your address for more accureate pricing, find nearby pros, and useful tips.',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () => print('adding Address'),
-                  child: Text('Add your address ->'),
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // Widget _buildAddressBasedCategory() {
+  //   return Consumer<HomeServicesController>(
+  //     builder: (context, value, child) {
+  //       if (value.categoryLoading) {
+  //         return CustomShimmer(
+  //           layoutType: ShimmerLayoutType.list,
+  //           itemCount: 3,
+  //         );
+  //       }
+  //       if (value.isAddressExists) {
+  //         return _buildHorizontalCategoryList(
+  //           'For Your Home',
+  //           value.homeServices,
+  //         );
+  //       }
+  //       return Column(
+  //         children: [
+  //           Text(
+  //             'Add your address for more accureate pricing, find nearby pros, and useful tips.',
+  //             style: Theme.of(context).textTheme.bodySmall,
+  //           ),
+  //           Row(
+  //             children: [
+  //               TextButton(
+  //                 onPressed: () => print('adding Address'),
+  //                 child: Text('Add your address ->'),
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget _buildYourGoals() {
     return Consumer<HomeServicesController>(
@@ -329,7 +254,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  _buildSectionTitle('Keep things clean'),
+                  SectionTitleWidget(title: 'Keep things clean'),
                   Container(
                     padding: const EdgeInsets.all(8),
                     width: width(context),
@@ -499,56 +424,6 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           ),
         );
       },
-    );
-  }
-
-  //static widgets
-  Widget _buildCategoryItem(
-    BuildContext context,
-    String categoryName,
-    String imageUrl,
-  ) {
-    final controller = context.read<HomeServicesController>();
-    return InkWell(
-      onTap: () => controller.openCategory({
-        'name': categoryName,
-        'imageUrl': imageUrl,
-      }, context),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              CachedNetworkImage(
-                height: height(context),
-                width: width(context) / 1.8,
-                imageUrl: imageUrl,
-                fit: BoxFit.cover,
-                errorWidget: (context, url, error) =>
-                    const Icon(Icons.error_outline_outlined),
-                progressIndicatorBuilder: (context, url, progress) => SizedBox(
-                  child: LinearProgressIndicator(value: progress.progress),
-                ),
-              ),
-              Container(
-                width: width(context) / 1.8,
-                color: Colors.black.withOpacity(0.4),
-                padding: const EdgeInsets.all(6),
-                child: Text(
-                  categoryName,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 

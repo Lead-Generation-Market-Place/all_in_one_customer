@@ -43,11 +43,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
 //checking navigation tree on all steps onboarding sign in and home
     if (!await controller.ensureOnboardingCompleted()) {
-      AppConstants.navigateKeyword.currentState?.pushNamed(AppRouter.onboarding);
+      AppConstants.navigateKeyword.currentState?.pushNamedAndRemoveUntil(AppRouter.onboarding,(route)=>false);
     } else if (aauth.isLoggedIn) {
-    AppConstants.navigateKeyword.currentState?.pushNamed(AppRouter.home);
+    AppConstants.navigateKeyword.currentState?.pushNamedAndRemoveUntil(AppRouter.home,(route)=>false);
     } else {
-      AppConstants.navigateKeyword.currentState?.pushNamed(AppRouter.signIn);
+      AppConstants.navigateKeyword.currentState?.pushNamedAndRemoveUntil(AppRouter.signIn,(route)=>false);
     }
   }
 
