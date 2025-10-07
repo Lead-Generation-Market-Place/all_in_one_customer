@@ -13,12 +13,12 @@ abstract class Endpoints {
   static const String updateUserProfile = '/users/profile';
   static const String changePassword = '/users/change-password';
 
-  // Product endpoints
-  static const String getProducts = '/products';
-  static const String getProductDetail = '/products/{id}';
-  static const String createProduct = '/products';
-  static const String updateProduct = '/products/{id}';
-  static const String deleteProduct = '/products/{id}';
+  // Services endpoints
+  static const String getServices = '/services';
+  // static const String getProductDetail = '/products/{id}';
+  // static const String createProduct = '/products';
+  // static const String updateProduct = '/products/{id}';
+  // static const String deleteProduct = '/products/{id}';
 
   // Order endpoints
   static const String getOrders = '/orders';

@@ -1,9 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
+import 'package:yelpax/features/home_services/domain/usecases/home_services_usecase.dart';
 import '../../../../config/routes/router.dart';
 
 class HomeServicesController extends ChangeNotifier {
-  HomeServicesController() {}
+  HomeServicesUsecase homeServicesUsecase;
+  HomeServicesController({required this.homeServicesUsecase});
+
+  //real states
+  List<HomeServicesEntity> _homeServices = [];
+  bool _isLoading = false;
+  String? _error;
+  String _searchQuery = '';
+
+  //Real Getters
+  List<HomeServicesEntity> get homeServices => _homeServices;
+  bool get isLoading => _isLoading;
+  String? get error => _error;
+  String get searchQuery => _searchQuery;
+
+  //Real Fetch Methods
+  Future<void> fetchHomeServices() async {
+    _isLoading = true;
+    notifyListeners();
+    final response = await homeServicesUsecase.call();
+    response.fold(
+      (problem) {
+        _error = problem.message;
+        _isLoading = false;
+        notifyListeners();
+      },
+      (success) {
+        _homeServices = success;
+        _isLoading = false;
+        notifyListeners();
+      },
+    );
+  }
 
   bool _categoryLoading = false;
   bool _isAddressExists = false;

@@ -19,5 +19,5 @@ List<SingleChildWidget> appProviders = [
  ChangeNotifierProvider(create: (context) => getIt<AuthManager>(),),
   ChangeNotifierProvider(create: (_) => createOnboardingController()),
   ChangeNotifierProvider(create: (_) => PromotionController()),
-  ChangeNotifierProvider(create: (_) => HomeServicesController()),
+  ChangeNotifierProvider(create: (_) => getIt<HomeServicesController>()),
 ];

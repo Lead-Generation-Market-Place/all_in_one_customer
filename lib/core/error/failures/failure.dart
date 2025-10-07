@@ -29,3 +29,6 @@ class NoInternetFailure extends Failure {
 class NotFoundFailure extends Failure{
   const NotFoundFailure (String message):super(message);
 }
+class DioFailure extends Failure{
+  const DioFailure(String message):super (message);
+}

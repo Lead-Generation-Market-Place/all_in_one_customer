@@ -1,11 +1,20 @@
+import 'package:yelpax/core/network/dio_client.dart';
+import 'package:yelpax/core/network/endpoints.dart';
+import 'package:yelpax/features/home_services/data/models/home_services_model.dart';
+
 import '../../../../core/error/exceptions/exceptions.dart';
 import '../models/professional_model.dart';
 
 abstract class HomeServicesRemoteDataSource {
   Future<List<ProfessionalModel>> searchProfessionals(String query);
+  Future<List<HomeServicesModel>> fetchHomeServices();
 }
 
 class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
+  final DioClient dioClient;
+
+  HomeServicesRemoteDataSourceImpl({required this.dioClient});
+
   List categories = [
     {"id": "1", "name": "Handy Man"},
     {"id": "2", "name": "Home Cleaning"},
@@ -34,6 +43,20 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
       return response.map((json) => ProfessionalModel.fromJson(json)).toList();
     } catch (e) {
       throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<HomeServicesModel>> fetchHomeServices() async {
+    final response = await dioClient.get(Endpoints.getServices);
+    if (response.statusCode == 200) {
+      final json = response.data as Map<String, dynamic>;
+      final List<dynamic> listData = json['data'];
+      return listData.map((e) => HomeServicesModel.fromJson(e)).toList();
+    } else if (response.statusCode == 404) {
+      throw NotFoundException("Not Found Home Services");
+    } else {
+      throw ServerException("Faild To Get Home Services");
     }
   }
 }

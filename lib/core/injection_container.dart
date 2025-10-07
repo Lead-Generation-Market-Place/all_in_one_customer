@@ -6,6 +6,11 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:yelpax/core/auth/auth_manager.dart';
 import 'package:yelpax/core/network/endpoints.dart';
 import 'package:yelpax/core/storage/secure_storage_service.dart';
+import 'package:yelpax/features/home_services/data/datasources/home_services_remote_data_source.dart';
+import 'package:yelpax/features/home_services/data/repositories/home_services_repository_impl.dart';
+import 'package:yelpax/features/home_services/domain/repositories/home_services_repository.dart';
+import 'package:yelpax/features/home_services/domain/usecases/home_services_usecase.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
 import 'package:yelpax/features/signin/data/datasources/auth_remote_data_source.dart';
 import 'package:yelpax/features/signin/data/repositories/auth_repository_impl.dart';
 import 'package:yelpax/features/signin/domain/repositories/auth_repository.dart';
@@ -66,4 +71,14 @@ Future<void> init() async {
   getIt.registerFactory<SignInController>(
     () => SignInController(signInUseCase: getIt<SignInUseCase>()),
   );
+
+
+  //home services di
+
+  getIt.registerLazySingleton<HomeServicesRemoteDataSource>(() => HomeServicesRemoteDataSourceImpl(dioClient: getIt<DioClient>()),);
+  getIt.registerLazySingleton<HomeServicesRepository>(() => HomeServicesRepositoryImpl(remoteDataSource: getIt<HomeServicesRemoteDataSource>(),
+  networkInfo: getIt<NetworkInfo>()),);
+  getIt.registerLazySingleton<HomeServicesUsecase>(() => HomeServicesUsecase(homeServicesRepository: getIt<HomeServicesRepository>()),);
+  getIt.registerFactory<HomeServicesController>(() =>HomeServicesController(
+  homeServicesUsecase: getIt<HomeServicesUsecase>()) ,);
 }

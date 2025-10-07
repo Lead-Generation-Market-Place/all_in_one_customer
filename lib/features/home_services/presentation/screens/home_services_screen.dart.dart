@@ -2,13 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 import '../../../../app/presentation/shell/widgets/custom_bottom_nav.dart';
 import '../../../../config/routes/router.dart';
 import '../../../../config/themes/theme_mode_type.dart';
 import '../../../../config/themes/theme_provider.dart';
 import '../controllers/home_services_controller.dart';
 import 'home_services_promotion_screen.dart';
-import 'search_professional_screen.dart';
 import '../widgets/app_bar_widget.dart';
 import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../core/constants/height.dart';
@@ -38,6 +38,8 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
 
       theme.setTheme(ThemeModeType.homeServices);
       controller.getCategories();
+      controller
+          .fetchHomeServices(); //fetching home services when user navigated to home screen of home services
     });
   }
 
@@ -59,10 +61,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   }
 
   Widget _buildBody() {
-    final _controller = Provider.of<HomeServicesController>(
-      context,
-      listen: false,
-    );
+    final _controller = context.read<HomeServicesController>();
     return Container(
       padding: const EdgeInsets.all(16),
       child: RefreshIndicator.adaptive(
@@ -83,7 +82,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                   ),
                 ],
               ),
-              SearchProfessionalScreen(),
+              //   SearchProfessionalScreen(),
               const SizedBox(height: 16),
               HomeServicesPromotionScreen(),
               _buildPopularCategories(),
@@ -163,13 +162,13 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget _buildPopularCategories() {
     return Consumer<HomeServicesController>(
       builder: (context, controller, _) {
-        if (controller.categoryLoading) {
+        if (controller.isLoading) {
           return const CustomShimmer(
             layoutType: ShimmerLayoutType.horizontalList,
           );
         }
 
-        if (controller.categories == null) {
+        if (controller.homeServices == null) {
           return InkWell(
             onTap: () => controller.getCategories(),
             child: const Icon(Icons.refresh),
@@ -178,8 +177,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
 
         return _buildHorizontalCategoryList(
           'Popular on Yelpax',
-          controller.categories,
-          controller,
+          controller.homeServices,
         );
       },
     );
@@ -211,8 +209,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
 
   Widget _buildHorizontalCategoryList(
     String sectionTitle,
-    List categories,
-    HomeServicesController controller,
+    List<HomeServicesEntity> services,
   ) {
     return Card(
       child: Column(
@@ -224,13 +221,15 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
             height: height(context) / 6,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: categories.length,
-              itemBuilder: (context, index) => _buildCategoryItem(
-                context,
-                categories[index]['name'],
-                categories[index]['imageUrl'],
-                controller,
-              ),
+              itemCount: services.length,
+              itemBuilder: (context, index) {
+                final service = services[index];
+                return _buildCategoryItem(
+                  context,
+                  service.service_name,
+                  service.subcategory_id,
+                );
+              },
             ),
           ),
         ],
@@ -260,7 +259,6 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                 context,
                 categories[index]['name'],
                 categories[index]['imageUrl'],
-                controller,
               ),
             ),
           ),
@@ -281,8 +279,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
         if (value.isAddressExists) {
           return _buildHorizontalCategoryList(
             'For Your Home',
-            value.categories,
-            value,
+            value.homeServices,
           );
         }
         return Column(
@@ -506,55 +503,54 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   }
 
   //static widgets
-Widget _buildCategoryItem(
-  BuildContext context,
-  String categoryName,
-  String imageUrl,
-  HomeServicesController controller,
-) {
-  return InkWell(
-    onTap: () => controller.openCategory(
-      {'name': categoryName, 'imageUrl': imageUrl},
-      context,
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            CachedNetworkImage(
-              height: height(context) ,
-              width: width(context) / 1.8,
-              imageUrl: imageUrl,
-              fit: BoxFit.cover,
-              errorWidget: (context, url, error) =>
-                  const Icon(Icons.error_outline_outlined),
-              progressIndicatorBuilder: (context, url, progress) => SizedBox(
-                child: LinearProgressIndicator(value: progress.progress),
+  Widget _buildCategoryItem(
+    BuildContext context,
+    String categoryName,
+    String imageUrl,
+  ) {
+    final controller = context.read<HomeServicesController>();
+    return InkWell(
+      onTap: () => controller.openCategory({
+        'name': categoryName,
+        'imageUrl': imageUrl,
+      }, context),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              CachedNetworkImage(
+                height: height(context),
+                width: width(context) / 1.8,
+                imageUrl: imageUrl,
+                fit: BoxFit.cover,
+                errorWidget: (context, url, error) =>
+                    const Icon(Icons.error_outline_outlined),
+                progressIndicatorBuilder: (context, url, progress) => SizedBox(
+                  child: LinearProgressIndicator(value: progress.progress),
+                ),
               ),
-            ),
-            Container(
-
-              width: width(context)/1.8,
-              color: Colors.black.withOpacity(0.4),
-              padding: const EdgeInsets.all(6),
-              child: Text(
-                categoryName,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+              Container(
+                width: width(context) / 1.8,
+                color: Colors.black.withOpacity(0.4),
+                padding: const EdgeInsets.all(6),
+                child: Text(
+                  categoryName,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildDivider() {
     return Container(margin: const EdgeInsets.all(24), child: Divider());

@@ -22,3 +22,7 @@ class NotFoundException implements Exception{
   final String message;
   NotFoundException(this.message);
 }
+class CustomDioException implements Exception{
+  final String message;
+  CustomDioException(this.message);
+}
