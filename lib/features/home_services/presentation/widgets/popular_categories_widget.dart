@@ -92,9 +92,9 @@ Widget _buildCategoryItem(
               height: height(context),
               width: width(context) / 1.8,
               imageUrl: imageUrl,
+              
               fit: BoxFit.cover,
-              errorWidget: (context, url, error) =>
-                  const Icon(Icons.error_outline_outlined),
+              errorWidget: (context, url, error) =>_buildErrorWidget(),
               progressIndicatorBuilder: (context, url, progress) => SizedBox(
                 child: LinearProgressIndicator(value: progress.progress),
               ),
@@ -117,4 +117,11 @@ Widget _buildCategoryItem(
       ),
     ),
   );
+}
+
+
+Widget _buildErrorWidget(){
+ return Container(
+ 
+  child: const Icon(Icons.error_outline_outlined,color: Colors.red,));
 }
