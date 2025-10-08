@@ -15,6 +15,7 @@ import '../widgets/app_bar_widget.dart';
 import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
+import 'search_professional_screen.dart';
 
 class HomeServicesScreen extends StatefulWidget {
   const HomeServicesScreen({super.key});
@@ -84,7 +85,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                   ),
                 ],
               ),
-              //   SearchProfessionalScreen(),
+              SearchProfessionalScreen(),
               const SizedBox(height: 16),
               HomeServicesPromotionScreen(),
               PopularCategoriesWidget(),

@@ -67,7 +67,7 @@ Widget _buildHorizontalCategoryList(
               final service = services[index];
               return _buildCategoryItem(
                 context,
-                service.service_name,
+                service.name,
                 service.subcategory_id,
                 service.id,
               );
