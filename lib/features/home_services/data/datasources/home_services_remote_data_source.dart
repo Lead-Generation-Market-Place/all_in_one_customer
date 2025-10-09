@@ -1,5 +1,6 @@
 import 'package:yelpax/core/network/dio_client.dart';
 import 'package:yelpax/core/network/endpoints.dart';
+import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_model.dart';
 
 import '../../../../core/error/exceptions/exceptions.dart';
@@ -8,6 +9,7 @@ import '../models/professional_model.dart';
 abstract class HomeServicesRemoteDataSource {
   Future<List<ProfessionalModel>> searchProfessionals(String query);
   Future<List<HomeServicesModel>> fetchHomeServices();
+  Future<List<HomeServicePromotionModel>> fetchPromotions();
 }
 
 class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
@@ -60,5 +62,19 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
     }
   }
 
-  
+  @override
+  Future<List<HomeServicePromotionModel>> fetchPromotions() async {
+    final response = await dioClient.get(Endpoints.promotions);
+    if (response.statusCode == 200) {
+      final json = response.data as Map<String, dynamic>;
+      final List<dynamic> listData = json['data'];
+      return listData
+          .map((e) => HomeServicePromotionModel.fromJson(e))
+          .toList();
+    } else if (response.statusCode == 404) {
+      throw NotFoundException("Promotions Not Found");
+    } else {
+      throw ServerException("Faild To Get Promotions");
+    }
+  }
 }

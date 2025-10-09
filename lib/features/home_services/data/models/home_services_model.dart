@@ -5,7 +5,6 @@ class HomeServicesModel extends HomeServicesEntity {
     required super.id,
     required super.name,
     required super.slug,
-
     required super.subcategory_id,
     required super.description,
     required super.image_url,

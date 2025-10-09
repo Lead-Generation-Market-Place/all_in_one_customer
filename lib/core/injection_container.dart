@@ -9,10 +9,13 @@ import 'package:yelpax/core/storage/secure_storage_service.dart';
 import 'package:yelpax/features/home_services/data/datasources/home_services_remote_data_source.dart';
 import 'package:yelpax/features/home_services/data/repositories/home_services_repository_impl.dart';
 import 'package:yelpax/features/home_services/domain/repositories/home_services_repository.dart';
+import 'package:yelpax/features/home_services/domain/usecases/home_services_promotions_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/search_professional_usecase.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/home_services_promotion_controller.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/search_professional_controller.dart';
+import 'package:yelpax/features/promotion/presentation/controllers/promotion_controller.dart';
 import 'package:yelpax/features/signin/data/datasources/auth_remote_data_source.dart';
 import 'package:yelpax/features/signin/data/repositories/auth_repository_impl.dart';
 import 'package:yelpax/features/signin/domain/repositories/auth_repository.dart';
@@ -84,6 +87,9 @@ Future<void> init() async {
   getIt.registerFactory<HomeServicesController>(() =>HomeServicesController(
   homeServicesUsecase: getIt<HomeServicesUsecase>()) ,);
 
+  //promotions
+  getIt.registerLazySingleton<HomeServicesPromotionsUsecase>(() => HomeServicesPromotionsUsecase(repository: getIt<HomeServicesRepository>()),);
+  getIt.registerFactory<HomeServicesPromotionController>(() => HomeServicesPromotionController(usecase: getIt<HomeServicesPromotionsUsecase>()),);
 
   //home services search professional di
   getIt.registerLazySingleton<SearchProfessionalUsecase>(() => SearchProfessionalUsecase(repository: getIt<HomeServicesRepository>()),);
