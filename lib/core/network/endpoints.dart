@@ -25,7 +25,12 @@ abstract class Endpoints {
   static const String createOrder = '/orders';
   static const String getOrderDetail = '/orders/{id}';
 
+  //promotions endpoints
   static const String promotions='/promotions';
+
+  //fetching professionals endpoints
+  static const String findpros='/findpros';
+
 
   // Helper method to replace path parameters
   static String replacePathParameters(String path, Map<String, dynamic> params) {

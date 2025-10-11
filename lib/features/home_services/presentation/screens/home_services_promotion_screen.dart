@@ -55,60 +55,57 @@ class _HomeServicesPromotionScreenState
 
   Widget _buildPromotionCard(HomeServicesPromotionEntity entity) {
     return Container(
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(2),
-              margin: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4),
-
-                borderRadius: BorderRadius.circular(7),
-              ),
-              child: Text(
-                entity.title,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(color: Colors.white),
-              ),
+      padding: const EdgeInsets.all(4),
+      child: ListView(
+       
+        children: [
+          Container(
+            padding: const EdgeInsets.all(2),
+            margin: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.4),
+      
+              borderRadius: BorderRadius.circular(7),
             ),
-            Container(
-              padding: const EdgeInsets.all(2),
-
-              margin: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4),
-
-                borderRadius: BorderRadius.circular(7),
-              ),
-              child: Text(
-                entity.description,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: Colors.white),
-              ),
+            child: Text(
+              entity.title,
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(color: Colors.white),
             ),
-            Container(
-              padding: const EdgeInsets.all(2),
-
-              margin: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4),
-
-                borderRadius: BorderRadius.circular(7),
-              ),
-              child: Text(
-                entity.promo_code,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: Colors.white),
-              ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(2),
+            margin: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.4),
+      
+              borderRadius: BorderRadius.circular(7),
             ),
-          ],
-        ),
+            child: Text(
+              entity.description,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(2),
+      
+            margin: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.4),
+      
+              borderRadius: BorderRadius.circular(7),
+            ),
+            child: Text(
+              entity.promo_code,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+            ),
+          ),
+        ],
       ),
       decoration: BoxDecoration(
         color: Colors.blue,

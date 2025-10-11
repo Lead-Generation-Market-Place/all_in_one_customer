@@ -17,13 +17,27 @@ class HomeServicesModel extends HomeServicesEntity {
     return HomeServicesModel(
       id: json['id'] ?? "",
       name: json["name"] ?? "",
-      slug: json["slug"]?? "",
+      slug: json["slug"] ?? "",
       subcategory_id: json["subcategory_id"] ?? "",
       description: json["description"] ?? "",
-      image_url: json["image_url"]??"",
-      is_active: json["is_active"],
+      image_url: json["image_url"] ?? "",
+      is_active: json["is_active"]??false,
       created_at: json["created_at"] ?? "",
       updated_at: json["updated_at"] ?? "",
+    );
+  }
+
+  static assignEmptyValues() {
+    return HomeServicesModel(
+      id: '',
+      name: '',
+      slug: '',
+      subcategory_id: '',
+      description: '',
+      image_url: '',
+      is_active: false,
+      created_at: '',
+      updated_at: '',
     );
   }
 }
