@@ -8,7 +8,7 @@ import '../../core/error/widgets/unknown_route_screen.dart';
 import '../../features/grocery/presentation/screens/grocery_screen_homepage.dart';
 import '../../features/home_services/presentation/screens/home_services_screen.dart.dart';
 import '../../features/home_services/sub_features/question_flows/presentation/screens/question_flow_screen.dart';
-import '../../features/home_services/sub_features/service_professionals/presentation/screens/service_professionals_screen.dart';
+import '../../features/home_services/sub_features/service_professionals/screens/service_professionals_screen.dart';
 import '../../features/home_services/sub_features/single_service_professional/presentation/screens/single_service_professional_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/signin/presentation/screens/sign_in_screen.dart';

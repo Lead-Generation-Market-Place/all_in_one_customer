@@ -1,6 +1,7 @@
 import 'package:yelpax/core/network/dio_client.dart';
 import 'package:yelpax/core/network/endpoints.dart';
 import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
+import 'package:yelpax/features/home_services/data/models/home_services_fetch_professional_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_model.dart';
 
 import '../../../../core/error/exceptions/exceptions.dart';
@@ -10,6 +11,7 @@ abstract class HomeServicesRemoteDataSource {
   Future<List<ProfessionalModel>> searchProfessionals(String query);
   Future<List<HomeServicesModel>> fetchHomeServices();
   Future<List<HomeServicePromotionModel>> fetchPromotions();
+  Future<List<HomeServicesFetchProfessionalModel>> findPros(String query);
 }
 
 class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
@@ -75,6 +77,26 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
       throw NotFoundException("Promotions Not Found");
     } else {
       throw ServerException("Faild To Get Promotions");
+    }
+  }
+
+  @override
+  Future<List<HomeServicesFetchProfessionalModel>> findPros(
+    String query,
+  ) async {
+    final response = await dioClient.get("${Endpoints.findpros}/$query");
+    if (response.statusCode == 200) {
+      final json = response.data as Map<String, dynamic>;
+      final List<dynamic> listData = json['data'];
+      return listData
+          .map((e) => HomeServicesFetchProfessionalModel.fromJson(e))
+          .toList();
+    } else if (response.statusCode == 404) {
+      throw NotFoundException(
+        "There Is No Professionals For The Selected Service",
+      );
+    } else {
+      throw ServerException("Faild To Get Professionals");
     }
   }
 }

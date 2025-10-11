@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../../../../../../shared/widgets/custom_button.dart';
-import '../../../../../../shared/widgets/styled_asterisk_name.dart';
-import '../../../../../../core/utils/get_rating_label.dart';
-import '../../../../../../shared/widgets/star_rating_widget.dart';
+import '../../../../../shared/widgets/custom_button.dart';
+import '../../../../../shared/widgets/styled_asterisk_name.dart';
+import '../../../../../core/utils/get_rating_label.dart';
+import '../../../../../shared/widgets/star_rating_widget.dart';
 
 class ProfessionalCardWidget extends StatelessWidget {
   Map professional;

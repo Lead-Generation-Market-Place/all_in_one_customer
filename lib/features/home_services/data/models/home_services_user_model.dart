@@ -9,9 +9,9 @@ class HomeServicesUserModel extends HomeServicesUserEntity {
 
   factory HomeServicesUserModel.fromJson(Map<String, dynamic> json) {
     return HomeServicesUserModel(
-      id: json["_id"],
-      email: json["email"],
-      username: json["username"],
+      id: json["_id"]??"",
+      email: json["email"]??"",
+      username: json["username"]??"",
     );
   }
 

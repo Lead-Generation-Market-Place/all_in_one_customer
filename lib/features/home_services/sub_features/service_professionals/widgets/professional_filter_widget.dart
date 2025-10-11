@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yelpax/core/constants/height.dart';
-import 'package:yelpax/features/home_services/sub_features/service_professionals/presentation/controllers/service_professionals_controller.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals/controllers/home_services_findpros_controller.dart';
 
-import '../../../../../../shared/widgets/custom_button.dart';
+import '../../../../../shared/widgets/custom_button.dart';
 
 class ProfessionalFilterWidget extends StatefulWidget {
   TextTheme textTheme;
-  ServiceProfessionalsController controller;
+  HomeServicesFindprosController controller;
 
   ProfessionalFilterWidget({required this.textTheme, required this.controller});
 

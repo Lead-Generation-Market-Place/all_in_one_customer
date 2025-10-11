@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../controllers/service_professionals_controller.dart';
-import '../widgets/professional_card_widget.dart';
+import 'package:yelpax/core/injection_container.dart';
+import '../controllers/home_services_findpros_controller.dart';
 import '../widgets/professional_filter_widget.dart';
-import '../../../../../../shared/widgets/custom_shimmer.dart';
+import '../../../../../shared/widgets/custom_shimmer.dart';
 
 class ServiceProfessionalsScreen extends StatefulWidget {
   final dynamic serviceDetails;
@@ -21,9 +21,9 @@ class _ServiceProfessionalsScreenState
     extends State<ServiceProfessionalsScreen> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider<HomeServicesFindprosController>(
       create: (context) =>
-          ServiceProfessionalsController(widget.serviceDetails),
+          getIt<HomeServicesFindprosController>(),
       child: const _ServiceProfessionalsView(),
     );
   }
@@ -34,7 +34,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<ServiceProfessionalsController>();
+    final controller = context.watch<HomeServicesFindprosController>();
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
@@ -50,7 +50,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
   }
 
   Widget _buildBody(
-    ServiceProfessionalsController controller,
+    HomeServicesFindprosController controller,
     ThemeData theme,
     TextTheme textTheme,
     BuildContext context,
@@ -80,7 +80,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
       children: [
         _buildHeader(controller, textTheme),
         const SizedBox(height: 8),
-        ProfessionalFilterWidget(textTheme: textTheme, controller: controller),
+    //    ProfessionalFilterWidget(textTheme: textTheme, controller: controller),
         const Divider(),
         const SizedBox(height: 8),
         _buildProfessionalsList(controller, theme, textTheme),
@@ -89,7 +89,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
   }
 
   Widget _buildHeader(
-    ServiceProfessionalsController controller,
+    HomeServicesFindprosController controller,
     TextTheme textTheme,
   ) {
     return Padding(
@@ -111,7 +111,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
   }
 
   Widget _buildProfessionalsList(
-    ServiceProfessionalsController controller,
+    HomeServicesFindprosController controller,
     ThemeData theme,
     TextTheme textTheme,
   ) {
@@ -122,11 +122,14 @@ class _ServiceProfessionalsView extends StatelessWidget {
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final professional = controller.professionals[index];
-          return ProfessionalCardWidget(
-            professional: professional,
-            onTap: () => controller.openCategory(professional, context),
-            onOpenQuotation: () => controller.openQuestionFlow('01', context),
-          );
+         
+          return Text(professional.serviceName);
+         //will be activated later just checking the response
+          // return ProfessionalCardWidget(
+          //   professional: professional,
+          //   onTap: () => controller.openCategory(professional, context),
+          //   onOpenQuotation: () => controller.openQuestionFlow('01', context),
+          // );
         },
       ),
     );
