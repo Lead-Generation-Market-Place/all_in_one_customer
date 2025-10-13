@@ -29,13 +29,13 @@ class HomeServicesFetchProfessionalModel
   ) {
     return HomeServicesFetchProfessionalModel(
       id: json["_id"] ?? "",
-      serviceName: json["serviceName"] ?? "",
-      maximumPrice: json["maximumPrice"] ?? 0,
-      minimumPrice: json["minimumPrice"] ?? 0,
-      serviceStatus: json["serviceStatus"] ?? false,
+      serviceName: json["service_name"] ?? "",
+      maximumPrice: json["maximum_price"] ?? 0,
+      minimumPrice: json["minimum_price"] ?? 0,
+      serviceStatus: json["service_status"] ?? false,
       description: json["description"] ?? "",
-      pricingType: json["pricingType"] ?? "",
-      completedTasks: json["completedTasks"] ?? 0,
+      pricingType: json["pricing_type"] ?? "",
+      completedTasks: json["completed_tasks"] ?? 0,
       createdAt: json["createdAt"] ?? "",
       updatedAt: json["updatedAt"] ?? "",
       service: json["service_id"] != null

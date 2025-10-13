@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:yelpax/core/injection_container.dart';
 import '../controllers/home_services_findpros_controller.dart';
 import '../widgets/professional_card_widget.dart';
-import '../widgets/professional_filter_widget.dart';
 import '../../../../../shared/widgets/custom_shimmer.dart';
 
 class ServiceProfessionalsScreen extends StatefulWidget {

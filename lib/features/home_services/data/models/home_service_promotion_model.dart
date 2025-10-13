@@ -26,7 +26,7 @@ class HomeServicePromotionModel extends HomeServicesPromotionEntity {
       valid_to: json['valid_to']?? '',
       is_active: json['is_active'] ?? false,
       promo_code: json['promo_code'] ?? '',
-      servicesEntity: HomeServicesModel.fromJson(json['service_id'])
+      servicesEntity:json['service_id']!=null? HomeServicesModel.fromJson(json['service_id']):HomeServicesModel.assignEmptyValues()
     );
   }
 }

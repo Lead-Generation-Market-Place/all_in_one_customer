@@ -85,13 +85,13 @@ Widget _buildProfessionalDetails(
       const SizedBox(height: 8),
   //    _buildAvailabilityInfo(professional, textTheme),
       // const SizedBox(height: 8),
-      // _buildHiredCount(professional, textTheme),
+       _buildHiredCount(professional.professional, textTheme),
       const SizedBox(height: 8),
- //     _buildPriceInfo(professional, textTheme),
-      // const SizedBox(height: 8),
-      // _buildLastReview(professional, textTheme, onTap),
+      _buildPriceInfo(professional, textTheme),
       const SizedBox(height: 8),
- //     _buildDetailsOrQuotation(onOpenQuotation),
+      _buildLastReview(professional.professional, textTheme, onTap),
+      const SizedBox(height: 8),
+ _buildDetailsOrQuotation(onOpenQuotation),
     ],
   );
 }
@@ -119,12 +119,12 @@ Widget _buildNameAndRating(HomeServicesProfessionalEntity professional, TextThem
           const Spacer(),
           Text(professional.ratingAverage.toString(), style: textTheme.bodySmall),
           const SizedBox(width: 4),
-          // StarRatingWidget(initialRating: professional['ratings'], size: 20),
+           StarRatingWidget(initialRating: professional.ratingAverage.toDouble(), size: 20),
           const SizedBox(width: 4),
-          // Text(
-          //   '(${professional['starsCount'] ?? 0})',
-          //   style: textTheme.bodySmall,
-          // ),
+          Text(
+            professional.totalReview.toString(),
+            style: textTheme.bodySmall,
+          ),
         ],
       ),
     ],
@@ -151,22 +151,22 @@ Widget _buildAvailabilityInfo(dynamic professional, TextTheme textTheme) {
         );
 }
 
-Widget _buildHiredCount(dynamic professional, TextTheme textTheme) {
+Widget _buildHiredCount(HomeServicesProfessionalEntity professional, TextTheme textTheme) {
   return Text(
-    '${professional['timesHired']} Hired in yelpax',
+    '${professional.totalHire} Times Hired in yelpax',
     style: textTheme.bodySmall,
   );
 }
 
-Widget _buildPriceInfo(dynamic professional, TextTheme textTheme) {
+Widget _buildPriceInfo(HomeServicesFetchProfessionalsEntity professional, TextTheme textTheme) {
   return Text(
-    professional['estimatedPrice'],
+    "${professional.minimumPrice} Minimum Price",
     style: textTheme.titleSmall?.copyWith(color: Colors.grey,fontSize: 14),
   );
 }
 
 Widget _buildLastReview(
-  dynamic professional,
+  HomeServicesProfessionalEntity professional,
   TextTheme textTheme,
   GestureTapCallback onTap,
 ) {
@@ -174,7 +174,7 @@ Widget _buildLastReview(
     text: TextSpan(
       children: [
         TextSpan(
-          text: professional['lastReviewText'] ?? '',
+          text: professional.businessType,
           style: textTheme.bodySmall?.copyWith(color: Colors.grey),
         ),
         TextSpan(
