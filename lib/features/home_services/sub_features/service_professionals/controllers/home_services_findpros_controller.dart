@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/web.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_findpros_usecase.dart';
 
@@ -32,6 +33,7 @@ class HomeServicesFindprosController extends ChangeNotifier {
         notifyListeners();
       },
       (success) {
+        
         _professionals = success;
         _professionalsLoading = false;
         notifyListeners();

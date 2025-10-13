@@ -1,7 +1,6 @@
 // core/network/dio_client.dart
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
-import 'package:yelpax/core/auth/auth_manager.dart';
 import 'package:yelpax/core/network/auth_interceptor.dart';
 import 'package:yelpax/core/injection_container.dart' as di;
 import 'package:yelpax/core/storage/secure_storage_service.dart';

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/core/injection_container.dart';
 import '../controllers/home_services_findpros_controller.dart';
+import '../widgets/professional_card_widget.dart';
 import '../widgets/professional_filter_widget.dart';
 import '../../../../../shared/widgets/custom_shimmer.dart';
 
@@ -122,14 +123,14 @@ class _ServiceProfessionalsView extends StatelessWidget {
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final professional = controller.professionals[index];
-         
-          return Text(professional.serviceName);
-         //will be activated later just checking the response
-          // return ProfessionalCardWidget(
-          //   professional: professional,
-          //   onTap: () => controller.openCategory(professional, context),
-          //   onOpenQuotation: () => controller.openQuestionFlow('01', context),
-          // );
+        //  return Text(professional.serviceName);
+       
+          return ProfessionalCardWidget(
+            professional: professional,
+            onTap: () => print("opening a prfessional"),
+            //controller.openCategory(professional, context),
+            onOpenQuotation: () => controller.openQuestionFlow('01', context),
+          );
         },
       ),
     );

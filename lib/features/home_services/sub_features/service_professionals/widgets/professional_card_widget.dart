@@ -1,13 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/web.dart';
+import 'package:yelpax/core/constants/asset_constants.dart';
+import 'package:yelpax/core/utils/url_helper.dart';
+import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_professional_entity.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_promotion_entity.dart';
 import '../../../../../shared/widgets/custom_button.dart';
 import '../../../../../shared/widgets/styled_asterisk_name.dart';
 import '../../../../../core/utils/get_rating_label.dart';
 import '../../../../../shared/widgets/star_rating_widget.dart';
 
 class ProfessionalCardWidget extends StatelessWidget {
-  Map professional;
+  HomeServicesFetchProfessionalsEntity professional;
   GestureTapCallback onTap;
   VoidCallback onOpenQuotation;
   ProfessionalCardWidget({
@@ -24,6 +32,7 @@ class ProfessionalCardWidget extends StatelessWidget {
       onTap: onTap,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 2.2,
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
@@ -47,13 +56,14 @@ class ProfessionalCardWidget extends StatelessWidget {
   }
 }
 
-Widget _buildAvatar(dynamic professional) {
+Widget _buildAvatar(HomeServicesFetchProfessionalsEntity professional) {
   return CircleAvatar(
     radius: 30,
     backgroundColor: Colors.grey,
     child: ClipOval(
-      child: Image.asset(
-        'assets/images/splash_1.jpg',
+      child: CachedNetworkImage(
+
+      imageUrl: UrlHelper.fixImageUrl(professional.professional.profileImage),//url helper will be changed later 
         fit: BoxFit.cover,
         width: 60,
         height: 60,
@@ -63,7 +73,7 @@ Widget _buildAvatar(dynamic professional) {
 }
 
 Widget _buildProfessionalDetails(
-  dynamic professional,
+  HomeServicesFetchProfessionalsEntity professional,
   TextTheme textTheme,
   GestureTapCallback onTap,
   VoidCallback onOpenQuotation
@@ -71,29 +81,29 @@ Widget _buildProfessionalDetails(
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      _buildNameAndRating(professional, textTheme),
+      _buildNameAndRating(professional.professional, textTheme),
       const SizedBox(height: 8),
-      _buildAvailabilityInfo(professional, textTheme),
+  //    _buildAvailabilityInfo(professional, textTheme),
       // const SizedBox(height: 8),
       // _buildHiredCount(professional, textTheme),
       const SizedBox(height: 8),
-      _buildPriceInfo(professional, textTheme),
+ //     _buildPriceInfo(professional, textTheme),
       // const SizedBox(height: 8),
       // _buildLastReview(professional, textTheme, onTap),
       const SizedBox(height: 8),
-      _buildDetailsOrQuotation(onOpenQuotation),
+ //     _buildDetailsOrQuotation(onOpenQuotation),
     ],
   );
 }
 
-Widget _buildNameAndRating(dynamic professional, TextTheme textTheme) {
+Widget _buildNameAndRating(HomeServicesProfessionalEntity professional, TextTheme textTheme) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       RichText(
         text: TextSpan(
           children: StyledAsteriskName(
-            professional['name'],
+            professional.businessName,
             textTheme.titleSmall,
           ),
         ),
@@ -103,18 +113,18 @@ Widget _buildNameAndRating(dynamic professional, TextTheme textTheme) {
       Row(
         children: [
           Text(
-            getRatingLabel(professional['ratings']),
+            getRatingLabel(4.2),
             style: textTheme.bodySmall,
           ),
           const Spacer(),
-          Text(professional['ratings'].toString(), style: textTheme.bodySmall),
+          Text(professional.ratingAverage.toString(), style: textTheme.bodySmall),
           const SizedBox(width: 4),
-          StarRatingWidget(initialRating: professional['ratings'], size: 20),
+          // StarRatingWidget(initialRating: professional['ratings'], size: 20),
           const SizedBox(width: 4),
-          Text(
-            '(${professional['starsCount'] ?? 0})',
-            style: textTheme.bodySmall,
-          ),
+          // Text(
+          //   '(${professional['starsCount'] ?? 0})',
+          //   style: textTheme.bodySmall,
+          // ),
         ],
       ),
     ],

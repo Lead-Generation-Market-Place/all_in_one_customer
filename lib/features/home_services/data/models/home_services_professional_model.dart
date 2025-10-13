@@ -11,6 +11,9 @@ class HomeServicesProfessionalModel extends HomeServicesProfessionalEntity {
     required super.introduction,
     required super.businessType,
     required super.profileImage,
+    required super.totalHire,
+    required super.totalReview,
+    required super.ratingAverage
   });
 
   factory HomeServicesProfessionalModel.fromJson(Map<String, dynamic> json) {
@@ -19,10 +22,14 @@ class HomeServicesProfessionalModel extends HomeServicesProfessionalEntity {
       user: json['user_id'] != null
           ? HomeServicesUserModel.fromJson(json['user_id'])
           : HomeServicesUserModel.empty(),
-      businessName: json["businessName"] ?? "",
+      businessName: json["business_name"] ?? "",
       introduction: json["introduction"] ?? "",
-      businessType: json["businessType"] ?? "",
-      profileImage: json["profileImage"] ?? "",
+      businessType: json["business_type"] ?? "",
+      profileImage: json["profile_image"] ?? "",
+      totalHire: json["total_hire"]??0,
+      totalReview: json["total_review"]??0,
+      ratingAverage: json["rating_avg"]??0
+
     );
   }
 
@@ -34,6 +41,9 @@ class HomeServicesProfessionalModel extends HomeServicesProfessionalEntity {
       introduction: '',
       businessType: '',
       profileImage: '',
+      totalHire: 0,
+      totalReview: 0,
+      ratingAverage: 0
     );
   }
 }

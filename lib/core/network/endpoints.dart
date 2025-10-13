@@ -1,6 +1,7 @@
 //all endpoints will be rigestered here
 abstract class Endpoints {
-  static const String baseUrl = 'https://servicyee-backend.onrender.com/api/v1';
+  //static const String baseUrl = 'https://servicyee-backend.onrender.com/api/v1';  //real server
+  static const String baseUrl='http://10.0.2.2:4000/api/v1';   //test server
 
   // Auth endpoints
   static const String login = '/auth/login';

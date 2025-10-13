@@ -7,6 +7,10 @@ class HomeServicesProfessionalEntity {
   final String introduction;
   final String businessType;
   final String profileImage;
+  final int totalHire;
+  final int totalReview;
+  final int ratingAverage;
+
 
   HomeServicesProfessionalEntity({
     required this.id,
@@ -15,5 +19,8 @@ class HomeServicesProfessionalEntity {
     required this.introduction,
     required this.businessType,
     required this.profileImage,
+    required this.totalHire,
+    required this.totalReview,
+    required this.ratingAverage
   });
 }
