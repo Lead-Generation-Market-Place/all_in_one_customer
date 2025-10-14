@@ -40,7 +40,7 @@ class QuestionPage extends StatelessWidget {
           _buildQuestionOptions(
             context,
             question.formType,
-            question.options,
+            question,
             currentAnswer,
             (answer) => controller.submitAnswer(questionIndex, answer),
           ),
@@ -61,23 +61,23 @@ class QuestionPage extends StatelessWidget {
   Widget _buildQuestionOptions(
     BuildContext context,
     String type,
-    List<String> options,
+    HomeServicesQuestionEntity question,
     dynamic currentAnswer,
     Function(dynamic) onAnswerSubmitted,
   ) {
     switch (type) {
       case "select":
-        final controller = Provider.of<QuestionFlowController>(
-          context,
-          listen: false,
-        );
-        final selectedOptionIds = controller.getSelectedOptionIdsForQuestion(
-          questionIndex,
-        );
+        //final controller = Provider.of<QuestionFlowController>(
+        //   context,
+        //   listen: false,
+        // );
+        // final selectedOptionIds = controller.getSelectedOptionIdsForQuestion(
+        //   questionIndex,
+        // );
 
         return MultipleChoiceWidget(
-          choices: options,
-          selectedChoiceIds: selectedOptionIds, // Now passing List<String>
+          choices:question.options,
+          selectedChoiceIds: ["first","second","third"], // Now passing List<String>
           onSelectionChanged: onAnswerSubmitted,
         );
       case "radio":
@@ -86,7 +86,7 @@ class QuestionPage extends StatelessWidget {
           selectedOption = currentAnswer;
         }
         return SingleChoiceWidget(
-          choices: options,
+          choices: question.options,
           selectedChoiceId: "dummyid",
           onSelectionChanged: onAnswerSubmitted,
         );
@@ -101,9 +101,11 @@ class QuestionPage extends StatelessWidget {
           onChanged: onAnswerSubmitted,
         );
       case "checkbox":
+      
         return CheckBoxInputWidget(
           initialValue: false,
           onChanged: onAnswerSubmitted,
+          options: question.options,
         );
       case "date":
         return DateInputWidget(

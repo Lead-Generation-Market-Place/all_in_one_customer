@@ -1,4 +1,3 @@
-// features/home_services/sub_features/question_flows/presentation/widgets/question_flow_widget.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/controllers/question_flow_controller.dart';
@@ -11,18 +10,23 @@ import 'package:yelpax/features/home_services/domain/entities/home_services_ques
 class QuestionFlowWidget extends StatelessWidget {
   final List<HomeServicesQuestionEntity> questions;
   const QuestionFlowWidget({super.key, required this.questions});
-  
 
   @override
   Widget build(BuildContext context) {
-    questions.forEach((element) => print(element.formType),);
     return ChangeNotifierProvider(
       create: (context) => QuestionFlowController(questions: questions),
       child: Consumer<QuestionFlowController>(
         builder: (context, controller, child) {
           // Handle Empty State
           if (controller.questions.isEmpty) {
-            return const Center(child: Text('No questions found.'));
+            return Column(
+              children: [
+                AppBar(leading: BackButton()),
+                Expanded(
+                  child: const Center(child: Text('No questions found.')),
+                ),
+              ],
+            );
           }
           //Handle Question Flow completed and send to professional
           if (controller.isQuestionFlowCompleted) {
@@ -43,7 +47,7 @@ class QuestionFlowWidget extends StatelessWidget {
                   'Question ${controller.currentPageIndex + 1} of ${controller.totalQuestions}',
                 ),
                 leading: controller.isFirstQuestion
-                    ? null
+                    ? SizedBox.shrink()
                     : IconButton(
                         icon: const Icon(Icons.arrow_back),
                         onPressed: controller.previousPage,
@@ -80,96 +84,95 @@ class QuestionFlowWidget extends StatelessWidget {
   }
 
   //a widget of a dialog to show send a quotation
-Future<void> sendQuotationToProfessionals(
-  BuildContext context,
-  String title,
-  QuestionFlowController controller,
-) async {
-  String? selectedOption = 'fiveProfessionals';
+  Future<void> sendQuotationToProfessionals(
+    BuildContext context,
+    String title,
+    QuestionFlowController controller,
+  ) async {
+    String? selectedOption = 'fiveProfessionals';
 
-  await showDialog(
-    context: context,
-    builder: (context) {
-      final textTheme = Theme.of(context).textTheme;
+    await showDialog(
+      context: context,
+      builder: (context) {
+        final textTheme = Theme.of(context).textTheme;
 
-      return AlertDialog(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Send Quotation', style: textTheme.titleSmall),
-            InkWell(
-              onTap: () => Navigator.pop(context),
-              child: const Icon(Icons.close),
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Send Quotation', style: textTheme.titleSmall),
+              InkWell(
+                onTap: () => Navigator.pop(context),
+                child: const Icon(Icons.close),
+              ),
+            ],
+          ),
+          content: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'For faster responses and more accurate pricing, '
+                    'we recommend sending your quotation request to the top 5 '
+                    'recommended professionals, including your selected professional.',
+                    style: textTheme.bodySmall?.copyWith(color: Colors.red),
+                  ),
+                  const Divider(),
+                  _buildOption(
+                    context: context,
+                    title: 'Request To Top 5 Pros',
+                    value: 'fiveProfessionals',
+                    selectedValue: selectedOption,
+                    onChanged: (val) => setState(() => selectedOption = val),
+                  ),
+                  _buildOption(
+                    context: context,
+                    title: 'Selected Professional',
+                    value: 'selectedProfessional',
+                    selectedValue: selectedOption,
+                    onChanged: (val) => setState(() => selectedOption = val),
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            CustomButton(
+              text: 'Confirm',
+              onPressed: () {
+                Navigator.pop(context); // close dialog first
+                controller.submitFlow(selectedOption ?? 'fiveProfessionals');
+              },
+              size: CustomButtonSize.small,
+            ),
+            const SizedBox(height: 10),
+            CustomButton(
+              text: 'Cancel',
+              bgColor: Colors.red,
+              size: CustomButtonSize.small,
+              onPressed: () => Navigator.pop(context),
             ),
           ],
-        ),
-        content: StatefulBuilder(
-          builder: (context, setState) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'For faster responses and more accurate pricing, '
-                  'we recommend sending your quotation request to the top 5 '
-                  'recommended professionals, including your selected professional.',
-                  style: textTheme.bodySmall?.copyWith(color: Colors.red),
-                ),
-                const Divider(),
-                _buildOption(
-                  context: context,
-                  title: 'Request To Top 5 Pros',
-                  value: 'fiveProfessionals',
-                  selectedValue: selectedOption,
-                  onChanged: (val) => setState(() => selectedOption = val),
-                ),
-                _buildOption(
-                  context: context,
-                  title: 'Selected Professional',
-                  value: 'selectedProfessional',
-                  selectedValue: selectedOption,
-                  onChanged: (val) => setState(() => selectedOption = val),
-                ),
-              ],
-            );
-          },
-        ),
-        actions: [
-          CustomButton(
-            text: 'Confirm',
-            onPressed: () {
-              Navigator.pop(context); // close dialog first
-              controller.submitFlow(selectedOption??'fiveProfessionals');
-            },
-            size: CustomButtonSize.small,
-          ),
-          const SizedBox(height: 10),
-          CustomButton(
-            text: 'Cancel',
-            bgColor: Colors.red,
-            size: CustomButtonSize.small,
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
-      );
-    },
-  );
-}
+        );
+      },
+    );
+  }
 
-/// Reusable radio list option builder
-Widget _buildOption({
-  required BuildContext context,
-  required String title,
-  required String value,
-  required String? selectedValue,
-  required ValueChanged<String?> onChanged,
-}) {
-  final textTheme = Theme.of(context).textTheme;
-  return RadioListTile<String>(
-    value: value,
-    groupValue: selectedValue,
-    onChanged: onChanged,
-    title: Text(title, style: textTheme.bodySmall),
-  );
-}
-
+  /// Reusable radio list option builder
+  Widget _buildOption({
+    required BuildContext context,
+    required String title,
+    required String value,
+    required String? selectedValue,
+    required ValueChanged<String?> onChanged,
+  }) {
+    final textTheme = Theme.of(context).textTheme;
+    return RadioListTile<String>(
+      value: value,
+      groupValue: selectedValue,
+      onChanged: onChanged,
+      title: Text(title, style: textTheme.bodySmall),
+    );
+  }
 }

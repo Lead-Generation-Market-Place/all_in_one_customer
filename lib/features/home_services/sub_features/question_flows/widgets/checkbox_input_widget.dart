@@ -1,29 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:yelpax/core/constants/height.dart';
+import 'package:yelpax/core/constants/width.dart';
 
 /// Checkbox input for a single boolean value (checked/unchecked)
-class CheckBoxInputWidget extends StatelessWidget {
+class CheckBoxInputWidget extends StatefulWidget {
   final bool initialValue;
+  List options;
   final ValueChanged<bool> onChanged;
 
-  const CheckBoxInputWidget({
+  CheckBoxInputWidget({
     super.key,
     required this.initialValue,
     required this.onChanged,
+    required this.options,
   });
+
+  @override
+  State<CheckBoxInputWidget> createState() => _CheckBoxInputWidgetState();
+}
+
+class _CheckBoxInputWidgetState extends State<CheckBoxInputWidget> {
+  List<bool> checkBoxState = [];
+  @override
+  void initState() {
+    widget.options.forEach((element) => checkBoxState.add(false));
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Checkbox(
-            value: initialValue,
-            onChanged: (val) => onChanged(val ?? false),
+      child: Container(
+        width: width(context),
+        height: height(context) / 2,
+        child: ListView.builder(
+          itemCount: widget.options.length,
+          itemBuilder: (context, index) => Card(
+            child: CheckboxListTile(
+              title: Text(widget.options[index]),
+              value: checkBoxState[index],
+
+              onChanged: (value) => setState(() {
+                widget.onChanged(value ?? false);
+                checkBoxState[index] = value ?? false;
+              }),
+            ),
           ),
-          const SizedBox(width: 8),
-          const Text('Check if applicable'),
-        ],
+        ),
+       
       ),
     );
   }
