@@ -17,11 +17,11 @@ class HomeServicesQuestionModel extends HomeServicesQuestionEntity {
   factory HomeServicesQuestionModel.fromJson(Map<String, dynamic> json) {
     return HomeServicesQuestionModel(
       id: json['_id']??"",
-      serviceId: json["serviceId"]??"",
-      questionName: json["questionName"]??"",
-      formType: json["formType"]??"",
+      serviceId: json["service_id"]??"",
+      questionName: json["question_name"]??"",
+      formType: json["form_type"]??"",
       options: List<String>.from(json['options'] ?? []),
-      requiredField: json["requiredField"] ?? false,
+      requiredField: json["required"] ?? false,
       order: json["order"] ?? 0,
       active: json["active"] ?? false,
       createdAt: json["createdAt"] ?? "",

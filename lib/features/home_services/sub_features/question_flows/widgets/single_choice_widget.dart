@@ -1,11 +1,9 @@
 // features/home_services/sub_features/question_flows/presentation/widgets/question_types/single_choice_widget.dart
 import 'package:flutter/material.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/domain/entities/question_flow_entity.dart';
-
 class SingleChoiceWidget extends StatelessWidget {
-  final List<Option> choices;
+  final List choices;
   final String? selectedChoiceId;
-  final ValueChanged<Option> onSelectionChanged;
+  final ValueChanged onSelectionChanged;
 
   const SingleChoiceWidget({
     super.key,

@@ -1,30 +1,25 @@
 // features/home_services/sub_features/question_flows/presentation/widgets/question_flow_widget.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/presentation/controllers/question_flow_controller.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/presentation/widgets/question_page.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/question_flow_di.dart';
+import 'package:yelpax/features/home_services/sub_features/question_flows/controllers/question_flow_controller.dart';
+import 'package:yelpax/features/home_services/sub_features/question_flows/widgets/question_page.dart';
 
 import '../../../../../../shared/widgets/custom_button.dart';
+
+import 'package:yelpax/features/home_services/domain/entities/home_services_question_entity.dart';
+
 class QuestionFlowWidget extends StatelessWidget {
-  const QuestionFlowWidget({super.key});
+  final List<HomeServicesQuestionEntity> questions;
+  const QuestionFlowWidget({super.key, required this.questions});
+  
 
   @override
   Widget build(BuildContext context) {
+    questions.forEach((element) => print(element.formType),);
     return ChangeNotifierProvider(
-      create: (context) => questionFlowDi(),
+      create: (context) => QuestionFlowController(questions: questions),
       child: Consumer<QuestionFlowController>(
         builder: (context, controller, child) {
-          // Handle Loading State
-          if (controller.isLoadingQuestion) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          // Handle Error State
-          if (controller.errorMessage.isNotEmpty) {
-            return Center(child: Text('Error: ${controller.errorMessage}'));
-          }
-
           // Handle Empty State
           if (controller.questions.isEmpty) {
             return const Center(child: Text('No questions found.'));
@@ -69,7 +64,7 @@ class QuestionFlowWidget extends StatelessWidget {
                   controller: controller.pageController,
                   itemCount: controller.totalQuestions,
                   itemBuilder: (context, index) {
-                    final question = controller.questions[0].questions[index];
+                    final question = controller.questions[index];
                     return QuestionPage(
                       question: question,
                       questionIndex: index,

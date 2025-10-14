@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:yelpax/core/constants/app_constants.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_question_entity.dart';
 import 'package:yelpax/features/home_services/presentation/screens/see_all_services_screen.dart';
+import 'package:yelpax/features/home_services/sub_features/question_flows/screens/question_flow_screen.dart';
 import 'package:yelpax/features/it_services/presentation/screens/it_home_screen.dart';
 import 'package:yelpax/features/settings/presentation/screens/settings_screen.dart';
 import '../../app/presentation/shell/main_shell_screen.dart';
 import '../../core/error/widgets/unknown_route_screen.dart';
 import '../../features/grocery/presentation/screens/grocery_screen_homepage.dart';
 import '../../features/home_services/presentation/screens/home_services_screen.dart.dart';
-import '../../features/home_services/sub_features/question_flows/presentation/screens/question_flow_screen.dart';
 import '../../features/home_services/sub_features/service_professionals/screens/service_professionals_screen.dart';
 import '../../features/home_services/sub_features/single_service_professional/presentation/screens/single_service_professional_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -77,7 +78,9 @@ class AppRouter {
               const UnknowRouteScreen(message: 'Unknown Route Screen'),
         );
       case questionFlowScreen:
-        return MaterialPageRoute(builder: (_) => const QuestionFlowScreen());
+        final List<HomeServicesQuestionEntity> questions = 
+    (settings.arguments as List<HomeServicesQuestionEntity>?) ?? [];
+        return MaterialPageRoute(builder: (_) =>  QuestionFlowScreen(entities: questions,));
       case itHomeScreen:
         return MaterialPageRoute(builder: (_) => const ItHomeScreen());
       case settingsScreen:

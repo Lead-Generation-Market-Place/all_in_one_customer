@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_question_entity.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_findpros_usecase.dart';
 
 import '../../../../../config/routes/router.dart';
@@ -99,8 +100,9 @@ class HomeServicesFindprosController extends ChangeNotifier {
     );
   }
 
-  Future<void> openQuestionFlow(String questionId, BuildContext context) async {
-    Navigator.pushNamed(context, AppRouter.questionFlowScreen);
+  Future<void> openQuestionFlow(List<HomeServicesQuestionEntity> questions, BuildContext context) async {
+    
+    Navigator.pushNamed(context, AppRouter.questionFlowScreen,arguments: questions);
   }
 
   @override

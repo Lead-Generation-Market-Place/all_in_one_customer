@@ -138,7 +138,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
             professional: professional,
             onTap: () => print("opening a prfessional"),
             //controller.openCategory(professional, context),
-            onOpenQuotation: () => controller.openQuestionFlow('01', context),
+            onOpenQuotation: () => controller.openQuestionFlow(controller.professionals[index].questions, context),
           );
         },
       ),

@@ -1,16 +1,20 @@
 // features/home_services/sub_features/question_flows/presentation/widgets/question_page.dart
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/domain/entities/question_flow_entity.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/presentation/controllers/question_flow_controller.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/presentation/widgets/multiple_choice_widget.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/presentation/widgets/number_input_widget.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/presentation/widgets/single_choice_widget.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/presentation/widgets/text_input_widget.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_question_entity.dart';
+import 'package:yelpax/features/home_services/sub_features/question_flows/widgets/checkbox_input_widget.dart';
+import 'package:yelpax/features/home_services/sub_features/question_flows/widgets/date_input_widget.dart';
+import 'package:yelpax/features/home_services/sub_features/question_flows/widgets/multiple_choice_widget.dart';
+import 'package:yelpax/features/home_services/sub_features/question_flows/widgets/number_input_widget.dart';
+import 'package:yelpax/features/home_services/sub_features/question_flows/widgets/single_choice_widget.dart';
+import 'package:yelpax/features/home_services/sub_features/question_flows/widgets/text_input_widget.dart';
 import 'package:yelpax/shared/widgets/custom_button.dart';
 
+import '../controllers/question_flow_controller.dart';
+
 class QuestionPage extends StatelessWidget {
-  final Question question;
+  final HomeServicesQuestionEntity question;
   final int questionIndex;
 
   const QuestionPage({
@@ -30,12 +34,12 @@ class QuestionPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Question Text
-          Text(question.text, style: Theme.of(context).textTheme.titleMedium),
+          Text(question.questionName, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 24),
           // The appropriate input widget
           _buildQuestionOptions(
             context,
-            question.type,
+            question.formType,
             question.options,
             currentAnswer,
             (answer) => controller.submitAnswer(questionIndex, answer),
@@ -56,13 +60,13 @@ class QuestionPage extends StatelessWidget {
 
   Widget _buildQuestionOptions(
     BuildContext context,
-    QuestionType type,
-    List<Option> options,
+    String type,
+    List<String> options,
     dynamic currentAnswer,
     Function(dynamic) onAnswerSubmitted,
   ) {
     switch (type) {
-      case QuestionType.multipleChoice:
+      case "select":
         final controller = Provider.of<QuestionFlowController>(
           context,
           listen: false,
@@ -76,28 +80,38 @@ class QuestionPage extends StatelessWidget {
           selectedChoiceIds: selectedOptionIds, // Now passing List<String>
           onSelectionChanged: onAnswerSubmitted,
         );
-      case QuestionType.radio:
+      case "radio":
         Option? selectedOption;
         if (currentAnswer is Option) {
           selectedOption = currentAnswer;
         }
         return SingleChoiceWidget(
           choices: options,
-          selectedChoiceId: selectedOption?.id,
+          selectedChoiceId: "dummyid",
           onSelectionChanged: onAnswerSubmitted,
         );
-      case QuestionType.number:
+      case "number":
         return NumberInputWidget(
           initialValue: currentAnswer as String? ?? '',
           onChanged: onAnswerSubmitted,
         );
-      case QuestionType.text:
+      case "text":
         return TextInputWidget(
           initialValue: currentAnswer as String? ?? '',
           onChanged: onAnswerSubmitted,
         );
-      // default:
-      //   return Text('Question type "$type" not implemented');
+      case "checkbox":
+        return CheckBoxInputWidget(
+          initialValue: false,
+          onChanged: onAnswerSubmitted,
+        );
+      case "date":
+        return DateInputWidget(
+          initialValue: currentAnswer as String? ?? '',
+          onChanged: onAnswerSubmitted,
+        );
+      default:
+        return Text('Question type "$type" not implemented');
     }
   }
 }

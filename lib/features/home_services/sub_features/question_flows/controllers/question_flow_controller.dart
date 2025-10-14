@@ -4,19 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:yelpax/config/routes/router.dart';
 import 'package:yelpax/core/constants/app_constants.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/domain/entities/question_flow_entity.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/domain/usecases/question_flow_usecase.dart';
+
+import 'package:yelpax/features/home_services/domain/entities/home_services_question_entity.dart';
+
 
 class QuestionFlowController extends ChangeNotifier {
-  final QuestionFlowUsecase _usecase;
-  QuestionFlowController(this._usecase) {
-    initializeQuestions();
+  final List<HomeServicesQuestionEntity> _questions;
+  QuestionFlowController({required List<HomeServicesQuestionEntity> questions})
+      : _questions = questions {
+    _userAnswers.addAll(
+      Map.fromIterable(
+        List.generate(_questions.length, (index) => index),
+        value: (index) => null,
+      ),
+    );
   }
 
   // Data Loading State
-  bool _isLoadingQuestion = false;
   bool _isLoading = false;
-  List<QuestionFlowEntity> _questions = [];
   String _errorMessage = '';
   bool _isQuestionFlowCompleted = false;
 
@@ -27,50 +32,18 @@ class QuestionFlowController extends ChangeNotifier {
       {}; // Key: question index, Value: answer
 
   // Getters
-  bool get isLoadingQuestion => _isLoadingQuestion;
+  // bool get isLoadingQuestion => _isLoadingQuestion; // No longer needed
   bool get isLoading => _isLoading;
-  List<QuestionFlowEntity> get questions => _questions;
+  List<HomeServicesQuestionEntity> get questions => _questions;
   String get errorMessage => _errorMessage;
   bool get isQuestionFlowCompleted => _isQuestionFlowCompleted;
 
   int get currentPageIndex => _currentPageIndex;
-  int get totalQuestions =>
-      _questions.isNotEmpty ? _questions[0].questions.length : 0;
+  int get totalQuestions => _questions.length;
   bool get isFirstQuestion => _currentPageIndex == 0;
   bool get isLastQuestion => _currentPageIndex == totalQuestions - 1;
 
-  Future<void> initializeQuestions() async {
-    _isLoadingQuestion = true;
-    notifyListeners();
-
-    final result = await _usecase('q1'); // Or pass a dynamic ID
-
-    result.fold(
-      (failure) {
-        SmartDialog.showToast(
-          'Error occurred ${failure.message}',
-          animationTime: Duration(seconds: 5),
-        );
-        _errorMessage = failure.message;
-        _isLoadingQuestion = false;
-        notifyListeners();
-      },
-      (questionFlows) {
-        SmartDialog.showToast('Question Flow Loaded Successfully');
-        _questions = questionFlows;
-        _isLoadingQuestion = false;
-
-        // Initialize the answers map once we have the questions
-        _userAnswers.addAll(
-          Map.fromIterable(
-            List.generate(totalQuestions, (index) => index),
-            value: (index) => null, // Initialize all answers to null
-          ),
-        );
-        notifyListeners();
-      },
-    );
-  }
+  // Removed initializeQuestions, as questions are now passed in constructor
 
   dynamic getAnswerForQuestion(int questionIndex) {
     return _userAnswers[questionIndex];
@@ -109,8 +82,8 @@ class QuestionFlowController extends ChangeNotifier {
   // Add a helper method to get selected option IDs for multiple choice
   List<String> getSelectedOptionIdsForQuestion(int questionIndex) {
     final answer = _userAnswers[questionIndex];
-    if (answer is List<Option>) {
-      return answer.map((option) => option.id).toList();
+    if (answer is List<String>) {
+      return answer;
     }
     return [];
   }

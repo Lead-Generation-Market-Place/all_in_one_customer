@@ -1,11 +1,11 @@
 // features/home_services/sub_features/question_flows/presentation/widgets/question_types/multiple_choice_widget.dart
+
 import 'package:flutter/material.dart';
-import 'package:yelpax/features/home_services/sub_features/question_flows/domain/entities/question_flow_entity.dart';
 
 class MultipleChoiceWidget extends StatelessWidget {
-  final List<Option> choices;
+  final List<String> choices;
   final List<String> selectedChoiceIds;
-  final ValueChanged<List<Option>> onSelectionChanged;
+  final ValueChanged<List<String>> onSelectionChanged;
 
   const MultipleChoiceWidget({
     super.key,
@@ -14,19 +14,16 @@ class MultipleChoiceWidget extends StatelessWidget {
     required this.onSelectionChanged,
   });
 
-  void _onChanged(bool? selected, Option option) {
+  void _onChanged(bool? selected, String option) {
     final newSelectedIds = List<String>.from(selectedChoiceIds);
-    
     if (selected == true) {
-      newSelectedIds.add(option.id);
+      if (!newSelectedIds.contains(option)) {
+        newSelectedIds.add(option);
+      }
     } else {
-      newSelectedIds.remove(option.id);
+      newSelectedIds.remove(option);
     }
-
-    // Convert selected IDs back to Option objects and notify parent
-    onSelectionChanged(
-      choices.where((o) => newSelectedIds.contains(o.id)).toList(),
-    );
+    onSelectionChanged(newSelectedIds);
   }
 
   @override
@@ -39,7 +36,7 @@ class MultipleChoiceWidget extends StatelessWidget {
       separatorBuilder: (_, __) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
         final option = choices[index];
-        final isSelected = selectedChoiceIds.contains(option.id);
+        final isSelected = selectedChoiceIds.contains(option);
 
         return Card(
           elevation: 2,
@@ -50,7 +47,7 @@ class MultipleChoiceWidget extends StatelessWidget {
             value: isSelected,
             onChanged: (val) => _onChanged(val, option),
             title: Text(
-              option.label,
+              option,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
