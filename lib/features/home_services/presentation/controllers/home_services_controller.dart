@@ -50,7 +50,7 @@ class HomeServicesController extends ChangeNotifier {
     } else {
       AppConstants.navigateKeyword.currentState?.pushNamed(
         AppRouter.serviceProfessionalsScreen,
-        arguments: service,
+        
       );
     }
   }

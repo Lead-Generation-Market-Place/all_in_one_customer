@@ -16,9 +16,9 @@ class HomeServicesFindprosController extends ChangeNotifier {
   List<HomeServicesFetchProfessionalsEntity> get professionals => _professionals;
   String get error=>_error;
 
-  final Map serviceDetails;
+ 
 
-  HomeServicesFindprosController(this.serviceDetails, {required this.usecase}) {
+  HomeServicesFindprosController( {required this.usecase}) {
     getProfessionals("68e6a87684148bc537ccf97b");
   }
 

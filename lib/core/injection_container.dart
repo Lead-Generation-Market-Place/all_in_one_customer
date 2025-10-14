@@ -96,7 +96,7 @@ Future<void> init() async {
   //Find Pros
 
   getIt.registerLazySingleton<HomeServicesFindprosUsecase>(() => HomeServicesFindprosUsecase(repository: getIt<HomeServicesRepository>()),);
-  getIt.registerFactory<HomeServicesFindprosController>(() => HomeServicesFindprosController({}, usecase: getIt<HomeServicesFindprosUsecase>()),);
+  getIt.registerFactory<HomeServicesFindprosController>(() => HomeServicesFindprosController( usecase: getIt<HomeServicesFindprosUsecase>()),);
 
   //home services search professional di
   getIt.registerLazySingleton<SearchProfessionalUsecase>(() => SearchProfessionalUsecase(repository: getIt<HomeServicesRepository>()),);

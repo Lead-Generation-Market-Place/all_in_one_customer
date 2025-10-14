@@ -7,9 +7,9 @@ import '../widgets/professional_card_widget.dart';
 import '../../../../../shared/widgets/custom_shimmer.dart';
 
 class ServiceProfessionalsScreen extends StatefulWidget {
-  final dynamic serviceDetails;
+  
 
-  const ServiceProfessionalsScreen({Key? key, required this.serviceDetails})
+  const ServiceProfessionalsScreen({Key? key})
     : super(key: key);
 
   @override
@@ -101,7 +101,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
             TextSpan(text: '3', style: textTheme.titleSmall),
             TextSpan(text: ' matching ', style: textTheme.bodyMedium),
             TextSpan(
-              text: controller.serviceDetails['name'],
+              text: "Dummy data",
               style: textTheme.titleSmall,
             ),
           ],

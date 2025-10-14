@@ -1,72 +1,72 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:yelpax/core/constants/height.dart';
-import 'package:yelpax/features/home_services/sub_features/service_professionals/controllers/home_services_findpros_controller.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+// import 'package:yelpax/core/constants/height.dart';
+// import 'package:yelpax/features/home_services/sub_features/service_professionals/controllers/home_services_findpros_controller.dart';
 
-import '../../../../../shared/widgets/custom_button.dart';
+// import '../../../../../shared/widgets/custom_button.dart';
 
-class ProfessionalFilterWidget extends StatefulWidget {
-  TextTheme textTheme;
-  HomeServicesFindprosController controller;
+// class ProfessionalFilterWidget extends StatefulWidget {
+//   TextTheme textTheme;
+//   HomeServicesFindprosController controller;
 
-  ProfessionalFilterWidget({required this.textTheme, required this.controller});
+//   ProfessionalFilterWidget({required this.textTheme, required this.controller});
 
-  @override
-  State<ProfessionalFilterWidget> createState() =>
-      _ProfessionalFilterWidgetState();
-}
+//   @override
+//   State<ProfessionalFilterWidget> createState() =>
+//       _ProfessionalFilterWidgetState();
+// }
 
-class _ProfessionalFilterWidgetState extends State<ProfessionalFilterWidget> {
-  // bool isVerified = false; // ✅ fixed
-  String selectedChip = '';
+// class _ProfessionalFilterWidgetState extends State<ProfessionalFilterWidget> {
+//   // bool isVerified = false; // ✅ fixed
+//   String selectedChip = '';
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: height(context)/18,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity,
+//       height: height(context)/18,
+//       padding: const EdgeInsets.symmetric(horizontal: 16),
       
-      child: ListView(
+//       child: ListView(
        
-        scrollDirection: Axis.horizontal,
-        children: [
-          Wrap(
-            spacing: 10,
-            children: [
-              ChoiceChip(
-                label: Text('Companies'),
-                selected: selectedChip == 'companies',
-                onSelected: (value) {
-                  setState(() {
-                    selectedChip = 'companies';
-                  });
-                },
-              ),
-              ChoiceChip(
-                label: Text(widget.controller.serviceDetails['name']),
-                selected:
-                    selectedChip == widget.controller.serviceDetails['name'],
-                onSelected: (value) {
-                  setState(() {
-                    selectedChip = widget.controller.serviceDetails['name'];
-                  });
-                },
-              ),
-              ChoiceChip(
-                label: Text('All Professionals'),
-                selected: selectedChip == 'allProfessionals',
-                onSelected: (value) {
-                  setState(() {
-                    selectedChip = 'allProfessionals';
-                  });
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+//         scrollDirection: Axis.horizontal,
+//         children: [
+//           Wrap(
+//             spacing: 10,
+//             children: [
+//               ChoiceChip(
+//                 label: Text('Companies'),
+//                 selected: selectedChip == 'companies',
+//                 onSelected: (value) {
+//                   setState(() {
+//                     selectedChip = 'companies';
+//                   });
+//                 },
+//               ),
+//               ChoiceChip(
+//                 label: Text(widget.controller.serviceDetails['name']),
+//                 selected:
+//                     selectedChip == widget.controller.serviceDetails['name'],
+//                 onSelected: (value) {
+//                   setState(() {
+//                     selectedChip = widget.controller.serviceDetails['name'];
+//                   });
+//                 },
+//               ),
+//               ChoiceChip(
+//                 label: Text('All Professionals'),
+//                 selected: selectedChip == 'allProfessionals',
+//                 onSelected: (value) {
+//                   setState(() {
+//                     selectedChip = 'allProfessionals';
+//                   });
+//                 },
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
 
-}
+// }

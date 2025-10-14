@@ -57,10 +57,10 @@ class AppRouter {
         final _seeAllArgs=settings.arguments??{};
         return MaterialPageRoute(builder: (_) =>  SeeAllServicesScreen(services: _seeAllArgs),);
       case serviceProfessionalsScreen:
-        final _arg = settings.arguments ?? {};
+       
         return MaterialPageRoute(
           builder: (context) =>
-              ServiceProfessionalsScreen(serviceDetails: _arg),
+              ServiceProfessionalsScreen(),
         );
       case singleServiceProfessionalScreen:
         final _arg = settings.arguments ?? {};
