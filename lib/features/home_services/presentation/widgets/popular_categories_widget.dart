@@ -88,8 +88,10 @@ Widget _buildCategoryItem(
 ) {
   final controller = context.read<HomeServicesController>();
   return InkWell(
-    onTap: () =>
-        controller.openService({'name': name, 'imageUrl': imageUrl, 'id': id}),
+    onTap: () {
+        controller.openService({'name': name, 'imageUrl': imageUrl, 'id': id});
+     
+    },
     child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: ClipRRect(

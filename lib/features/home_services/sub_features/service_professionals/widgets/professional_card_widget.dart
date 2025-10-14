@@ -160,7 +160,7 @@ Widget _buildHiredCount(HomeServicesProfessionalEntity professional, TextTheme t
 
 Widget _buildPriceInfo(HomeServicesFetchProfessionalsEntity professional, TextTheme textTheme) {
   return Text(
-    "${professional.minimumPrice} Minimum Price",
+    "${professional.minimumPrice}\$ Minimum Price",
     style: textTheme.titleSmall?.copyWith(color: Colors.grey,fontSize: 14),
   );
 }
@@ -174,7 +174,7 @@ Widget _buildLastReview(
     text: TextSpan(
       children: [
         TextSpan(
-          text: professional.businessType,
+          text: professional.introduction,
           style: textTheme.bodySmall?.copyWith(color: Colors.grey),
         ),
         TextSpan(

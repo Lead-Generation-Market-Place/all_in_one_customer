@@ -48,9 +48,14 @@ class HomeServicesController extends ChangeNotifier {
         arguments: _categories,
       );
     } else {
+       
       AppConstants.navigateKeyword.currentState?.pushNamed(
         AppRouter.serviceProfessionalsScreen,
-        
+        arguments: {
+          'serviceId':service['id'],
+          'serviceName':service['name']
+        }
+
       );
     }
   }

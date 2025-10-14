@@ -15,7 +15,7 @@ class HomeServicesModel extends HomeServicesEntity {
 
   factory HomeServicesModel.fromJson(Map json) {
     return HomeServicesModel(
-      id: json['id'] ?? "",
+      id: json['_id'] ?? "",
       name: json["name"] ?? "",
       slug: json["slug"] ?? "",
       subcategory_id: json["subcategory_id"] ?? "",

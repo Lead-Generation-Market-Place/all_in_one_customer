@@ -10,30 +10,26 @@ class HomeServicesFindprosController extends ChangeNotifier {
 
   bool _professionalsLoading = false;
   List<HomeServicesFetchProfessionalsEntity> _professionals = [];
-  String _error="";
+  String _error = "";
 
   bool get professionalsLoading => _professionalsLoading;
-  List<HomeServicesFetchProfessionalsEntity> get professionals => _professionals;
-  String get error=>_error;
+  List<HomeServicesFetchProfessionalsEntity> get professionals =>
+      _professionals;
+  String get error => _error;
 
- 
-
-  HomeServicesFindprosController( {required this.usecase}) {
-    getProfessionals("68e6a87684148bc537ccf97b");
-  }
+  HomeServicesFindprosController({required this.usecase});
 
   Future<void> getProfessionals(String query) async {
     _professionalsLoading = true;
     notifyListeners();
     var response = await usecase.call(query);
-     response.fold(
+    response.fold(
       (problem) {
         _error = problem.message;
         _professionalsLoading = false;
         notifyListeners();
       },
       (success) {
-        
         _professionals = success;
         _professionalsLoading = false;
         notifyListeners();

@@ -17,7 +17,7 @@ import '../../features/splash/presentation/splash_screen.dart';
 
 class AppRouter {
   static const String splash = '/';
-//  static const String login = '/login';
+  //  static const String login = '/login';
   static const String signIn = '/SignIn';
   static const String home = '/home'; //test screen
   static const String main_shell_screen = '/mainshellscreen';
@@ -25,7 +25,7 @@ class AppRouter {
   static const String featured = '/featured';
   static const String grocery = '/grocery';
   static const String homeServices = '/homeservices';
-  static const String seeAllServices='/seeallservices';
+  static const String seeAllServices = '/seeallservices';
   static const String unknownRouteScreen = '/unknownRouteScreen';
   static const String serviceProfessionalsScreen =
       '/serviceProfessionalsScreen';
@@ -33,7 +33,7 @@ class AppRouter {
       '/singleServiceProfessionalScreen';
   static const String questionFlowScreen = '/questionFlowScreen';
   static const String itHomeScreen = '/itHomeScreen';
-  static const String settingsScreen='/settingsScreen';
+  static const String settingsScreen = '/settingsScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -54,13 +54,17 @@ class AppRouter {
       case homeServices:
         return MaterialPageRoute(builder: (_) => const HomeServicesScreen());
       case seeAllServices:
-        final _seeAllArgs=settings.arguments??{};
-        return MaterialPageRoute(builder: (_) =>  SeeAllServicesScreen(services: _seeAllArgs),);
-      case serviceProfessionalsScreen:
-       
+        final _seeAllArgs = settings.arguments ?? {};
         return MaterialPageRoute(
-          builder: (context) =>
-              ServiceProfessionalsScreen(),
+          builder: (_) => SeeAllServicesScreen(services: _seeAllArgs),
+        );
+      case serviceProfessionalsScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (context) => ServiceProfessionalsScreen(
+            serviceId: args['serviceId'],
+            serviceName: args['serviceName'],
+          ),
         );
       case singleServiceProfessionalScreen:
         final _arg = settings.arguments ?? {};
@@ -77,7 +81,7 @@ class AppRouter {
       case itHomeScreen:
         return MaterialPageRoute(builder: (_) => const ItHomeScreen());
       case settingsScreen:
-        return MaterialPageRoute(builder: (_) => const SettingsScreen(),);
+        return MaterialPageRoute(builder: (_) => const SettingsScreen());
       default:
         return unknownRoute(settings);
     }
@@ -86,12 +90,17 @@ class AppRouter {
   //when going to unknown routes
   static Route<dynamic> unknownRoute(RouteSettings settings) {
     return MaterialPageRoute(
-      builder: (_) =>
-          UnknowRouteScreen(message: 'Screen not found: ${settings}',onRetry: ()=>onRetry(),),
+      builder: (_) => UnknowRouteScreen(
+        message: 'Screen not found: ${settings}',
+        onRetry: () => onRetry(),
+      ),
     );
   }
-  
- static onRetry(){
-    return AppConstants.navigateKeyword.currentState?.pushNamedAndRemoveUntil(AppRouter.splash, (route) => false,);
+
+  static onRetry() {
+    return AppConstants.navigateKeyword.currentState?.pushNamedAndRemoveUntil(
+      AppRouter.splash,
+      (route) => false,
+    );
   }
 }
