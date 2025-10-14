@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:yelpax/core/constants/height.dart';
 import 'package:yelpax/core/constants/width.dart';
 
 /// Checkbox input for a single boolean value (checked/unchecked)
+@immutable
 class CheckBoxInputWidget extends StatefulWidget {
   final bool initialValue;
-  List options;
+  final List options;
   final ValueChanged<bool> onChanged;
 
   CheckBoxInputWidget({
@@ -41,7 +43,6 @@ class _CheckBoxInputWidgetState extends State<CheckBoxInputWidget> {
             child: CheckboxListTile(
               title: Text(widget.options[index]),
               value: checkBoxState[index],
-
               onChanged: (value) => setState(() {
                 widget.onChanged(value ?? false);
                 checkBoxState[index] = value ?? false;
@@ -49,8 +50,8 @@ class _CheckBoxInputWidgetState extends State<CheckBoxInputWidget> {
             ),
           ),
         ),
-       
       ),
     );
   }
 }
+

@@ -3,7 +3,7 @@ import 'package:yelpax/features/home_services/domain/entities/home_services_ques
 import '../widgets/question_flow_widget.dart';
 
 class QuestionFlowScreen extends StatefulWidget {
-  List<HomeServicesQuestionEntity> entities;
+ final List<HomeServicesQuestionEntity> entities;
    QuestionFlowScreen({super.key,required this.entities});
 
   @override

@@ -1,16 +1,21 @@
-// features/home_services/sub_features/question_flows/presentation/widgets/question_types/single_choice_widget.dart
 import 'package:flutter/material.dart';
-class SingleChoiceWidget extends StatelessWidget {
-  final List choices;
-  final String? selectedChoiceId;
-  final ValueChanged onSelectionChanged;
+
+class SingleChoiceWidget extends StatefulWidget {
+  final List<String> options; // Specify the type for options
+  final ValueChanged<String?> onSelectionChanged;
 
   const SingleChoiceWidget({
-    super.key,
-    required this.choices,
-    required this.selectedChoiceId,
+    Key? key,
+    required this.options,
     required this.onSelectionChanged,
-  });
+  }) : super(key: key);
+
+  @override
+  State<SingleChoiceWidget> createState() => _SingleChoiceWidgetState();
+}
+
+class _SingleChoiceWidgetState extends State<SingleChoiceWidget> {
+  String? _selectedOption; // Variable to hold the selected option
 
   @override
   Widget build(BuildContext context) {
@@ -18,27 +23,31 @@ class SingleChoiceWidget extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(0),
-      itemCount: choices.length,
+      itemCount: widget.options.length,
       separatorBuilder: (_, __) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
-        final option = choices[index];
-        final isSelected = option.id == selectedChoiceId;
-
         return Card(
           elevation: 2,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           child: RadioListTile<String>(
-            value: option.id,
-            groupValue: selectedChoiceId,
-            onChanged: (val) => onSelectionChanged(option),
+            value: widget.options[index],
+            groupValue: _selectedOption, // Manage group value
+            onChanged: (val) {
+              setState(() {
+                _selectedOption = val; // Update selected option
+              });
+              widget.onSelectionChanged(val); // Notify parent
+            },
             title: Text(
-              option.label,
+              widget.options[index],
               style: TextStyle(
                 fontSize: 16,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                color: isSelected
+                fontWeight: _selectedOption == widget.options[index]
+                    ? FontWeight.w600
+                    : FontWeight.normal,
+                color: _selectedOption == widget.options[index]
                     ? Theme.of(context).colorScheme.primary
                     : Colors.black87,
               ),

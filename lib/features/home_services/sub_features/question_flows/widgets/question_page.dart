@@ -49,7 +49,8 @@ class QuestionPage extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: CustomButton(
-              onPressed: () => controller.nextPage(),
+              bgColor: question.requiredField!=true? Theme.of(context).primaryColor:Colors.grey,
+              onPressed: () =>question.requiredField!=true? controller.nextPage():SizedBox.shrink(),
               text: controller.isLastQuestion ? 'Finish' : 'Next',
             ),
           ),
@@ -75,39 +76,45 @@ class QuestionPage extends StatelessWidget {
         //   questionIndex,
         // );
 
+       print('Hi myself Select');
         return MultipleChoiceWidget(
           choices:question.options,
           selectedChoiceIds: ["first","second","third"], // Now passing List<String>
           onSelectionChanged: onAnswerSubmitted,
         );
       case "radio":
-        Option? selectedOption;
-        if (currentAnswer is Option) {
-          selectedOption = currentAnswer;
-        }
+       print('Hi myself Radio');
+      
         return SingleChoiceWidget(
-          choices: question.options,
-          selectedChoiceId: "dummyid",
+          options: question.options,
+         
           onSelectionChanged: onAnswerSubmitted,
         );
       case "number":
+      
+       print('Hi myself Number');
         return NumberInputWidget(
           initialValue: currentAnswer as String? ?? '',
           onChanged: onAnswerSubmitted,
         );
       case "text":
+      
+       print('Hi myself text');
         return TextInputWidget(
           initialValue: currentAnswer as String? ?? '',
           onChanged: onAnswerSubmitted,
         );
       case "checkbox":
       
+       print('Hi myself checkbox');
         return CheckBoxInputWidget(
           initialValue: false,
           onChanged: onAnswerSubmitted,
           options: question.options,
         );
       case "date":
+      
+       print('Hi myself Date');
         return DateInputWidget(
           initialValue: currentAnswer as String? ?? '',
           onChanged: onAnswerSubmitted,
