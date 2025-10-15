@@ -1,3 +1,4 @@
+// features/home_services/sub_features/question_flows/presentation/widgets/question_flow_widget.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/controllers/question_flow_controller.dart';
@@ -33,7 +34,6 @@ class QuestionFlowWidget extends StatelessWidget {
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
               sendQuotationToProfessionals(
                 context,
-                'Send Quotation',
                 controller,
               );
             });
@@ -54,7 +54,7 @@ class QuestionFlowWidget extends StatelessWidget {
                         color: Colors.white,
                       ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               // Progress Bar
               LinearProgressIndicator(
                 value:
@@ -83,10 +83,9 @@ class QuestionFlowWidget extends StatelessWidget {
     );
   }
 
-  //a widget of a dialog to show send a quotation
+  /// Show dialog to send quotation to professionals
   Future<void> sendQuotationToProfessionals(
     BuildContext context,
-    String title,
     QuestionFlowController controller,
   ) async {
     String? selectedOption = 'fiveProfessionals';

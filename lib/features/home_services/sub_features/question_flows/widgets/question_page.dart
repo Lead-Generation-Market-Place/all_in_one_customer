@@ -1,5 +1,4 @@
 // features/home_services/sub_features/question_flows/presentation/widgets/question_page.dart
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_question_entity.dart';
@@ -34,7 +33,10 @@ class QuestionPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Question Text
-          Text(question.questionName, style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            question.questionName,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 24),
           // The appropriate input widget
           _buildQuestionOptions(
@@ -42,16 +44,24 @@ class QuestionPage extends StatelessWidget {
             question.formType,
             question,
             currentAnswer,
-            (answer) => controller.submitAnswer(questionIndex, answer),
+            (answer) {
+              controller.submitAnswer(questionIndex, answer);
+            },
           ),
           const Spacer(),
           // Next/Finish Button
-          SizedBox(
-            width: double.infinity,
-            child: CustomButton(
-              bgColor: question.requiredField!=true? Theme.of(context).primaryColor:Colors.grey,
-              onPressed: () =>question.requiredField!=true? controller.nextPage():SizedBox.shrink(),
-              text: controller.isLastQuestion ? 'Finish' : 'Next',
+          Consumer<QuestionFlowController>(
+            builder: (context, controller, child) => SizedBox(
+              width: double.infinity,
+              child: CustomButton(
+                bgColor: controller.isCurrentQuestionValid()
+                    ? Theme.of(context).primaryColor
+                    : Colors.grey,
+                onPressed: controller.isCurrentQuestionValid()
+                    ? () => controller.nextPage()
+                    : null, // Disable button if validation fails
+                text: controller.isLastQuestion ? 'Finish' : 'Next',
+              ),
             ),
           ),
         ],
@@ -59,6 +69,7 @@ class QuestionPage extends StatelessWidget {
     );
   }
 
+  /// Build the appropriate input widget based on the question type
   Widget _buildQuestionOptions(
     BuildContext context,
     String type,
@@ -66,55 +77,45 @@ class QuestionPage extends StatelessWidget {
     dynamic currentAnswer,
     Function(dynamic) onAnswerSubmitted,
   ) {
+    print("HI MYYYYYYYYYYYYYYYYYYYYYY TYYPEEEEEEEEEEEE IS $type");
     switch (type) {
       case "select":
-        //final controller = Provider.of<QuestionFlowController>(
-        //   context,
-        //   listen: false,
-        // );
-        // final selectedOptionIds = controller.getSelectedOptionIdsForQuestion(
-        //   questionIndex,
-        // );
-
-       print('Hi myself Select');
+        // Handle the currentAnswer which might be a single string or a list of strings
+        List<String> currentSelections = [];
+        if (currentAnswer != null) {
+          if (currentAnswer is String) {
+            currentSelections = [currentAnswer];
+          } else if (currentAnswer is List) {
+            currentSelections = currentAnswer.cast<String>();
+          }
+        }
         return MultipleChoiceWidget(
-          choices:question.options,
-          selectedChoiceIds: ["first","second","third"], // Now passing List<String>
+          choices: question.options,
+          selectedChoiceIds: currentSelections,
           onSelectionChanged: onAnswerSubmitted,
         );
       case "radio":
-       print('Hi myself Radio');
-      
         return SingleChoiceWidget(
           options: question.options,
-         
           onSelectionChanged: onAnswerSubmitted,
         );
       case "number":
-      
-       print('Hi myself Number');
         return NumberInputWidget(
           initialValue: currentAnswer as String? ?? '',
           onChanged: onAnswerSubmitted,
         );
       case "text":
-      
-       print('Hi myself text');
         return TextInputWidget(
           initialValue: currentAnswer as String? ?? '',
           onChanged: onAnswerSubmitted,
         );
       case "checkbox":
-      
-       print('Hi myself checkbox');
         return CheckBoxInputWidget(
           initialValue: false,
           onChanged: onAnswerSubmitted,
           options: question.options,
         );
       case "date":
-      
-       print('Hi myself Date');
         return DateInputWidget(
           initialValue: currentAnswer as String? ?? '',
           onChanged: onAnswerSubmitted,
