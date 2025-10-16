@@ -1,13 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:yelpax/core/network/network_info.dart';
 import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
-import 'package:yelpax/features/home_services/data/models/home_services_fetch_professional_model.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
 import '../../../../core/error/exceptions/exceptions.dart';
 import '../../../../core/error/failures/failure.dart';
 import '../datasources/home_services_remote_data_source.dart';
-import '../../domain/entities/professional.dart';
 import '../../domain/repositories/home_services_repository.dart';
 
 class HomeServicesRepositoryImpl implements HomeServicesRepository {
@@ -19,11 +17,11 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
   });
 
   @override
-  Future<Either<Failure, List<Professional>>> searchProfessionals(
+  Future<Either<Failure, List<HomeServicesEntity>>> fetchServicesQuery(
     String query,
   ) async {
     try {
-      final result = await remoteDataSource.searchProfessionals(query);
+      final result = await remoteDataSource.fetchServicesQuery(query);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));

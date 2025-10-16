@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
-import '../../domain/entities/professional.dart';
-import '../../domain/usecases/search_professional_usecase.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
+import '../../domain/usecases/fetch_services_query_usecase.dart';
 
 import '../../../../config/routes/router.dart';
 
-class SearchProfessionalController extends ChangeNotifier {
+class FetchServicesQueryController extends ChangeNotifier {
   final SearchProfessionalUsecase searchProfessionalUsecase;
-  SearchProfessionalController({required this.searchProfessionalUsecase});
+  FetchServicesQueryController({required this.searchProfessionalUsecase});
 
-  List<Professional> professionals = [];
+  List<HomeServicesEntity> professionals = [];
   bool isLoading = false;
   String errorMessage = '';
 

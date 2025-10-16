@@ -12,10 +12,10 @@ import 'package:yelpax/features/home_services/domain/repositories/home_services_
 import 'package:yelpax/features/home_services/domain/usecases/home_services_findpros_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_promotions_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_usecase.dart';
-import 'package:yelpax/features/home_services/domain/usecases/search_professional_usecase.dart';
+import 'package:yelpax/features/home_services/domain/usecases/fetch_services_query_usecase.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_promotion_controller.dart';
-import 'package:yelpax/features/home_services/presentation/controllers/search_professional_controller.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/fetch_services_query_controller.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals/controllers/home_services_findpros_controller.dart';
 import 'package:yelpax/features/promotion/presentation/controllers/promotion_controller.dart';
 import 'package:yelpax/features/signin/data/datasources/auth_remote_data_source.dart';
@@ -100,7 +100,7 @@ Future<void> init() async {
 
   //home services search professional di
   getIt.registerLazySingleton<SearchProfessionalUsecase>(() => SearchProfessionalUsecase(repository: getIt<HomeServicesRepository>()),);
-  getIt.registerFactory<SearchProfessionalController>(() => SearchProfessionalController(searchProfessionalUsecase: getIt<SearchProfessionalUsecase>()),);
+  getIt.registerFactory<FetchServicesQueryController>(() => FetchServicesQueryController(searchProfessionalUsecase: getIt<SearchProfessionalUsecase>()),);
 
 
 

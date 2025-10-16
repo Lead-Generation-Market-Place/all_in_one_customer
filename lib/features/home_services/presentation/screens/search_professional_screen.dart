@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../domain/entities/professional.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 import '../controllers/home_services_controller.dart';
 import '../../../../shared/widgets/custom_button.dart';
 import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../shared/widgets/custom_input.dart';
-import '../controllers/search_professional_controller.dart';
+import '../controllers/fetch_services_query_controller.dart';
 
 class SearchProfessionalScreen extends StatelessWidget {
   const SearchProfessionalScreen({super.key});
@@ -43,7 +43,7 @@ class __searchProBodyState extends State<_searchProBody> {
   void onCompleteCategory(String name) {
     _searchController.text = name;
 
-    var _searchProController = Provider.of<SearchProfessionalController>(
+    var _searchProController = Provider.of<FetchServicesQueryController>(
       context,
       listen: false,
     );
@@ -51,7 +51,7 @@ class __searchProBodyState extends State<_searchProBody> {
   }
 
   void onClear() {
-    var _searchProController = Provider.of<SearchProfessionalController>(
+    var _searchProController = Provider.of<FetchServicesQueryController>(
       context,
       listen: false,
     );
@@ -60,7 +60,7 @@ class __searchProBodyState extends State<_searchProBody> {
   }
 
   void onChanged(String value) {
-    var _searchProController = Provider.of<SearchProfessionalController>(
+    var _searchProController = Provider.of<FetchServicesQueryController>(
       context,
       listen: false,
     );
@@ -126,7 +126,7 @@ class __searchProBodyState extends State<_searchProBody> {
             onPressed: onSearch,
           ),
           SizedBox(height: 10),
-          Consumer<SearchProfessionalController>(
+          Consumer<FetchServicesQueryController>(
             builder: (context, value, child) {
               if (value.isLoading) {
                 return Padding(
@@ -159,12 +159,12 @@ class __searchProBodyState extends State<_searchProBody> {
     );
   }
 
-  Widget _buildSearchFieldData(Professional pro) {
+  Widget _buildSearchFieldData(HomeServicesEntity serviceEntity) {
     return Center(
       child: ListTile(
-        onTap: () => onCompleteCategory(pro.name),
-        leading: CircleAvatar(child: Text(pro.id)),
-        title: Text(pro.name),
+        onTap: () => onCompleteCategory(serviceEntity.name),
+        leading: CircleAvatar(child: Text(serviceEntity.is_active.toString())),
+        title: Text(serviceEntity.name),
       ),
     );
   }
