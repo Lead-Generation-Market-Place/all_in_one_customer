@@ -40,7 +40,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
       );
 
       theme.setTheme(ThemeModeType.homeServices);
-      controller.getCategories();
+      
       controller
           .fetchHomeServices(); //fetching home services when user navigated to home screen of home services
     });
@@ -381,7 +381,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
 
         if (controller.categories == null) {
           return InkWell(
-            onTap: () => controller.getCategories(),
+            onTap: () => controller.fetchHomeServices(),
             child: const Icon(Icons.refresh),
           );
         }

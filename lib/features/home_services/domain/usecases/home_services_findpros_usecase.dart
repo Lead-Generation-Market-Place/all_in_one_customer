@@ -7,8 +7,14 @@ class HomeServicesFindprosUsecase {
   HomeServicesRepository repository;
   HomeServicesFindprosUsecase({required this.repository});
 
-
-  Future<Either<Failure,List<HomeServicesFetchProfessionalsEntity>>> call(String query){
+  Future<Either<Failure, List<HomeServicesFetchProfessionalsEntity>>> call(
+    String query,
+  ) {
     return repository.fetchPros(query);
+  }
+
+  Future<Either<Failure, List<HomeServicesFetchProfessionalsEntity>>>
+  callByServiceIdZipCode(String serviceId, String zipCode) async {
+    return repository.fetchProsByServiceIdAndZip(serviceId, zipCode);
   }
 }

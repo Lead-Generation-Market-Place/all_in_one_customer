@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
-import '../controllers/home_services_controller.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
 import '../../../../shared/widgets/custom_button.dart';
 import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../shared/widgets/custom_input.dart';
@@ -17,7 +17,6 @@ class SearchProfessionalScreen extends StatelessWidget {
 }
 
 class _searchProBody extends StatefulWidget {
-
   @override
   State<_searchProBody> createState() => __searchProBodyState();
 }
@@ -25,6 +24,7 @@ class _searchProBody extends StatefulWidget {
 class __searchProBodyState extends State<_searchProBody> {
   late TextEditingController _searchController;
   late TextEditingController _zipController;
+  String _serviceId = '';
   final formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -40,9 +40,9 @@ class __searchProBodyState extends State<_searchProBody> {
     super.dispose();
   }
 
-  void onCompleteCategory(String name) {
+  void onCompleteCategory(String name, String serviceId) {
     _searchController.text = name;
-
+    _serviceId = serviceId;
     var _searchProController = Provider.of<FetchServicesQueryController>(
       context,
       listen: false,
@@ -73,7 +73,11 @@ class __searchProBodyState extends State<_searchProBody> {
       listen: false,
     );
     if (formKey.currentState!.validate()) {
-     // controller.openCategory({'name': _searchController.text}, context);
+      controller.openService({
+        'id': _serviceId,
+        'name': _searchController.text,
+        'zipCode': _zipController.text,
+      });
     }
   }
 
@@ -104,7 +108,7 @@ class __searchProBodyState extends State<_searchProBody> {
           CustomInput(
             validator: (p0) {
               if (p0 == null || p0.isEmpty) return 'Enter Zip Code';
-    
+
               return null;
             },
             hint: 'Zip Code',
@@ -120,9 +124,9 @@ class __searchProBodyState extends State<_searchProBody> {
           SizedBox(height: 20),
           CustomButton(
             type: CustomButtonType.primary,
-    
+
             text: 'Search',
-    
+
             onPressed: onSearch,
           ),
           SizedBox(height: 10),
@@ -162,7 +166,7 @@ class __searchProBodyState extends State<_searchProBody> {
   Widget _buildSearchFieldData(HomeServicesEntity serviceEntity) {
     return Center(
       child: ListTile(
-        onTap: () => onCompleteCategory(serviceEntity.name),
+        onTap: () => onCompleteCategory(serviceEntity.name, serviceEntity.id),
         leading: CircleAvatar(child: Text(serviceEntity.is_active.toString())),
         title: Text(serviceEntity.name),
       ),

@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:yelpax/core/network/dio_client.dart';
 import 'package:yelpax/core/network/endpoints.dart';
 import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
@@ -11,6 +14,10 @@ abstract class HomeServicesRemoteDataSource {
   Future<List<HomeServicesModel>> fetchHomeServices();
   Future<List<HomeServicePromotionModel>> fetchPromotions();
   Future<List<HomeServicesFetchProfessionalModel>> findPros(String query);
+  Future<List<HomeServicesFetchProfessionalModel>> fetchProsByServiceAndZip(
+    String serviceId,
+    String zipCode,
+  );
 }
 
 class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
@@ -18,26 +25,18 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
 
   HomeServicesRemoteDataSourceImpl({required this.dioClient});
 
-  // List categories = [
-  //   {"id": "1", "name": "Handy Man"},
-  //   {"id": "2", "name": "Home Cleaning"},
-  //   {"id": "1", "name": "Handy Mainetnance"},
-  //   {"id": "1", "name": "Handy Repair"},
-  //   {"id": "3", "name": "Junk Removal"},
-  //   {"id": "4", "name": "Plumber"},
-  //   {"id": "5", "name": "TV Mounting"},
-  // ];
-
   List filteredList = [];
   @override
   Future<List<HomeServicesModel>> fetchServicesQuery(String query) async {
-        final response = await dioClient.get(Endpoints.getServices);
+    final response = await dioClient.get(Endpoints.getServices);
     if (response.statusCode == 200) {
       final json = response.data as Map<String, dynamic>;
       final List<dynamic> services = json['data'];
-    filteredList.clear();
+      filteredList.clear();
       services.forEach((element) {
-        if (element["name"].toString().toLowerCase().contains(query.toLowerCase())) {
+        if (element["name"].toString().toLowerCase().contains(
+          query.toLowerCase(),
+        )) {
           filteredList.add(element);
         }
       });
@@ -47,8 +46,8 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
     } else {
       throw ServerException("Faild To Get Home Services");
     }
-    } 
-  
+  }
+
   @override
   Future<List<HomeServicesModel>> fetchHomeServices() async {
     final response = await dioClient.get(Endpoints.getServices);
@@ -98,4 +97,43 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
       throw ServerException("Faild To Get Professionals");
     }
   }
+
+ @override
+Future<List<HomeServicesFetchProfessionalModel>> fetchProsByServiceAndZip(
+  String serviceId,
+  String zipCode,
+) async {
+  try {
+    final response = await dioClient.post(
+      Endpoints.findpros,
+      data: {
+        "serviceId": serviceId,
+        "zipCode": zipCode,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final json = response.data;
+
+    
+        final List<dynamic> listData = json['data'] ?? [];
+        return listData
+            .map((e) => HomeServicesFetchProfessionalModel.fromJson(e))
+            .toList();
+      
+    } else if (response.statusCode == 404) {
+      throw NotFoundException(
+        "No professionals found for this service and zip code",
+      );
+    } else {
+      throw ServerException(
+        "Failed to get professionals: ${response.statusCode}",
+      );
+    }
+  } catch (e, s) {
+    debugPrint("Error in fetchProsByServiceAndZip: $e\n$s");
+    throw ServerException("An error occurred while fetching professionals");
+  }
+}
+
 }

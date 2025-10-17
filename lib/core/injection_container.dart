@@ -16,8 +16,7 @@ import 'package:yelpax/features/home_services/domain/usecases/fetch_services_que
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_promotion_controller.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/fetch_services_query_controller.dart';
-import 'package:yelpax/features/home_services/sub_features/service_professionals/controllers/home_services_findpros_controller.dart';
-import 'package:yelpax/features/promotion/presentation/controllers/promotion_controller.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals_id_zipcode/controllers/home_services_findpros_controller.dart';
 import 'package:yelpax/features/signin/data/datasources/auth_remote_data_source.dart';
 import 'package:yelpax/features/signin/data/repositories/auth_repository_impl.dart';
 import 'package:yelpax/features/signin/domain/repositories/auth_repository.dart';
@@ -79,29 +78,61 @@ Future<void> init() async {
     () => SignInController(signInUseCase: getIt<SignInUseCase>()),
   );
 
-
   //home services di
 
-  getIt.registerLazySingleton<HomeServicesRemoteDataSource>(() => HomeServicesRemoteDataSourceImpl(dioClient: getIt<DioClient>()),);
-  getIt.registerLazySingleton<HomeServicesRepository>(() => HomeServicesRepositoryImpl(remoteDataSource: getIt<HomeServicesRemoteDataSource>(),
-  networkInfo: getIt<NetworkInfo>()),);
-  getIt.registerLazySingleton<HomeServicesUsecase>(() => HomeServicesUsecase(homeServicesRepository: getIt<HomeServicesRepository>()),);
-  getIt.registerFactory<HomeServicesController>(() =>HomeServicesController(
-  homeServicesUsecase: getIt<HomeServicesUsecase>()) ,);
+  getIt.registerLazySingleton<HomeServicesRemoteDataSource>(
+    () => HomeServicesRemoteDataSourceImpl(dioClient: getIt<DioClient>()),
+  );
+  getIt.registerLazySingleton<HomeServicesRepository>(
+    () => HomeServicesRepositoryImpl(
+      remoteDataSource: getIt<HomeServicesRemoteDataSource>(),
+      networkInfo: getIt<NetworkInfo>(),
+    ),
+  );
+  getIt.registerLazySingleton<HomeServicesUsecase>(
+    () => HomeServicesUsecase(
+      homeServicesRepository: getIt<HomeServicesRepository>(),
+    ),
+  );
+  getIt.registerFactory<HomeServicesController>(
+    () => HomeServicesController(
+      homeServicesUsecase: getIt<HomeServicesUsecase>(),
+    ),
+  );
 
   //promotions
-  getIt.registerLazySingleton<HomeServicesPromotionsUsecase>(() => HomeServicesPromotionsUsecase(repository: getIt<HomeServicesRepository>()),);
-  getIt.registerFactory<HomeServicesPromotionController>(() => HomeServicesPromotionController(usecase: getIt<HomeServicesPromotionsUsecase>()),);
+  getIt.registerLazySingleton<HomeServicesPromotionsUsecase>(
+    () => HomeServicesPromotionsUsecase(
+      repository: getIt<HomeServicesRepository>(),
+    ),
+  );
+  getIt.registerFactory<HomeServicesPromotionController>(
+    () => HomeServicesPromotionController(
+      usecase: getIt<HomeServicesPromotionsUsecase>(),
+    ),
+  );
 
   //Find Pros
 
-  getIt.registerLazySingleton<HomeServicesFindprosUsecase>(() => HomeServicesFindprosUsecase(repository: getIt<HomeServicesRepository>()),);
-  getIt.registerFactory<HomeServicesFindprosController>(() => HomeServicesFindprosController( usecase: getIt<HomeServicesFindprosUsecase>()),);
+  getIt.registerLazySingleton<HomeServicesFindprosUsecase>(
+    () => HomeServicesFindprosUsecase(
+      repository: getIt<HomeServicesRepository>(),
+    ),
+  );
+  getIt.registerFactory<HomeServicesFindprosController>(
+    () => HomeServicesFindprosController(
+      usecase: getIt<HomeServicesFindprosUsecase>(),
+    ),
+  );
 
   //home services search professional di
-  getIt.registerLazySingleton<SearchProfessionalUsecase>(() => SearchProfessionalUsecase(repository: getIt<HomeServicesRepository>()),);
-  getIt.registerFactory<FetchServicesQueryController>(() => FetchServicesQueryController(searchProfessionalUsecase: getIt<SearchProfessionalUsecase>()),);
-
-
-
+  getIt.registerLazySingleton<SearchProfessionalUsecase>(
+    () =>
+        SearchProfessionalUsecase(repository: getIt<HomeServicesRepository>()),
+  );
+  getIt.registerFactory<FetchServicesQueryController>(
+    () => FetchServicesQueryController(
+      searchProfessionalUsecase: getIt<SearchProfessionalUsecase>(),
+    ),
+  );
 }

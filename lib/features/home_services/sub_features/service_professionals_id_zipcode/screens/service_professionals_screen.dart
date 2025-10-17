@@ -9,11 +9,12 @@ import '../../../../../shared/widgets/custom_shimmer.dart';
 class ServiceProfessionalsScreen extends StatefulWidget {
   final String serviceId;
   final String serviceName;
-
+  final String zipCode;
   const ServiceProfessionalsScreen({
     Key? key,
     required this.serviceId,
     required this.serviceName,
+    this.zipCode = '',
   }) : super(key: key);
 
   @override
@@ -27,7 +28,7 @@ class _ServiceProfessionalsScreenState
   Widget build(BuildContext context) {
 
     return ChangeNotifierProvider<HomeServicesFindprosController>(
-      create: (context) => getIt<HomeServicesFindprosController>()..getProfessionals(widget.serviceId),
+      create: (context) => getIt<HomeServicesFindprosController>()..wrapper(widget.serviceId,widget.zipCode),
       child:  _ServiceProfessionalsView(serviceName: widget.serviceName,),
     );
   }

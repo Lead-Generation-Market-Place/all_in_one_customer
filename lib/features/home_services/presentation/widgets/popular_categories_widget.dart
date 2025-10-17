@@ -23,7 +23,7 @@ class PopularCategoriesWidget extends StatelessWidget {
 
         if (controller.homeServices.isEmpty) {
           return InkWell(
-            onTap: () => controller.getCategories(),
+            onTap: () => controller.fetchHomeServices(),
             child: const Icon(Icons.refresh),
           );
         }
@@ -89,7 +89,7 @@ Widget _buildCategoryItem(
   final controller = context.read<HomeServicesController>();
   return InkWell(
     onTap: () {
-        controller.openService({'name': name, 'imageUrl': imageUrl, 'id': id});
+        controller.openService({'name': name, 'imageUrl': imageUrl, 'id': id,'zipCode':''});
      
     },
     child: Padding(

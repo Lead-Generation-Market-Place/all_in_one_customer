@@ -9,7 +9,7 @@ import '../../app/presentation/shell/main_shell_screen.dart';
 import '../../core/error/widgets/unknown_route_screen.dart';
 import '../../features/grocery/presentation/screens/grocery_screen_homepage.dart';
 import '../../features/home_services/presentation/screens/home_services_screen.dart.dart';
-import '../../features/home_services/sub_features/service_professionals/screens/service_professionals_screen.dart';
+import '../../features/home_services/sub_features/service_professionals_id_zipcode/screens/service_professionals_screen.dart';
 import '../../features/home_services/sub_features/single_service_professional/presentation/screens/single_service_professional_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/signin/presentation/screens/sign_in_screen.dart';
@@ -63,8 +63,9 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (context) => ServiceProfessionalsScreen(
-            serviceId: args['serviceId'],
-            serviceName: args['serviceName'],
+            serviceId: args['serviceId']??"",
+            serviceName: args['serviceName']??"",
+            zipCode: args['zipCode']??"",
           ),
         );
       case singleServiceProfessionalScreen:

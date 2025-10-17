@@ -29,8 +29,9 @@ abstract class Endpoints {
   //promotions endpoints
   static const String promotions='/promotions';
 
-  //fetching professionals endpoints
+  //fetching professionals endpoints by service / service and zip code / highest rating.
   static const String findpros='/findpros';
+
 
 
   // Helper method to replace path parameters
