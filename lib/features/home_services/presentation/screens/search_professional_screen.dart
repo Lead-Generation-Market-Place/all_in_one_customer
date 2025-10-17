@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../domain/entities/professional.dart';
-import '../controllers/home_services_controller.dart';
-import '../controllers/search_professional_controller.dart';
-import '../../search_professional_di.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/home_services_controller.dart';
 import '../../../../shared/widgets/custom_button.dart';
 import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../shared/widgets/custom_input.dart';
+import '../controllers/fetch_services_query_controller.dart';
 
 class SearchProfessionalScreen extends StatelessWidget {
   const SearchProfessionalScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => searchProfessionalController(),
-      child:  _searchProBody(),
-    );
+    return _searchProBody();
   }
 }
 
 class _searchProBody extends StatefulWidget {
-
   @override
   State<_searchProBody> createState() => __searchProBodyState();
 }
@@ -29,6 +24,7 @@ class _searchProBody extends StatefulWidget {
 class __searchProBodyState extends State<_searchProBody> {
   late TextEditingController _searchController;
   late TextEditingController _zipController;
+  String _serviceId = '';
   final formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -44,10 +40,10 @@ class __searchProBodyState extends State<_searchProBody> {
     super.dispose();
   }
 
-  void onCompleteCategory(String name) {
+  void onCompleteCategory(String name, String serviceId) {
     _searchController.text = name;
-
-    var _searchProController = Provider.of<SearchProfessionalController>(
+    _serviceId = serviceId;
+    var _searchProController = Provider.of<FetchServicesQueryController>(
       context,
       listen: false,
     );
@@ -55,7 +51,7 @@ class __searchProBodyState extends State<_searchProBody> {
   }
 
   void onClear() {
-    var _searchProController = Provider.of<SearchProfessionalController>(
+    var _searchProController = Provider.of<FetchServicesQueryController>(
       context,
       listen: false,
     );
@@ -64,7 +60,7 @@ class __searchProBodyState extends State<_searchProBody> {
   }
 
   void onChanged(String value) {
-    var _searchProController = Provider.of<SearchProfessionalController>(
+    var _searchProController = Provider.of<FetchServicesQueryController>(
       context,
       listen: false,
     );
@@ -77,7 +73,11 @@ class __searchProBodyState extends State<_searchProBody> {
       listen: false,
     );
     if (formKey.currentState!.validate()) {
-      controller.openCategory({'name': _searchController.text}, context);
+      controller.openService({
+        'id': _serviceId,
+        'name': _searchController.text,
+        'zipCode': _zipController.text,
+      });
     }
   }
 
@@ -108,7 +108,7 @@ class __searchProBodyState extends State<_searchProBody> {
           CustomInput(
             validator: (p0) {
               if (p0 == null || p0.isEmpty) return 'Enter Zip Code';
-    
+
               return null;
             },
             hint: 'Zip Code',
@@ -124,13 +124,13 @@ class __searchProBodyState extends State<_searchProBody> {
           SizedBox(height: 20),
           CustomButton(
             type: CustomButtonType.primary,
-    
+
             text: 'Search',
-    
+
             onPressed: onSearch,
           ),
           SizedBox(height: 10),
-          Consumer<SearchProfessionalController>(
+          Consumer<FetchServicesQueryController>(
             builder: (context, value, child) {
               if (value.isLoading) {
                 return Padding(
@@ -163,12 +163,12 @@ class __searchProBodyState extends State<_searchProBody> {
     );
   }
 
-  Widget _buildSearchFieldData(Professional pro) {
+  Widget _buildSearchFieldData(HomeServicesEntity serviceEntity) {
     return Center(
       child: ListTile(
-        onTap: () => onCompleteCategory(pro.name),
-        leading: CircleAvatar(child: Text(pro.id)),
-        title: Text(pro.name),
+        onTap: () => onCompleteCategory(serviceEntity.name, serviceEntity.id),
+        leading: CircleAvatar(child: Text(serviceEntity.is_active.toString())),
+        title: Text(serviceEntity.name),
       ),
     );
   }

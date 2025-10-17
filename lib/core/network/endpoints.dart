@@ -1,6 +1,7 @@
 //all endpoints will be rigestered here
 abstract class Endpoints {
-  static const String baseUrl = 'https://servicyee-backend.onrender.com/api/v1';
+  //static const String baseUrl = 'https://servicyee-backend.onrender.com/api/v1';  //real server
+  static const String baseUrl='http://10.0.2.2:4000/api/v1';   //test server
 
   // Auth endpoints
   static const String login = '/auth/login';
@@ -13,17 +14,25 @@ abstract class Endpoints {
   static const String updateUserProfile = '/users/profile';
   static const String changePassword = '/users/change-password';
 
-  // Product endpoints
-  static const String getProducts = '/products';
-  static const String getProductDetail = '/products/{id}';
-  static const String createProduct = '/products';
-  static const String updateProduct = '/products/{id}';
-  static const String deleteProduct = '/products/{id}';
+  // Services endpoints
+  static const String getServices = '/services';
+  // static const String getProductDetail = '/products/{id}';
+  // static const String createProduct = '/products';
+  // static const String updateProduct = '/products/{id}';
+  // static const String deleteProduct = '/products/{id}';
 
   // Order endpoints
   static const String getOrders = '/orders';
   static const String createOrder = '/orders';
   static const String getOrderDetail = '/orders/{id}';
+
+  //promotions endpoints
+  static const String promotions='/promotions';
+
+  //fetching professionals endpoints by service / service and zip code / highest rating.
+  static const String findpros='/findpros';
+
+
 
   // Helper method to replace path parameters
   static String replacePathParameters(String path, Map<String, dynamic> params) {

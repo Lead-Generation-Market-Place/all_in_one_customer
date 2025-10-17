@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:yelpax/features/home_services/domain/usecases/home_services_promotions_usecase.dart';
 import '../../domain/entities/home_services_promotion_entity.dart';
-import '../../domain/usecases/home_service_promotion_usecase.dart';
 
 class HomeServicesPromotionController extends ChangeNotifier {
-  HomeServicePromotionUsecase _usecase;
-  HomeServicesPromotionController(this._usecase) {
+  HomeServicesPromotionsUsecase usecase;
+  HomeServicesPromotionController({required this.usecase}) {
     getPromotions();
   }
 
@@ -21,7 +21,7 @@ class HomeServicesPromotionController extends ChangeNotifier {
     _isPromotionLoading = true;
     notifyListeners();
 
-    final result = await _usecase.call();
+    final result = await usecase.getPromotionsUsecase();
 
     result.fold(
       (error) {

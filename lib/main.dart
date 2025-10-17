@@ -17,21 +17,22 @@ import 'shared/screens/unexpected_release_mode_error.dart';
 import 'generated/app_localizations.dart';
 import 'core/injection_container.dart' as di;
 
-
 void main() {
   runZonedGuarded(
-    () {
+    () async {
       WidgetsFlutterBinding.ensureInitialized();
       ErrorWidget.builder = (FlutterErrorDetails details) {
         if (kReleaseMode) {
+          debugPrint('Error on Release Mode $details');
           return UnexpectedReleaseModeError(message: details.toString());
         }
+        debugPrint('Error on Debug Mode $details');
         return MaterialApp(
           navigatorKey: AppConstants.navigateKeyword,
           home: UnexpectedErrorScreen(message: details.toString()),
         );
       };
-      di.init();// injecting the containers for clean architecture
+      await di.init(); // injecting the containers for clean architecture
       runApp(
         RestartWidget(
           child: MultiProvider(providers: appProviders, child: const MyApp()),

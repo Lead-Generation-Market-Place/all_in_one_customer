@@ -1,7 +1,9 @@
 // core/network/dio_client.dart
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
-
+import 'package:yelpax/core/network/auth_interceptor.dart';
+import 'package:yelpax/core/injection_container.dart' as di;
+import 'package:yelpax/core/storage/secure_storage_service.dart';
 class DioClient {
   final Dio dio;
   final Logger logger;
@@ -11,23 +13,24 @@ class DioClient {
   }
 
   void _setupInterceptors() {
+    dio.interceptors.add(AuthInterceptor(localStorageService: di.getIt<LocalStorageService>()));
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
-        logger.i('🌍 REQUEST: ${options.method} ${options.uri}');
-        logger.i('Headers: ${options.headers}');
+    //    logger.i('🌍 REQUEST: ${options.method} ${options.uri}');
+   //     logger.i('Headers: ${options.headers}');
         if (options.data != null) {
-          logger.i('Body: ${options.data}');
+   //       logger.i('Body: ${options.data}');
         }
         return handler.next(options);
       },
       onResponse: (response, handler) {
-        logger.i('✅ RESPONSE: ${response.statusCode} ${response.requestOptions.uri}');
-        logger.i('Data: ${response.data}');
+   //     logger.i('✅ RESPONSE: ${response.statusCode} ${response.requestOptions.uri}');
+   //     logger.i('Data: ${response.data}');
         return handler.next(response);
       },
       onError: (DioException error, handler) {
-        logger.e('❌ ERROR: ${error.type} ${error.response?.statusCode}');
-        logger.e('Message: ${error.message}');
+    //    logger.e('❌ ERROR: ${error.type} ${error.response?.statusCode}');
+ //       logger.e('Message: ${error.message}');
         return handler.next(error);
       },
     ));
@@ -40,7 +43,7 @@ class DioClient {
       responseHeader: true,
       responseBody: true,
       error: true,
-      logPrint: (object) => logger.d(object),
+   //   logPrint: (object) => logger.d(object),
     ));
   }
 

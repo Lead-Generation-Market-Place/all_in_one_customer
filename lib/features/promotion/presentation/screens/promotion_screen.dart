@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/config/routes/router.dart';
+import 'package:yelpax/core/constants/app_constants.dart';
+import 'package:yelpax/features/home_services/presentation/widgets/app_bar_widget.dart';
 import '../../../../config/themes/theme_mode_type.dart';
 import '../../../../config/themes/theme_provider.dart';
 import '../../../../core/constants/height.dart';
@@ -25,13 +28,13 @@ class _PromotionScreenState extends State<PromotionScreen> {
     super.initState();
   }
 
-  void _initializeData() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final theme = Provider.of<ThemeProvider>(context, listen: false);
-
-      theme.setTheme(ThemeModeType.dark);
-    });
-  }
+ void _initializeData() {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (!mounted) return; // ✅ this avoids calling context after dispose
+    final theme = Provider.of<ThemeProvider>(context, listen: false);
+    theme.setTheme(ThemeModeType.dark);
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -42,25 +45,10 @@ class _PromotionScreenState extends State<PromotionScreen> {
     TextEditingController _searchController = TextEditingController();
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          surfaceTintColor: Colors.transparent,
-          shadowColor: Theme.of(context).primaryColor,
-          title: Text('Yelpax'),
-          elevation: 2.2,
-          actionsPadding: const EdgeInsets.symmetric(horizontal: 8),
-          actions: [
-            InkWell(child: Icon(Icons.settings_outlined)),
-            SizedBox(width: 10),
-            InkWell(child: Icon(Icons.notifications_outlined)),
-            SizedBox(width: 10),
-            InkWell(child: Icon(CupertinoIcons.cart)),
-            SizedBox(width: 10),
-            InkWell(child: Icon(Icons.question_mark_outlined)),
-            SizedBox(width: 10),
-            InkWell(child: Icon(CupertinoIcons.heart)),
-          ],
-        ),
+       appBar: PreferredSize(
+        child: AppBarWidget(),
+        preferredSize: Size.fromHeight(height(context) / 15),
+      ),
         body: RefreshIndicator.adaptive(
           onRefresh: () => _controller.retry(),
           child: SingleChildScrollView(

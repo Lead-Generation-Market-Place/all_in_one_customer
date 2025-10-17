@@ -1,24 +1,34 @@
 import '../../domain/entities/signin_entity.dart';
 
 class SigninModel extends SigninEntity {
-  SigninModel({required super.token, required super.user});
+  SigninModel({required super.tokens, required super.user});
 
   factory SigninModel.fromJson(Map<String, dynamic> json) {
     return SigninModel(
-      token: json['token'] ?? "",
+      tokens: Tokens(
+        accessToken: json['tokens']['accessToken'] ?? "",
+        refreshToken: json['tokens']['refreshToken'] ?? "",
+      ),
+
       user: User(
-        id: json['id'] ?? "",
-        username: json['username'] ?? "",
-        email: json['email'] ?? "",
+        id: json['user']['id'] ?? "",
+        username: json['user']['username'] ?? "",
+        email: json['user']['email'] ?? "",
       ),
     );
   }
 
-  Map<String,dynamic> toJson(){
-    return{
-      "id":user.id,
-      "username":user.username,
-      "email":user.email
+   Map<String, dynamic> toJson() {
+    return {
+      'user': {
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+      },
+      'tokens': {
+        'accessToken': tokens.accessToken,
+        'refreshToken': tokens.refreshToken,
+      },
     };
   }
 }
