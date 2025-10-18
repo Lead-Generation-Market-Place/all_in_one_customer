@@ -49,5 +49,9 @@
 	<array>
         <string>$(AppIdentifierPrefix)com.shafiullahamani.yelpax.yelpax</string>
     </array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs location access to provide location-based services</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs location access to provide location-based services</string>
 </dict>
 </plist>

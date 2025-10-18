@@ -67,55 +67,7 @@ class HomeServicesFindprosController extends ChangeNotifier {
 
   Future<void> retry() async {
     print('Retrying....');
-    // try {
-    //   _professionalsLoading = true;
-    //   notifyListeners();
-
-    //   await Future.delayed(const Duration(seconds: 2));
-
-    //   _professionals = [
-    //     {
-    //       'name': 'Brand Construction Company',
-    //       'ratings': 4.9,
-    //       'isActive': false,
-    //       'timesHired': 84,
-    //       'estimatedPrice': '97\$ - \$113/hour',
-    //       'response': '~ 56',
-    //       'starsCount': 33,
-    //       'lastReviewText':
-    //           "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-    //     },
-    //     {
-    //       'name': 'Seven Guys Construction',
-    //       'ratings': 3.8,
-    //       'isActive': true,
-    //       'timesHired': 20,
-    //       'estimatedPrice': '47\$ - \$113/hour',
-    //       'response': '~ 43',
-    //       'starsCount': 32,
-
-    //       'lastReviewText':
-    //           "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-    //     },
-    //     {
-    //       'name': 'New Construction Company',
-    //       'ratings': 2.0,
-    //       'isActive': true,
-    //       'timesHired': 4,
-    //       'estimatedPrice': '37\$ - \$13/hour',
-    //       'response': '~ 22',
-    //       'starsCount': 50,
-
-    //       'lastReviewText':
-    //           "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-    //     },
-    //   ];
-    // } catch (e) {
-    //   debugPrint('Error on retry : $e');
-    // } finally {
-    //   _professionalsLoading = false;
-    //   notifyListeners();
-    // }
+  
   }
 
   Future<void> openCategory(Map categoryDetails, BuildContext context) async {
