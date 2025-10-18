@@ -3,6 +3,7 @@ import 'package:provider/single_child_widget.dart';
 import 'package:yelpax/core/auth/auth_manager.dart';
 import 'package:yelpax/core/injection_container.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/fetch_services_query_controller.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/home_services_location_controller.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals_id_zipcode/controllers/home_services_findpros_controller.dart';
 import 'package:yelpax/features/signin/presentation/controllers/sign_in_controller.dart';
 import '../features/home_services/presentation/controllers/home_services_controller.dart';
@@ -24,4 +25,5 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider(create: (_) => getIt<HomeServicesController>()),
   ChangeNotifierProvider(create: (_) => getIt<FetchServicesQueryController>(),),
   ChangeNotifierProvider(create: (_) => getIt<HomeServicesFindprosController>(),),
+  ChangeNotifierProvider(create: (context) => getIt<HomeServicesLocationController>(),),
 ];  

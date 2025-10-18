@@ -6,10 +6,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:yelpax/core/auth/auth_manager.dart';
 import 'package:yelpax/core/network/endpoints.dart';
 import 'package:yelpax/core/storage/secure_storage_service.dart';
+import 'package:yelpax/features/home_services/data/datasources/home_services_location_local_data_source.dart';
 import 'package:yelpax/features/home_services/data/datasources/home_services_remote_data_source.dart';
 import 'package:yelpax/features/home_services/data/repositories/home_services_repository_impl.dart';
 import 'package:yelpax/features/home_services/domain/repositories/home_services_repository.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_findpros_usecase.dart';
+import 'package:yelpax/features/home_services/domain/usecases/home_services_get_current_location_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_promotions_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/fetch_services_query_usecase.dart';
@@ -23,6 +25,7 @@ import 'package:yelpax/features/signin/domain/repositories/auth_repository.dart'
 import 'package:yelpax/features/signin/domain/usecases/sign_in_usecase.dart';
 import 'package:yelpax/features/signin/presentation/controllers/sign_in_controller.dart';
 
+import '../features/home_services/presentation/controllers/home_services_location_controller.dart';
 import 'network/dio_client.dart';
 import 'network/network_info.dart';
 
@@ -78,6 +81,10 @@ Future<void> init() async {
     () => SignInController(signInUseCase: getIt<SignInUseCase>()),
   );
 
+  //Local Data Source
+  getIt.registerLazySingleton<HomeServicesLocationLocalDataSource>(
+    () => HomeServicesLocationLocalDataSourceImpl(),
+  );
   //home services di
 
   getIt.registerLazySingleton<HomeServicesRemoteDataSource>(
@@ -86,6 +93,7 @@ Future<void> init() async {
   getIt.registerLazySingleton<HomeServicesRepository>(
     () => HomeServicesRepositoryImpl(
       remoteDataSource: getIt<HomeServicesRemoteDataSource>(),
+      locationLocalDataSource: getIt<HomeServicesLocationLocalDataSource>(),
       networkInfo: getIt<NetworkInfo>(),
     ),
   );
@@ -133,6 +141,18 @@ Future<void> init() async {
   getIt.registerFactory<FetchServicesQueryController>(
     () => FetchServicesQueryController(
       searchProfessionalUsecase: getIt<SearchProfessionalUsecase>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<HomeServicesGetCurrentLocationUsecase>(
+    () => HomeServicesGetCurrentLocationUsecase(
+      repository: getIt<HomeServicesRepository>(),
+
+    ),
+  );
+  getIt.registerFactory<HomeServicesLocationController>(
+    () => HomeServicesLocationController(
+      getCurrentLocationUsecase: getIt<HomeServicesGetCurrentLocationUsecase>(),
     ),
   );
 }

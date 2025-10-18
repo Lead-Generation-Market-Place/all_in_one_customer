@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
+import 'package:yelpax/features/home_services/presentation/widgets/compact_location_widget.dart';
+import 'package:yelpax/features/home_services/presentation/widgets/location_display_widget.dart';
+import 'package:yelpax/features/home_services/presentation/widgets/location_widget.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/popular_categories_widget.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/section_title_widget.dart';
 import '../../../../app/presentation/shell/widgets/custom_bottom_nav.dart';
@@ -90,6 +93,9 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               HomeServicesPromotionScreen(),
               PopularCategoriesWidget(),
               const SizedBox(height: 50),
+              LocationWidget(),
+              CompactLocationWidget(),
+              LocationDisplayWidget(),
          //     _buildActivityBasedCategories(),
               _buildDivider(),
          //     _buildAddressBasedCategory(),

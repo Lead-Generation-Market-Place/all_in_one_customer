@@ -32,3 +32,12 @@ class NotFoundFailure extends Failure{
 class DioFailure extends Failure{
   const DioFailure(String message):super (message);
 }
+class PermissionFailure extends Failure{
+  const PermissionFailure (String message):super(message);
+}
+class LocationFailure extends Failure{
+  const LocationFailure (String message):super(message);
+}
+class TimeoutFailure extends Failure{
+  const TimeoutFailure (String message):super(message);
+}
