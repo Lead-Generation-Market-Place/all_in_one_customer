@@ -131,7 +131,6 @@ Future<List<HomeServicesFetchProfessionalModel>> fetchProsByServiceAndZip(
       );
     }
   } catch (e, s) {
-    debugPrint("Error in fetchProsByServiceAndZip: $e\n$s");
     throw ServerException("An error occurred while fetching professionals");
   }
 }

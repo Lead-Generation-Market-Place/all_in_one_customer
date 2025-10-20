@@ -4,7 +4,8 @@ import 'package:yelpax/config/routes/router.dart';
 import 'package:yelpax/core/constants/app_constants.dart';
 
 class AppBarWidget extends StatefulWidget {
-  const AppBarWidget({super.key});
+  Widget title;
+   AppBarWidget({this.title=const Text("Allneeda"),super.key});
 
   @override
   State<AppBarWidget> createState() => _AppBarWidgetState();
@@ -14,7 +15,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('Yelpax'),
+      title: widget.title,
       backgroundColor: Theme.of(context).primaryColor,
       surfaceTintColor: Colors.transparent,
       shadowColor: Theme.of(context).primaryColor,

@@ -3,6 +3,7 @@ import 'package:yelpax/core/constants/app_constants.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_question_entity.dart';
 import 'package:yelpax/features/home_services/presentation/screens/see_all_services_screen.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/screens/question_flow_screen.dart';
+import 'package:yelpax/features/homepage/presentation/screens/home_page_screen.dart';
 import 'package:yelpax/features/it_services/presentation/screens/it_home_screen.dart';
 import 'package:yelpax/features/settings/presentation/screens/settings_screen.dart';
 import '../../app/presentation/shell/main_shell_screen.dart';
@@ -13,7 +14,6 @@ import '../../features/home_services/sub_features/service_professionals_id_zipco
 import '../../features/home_services/sub_features/single_service_professional/presentation/screens/single_service_professional_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/signin/presentation/screens/sign_in_screen.dart';
-import '../../features/promotion/presentation/screens/promotion_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
 
 class AppRouter {
@@ -43,7 +43,7 @@ class AppRouter {
       case onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
       case featured:
-        return MaterialPageRoute(builder: (_) => const PromotionScreen());
+        return MaterialPageRoute(builder: (_) => const HomePageScreen());
       // case login:
       //   return MaterialPageRoute(builder: (_) => const LoginScreen());
       case signIn:

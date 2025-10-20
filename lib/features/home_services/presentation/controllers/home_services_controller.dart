@@ -3,11 +3,13 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:yelpax/core/constants/app_constants.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_usecase.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/home_services_location_controller.dart';
 import '../../../../config/routes/router.dart';
 
 class HomeServicesController extends ChangeNotifier {
   HomeServicesUsecase homeServicesUsecase;
-  HomeServicesController({required this.homeServicesUsecase});
+  HomeServicesLocationController locationData;
+  HomeServicesController({required this.homeServicesUsecase,required this.locationData});
 
   //real states
   List<HomeServicesEntity> _homeServices = [];

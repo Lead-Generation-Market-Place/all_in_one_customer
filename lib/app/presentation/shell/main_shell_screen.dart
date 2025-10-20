@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../features/promotion/presentation/screens/promotion_screen.dart';
+import '../../../features/homepage/presentation/screens/home_page_screen.dart';
 import 'widgets/custom_bottom_nav.dart';
 
 class MainShellScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
   Widget _getScreen(int index) {
     switch (index) {
       case 0:
-        return const PromotionScreen();
+        return const HomePageScreen();
       case 1:
         return const CategoriesScreen();
       case 2:
@@ -25,7 +25,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
       case 4:
         return const ProfileScreen();
       default:
-        return const PromotionScreen();
+        return const HomePageScreen();
     }
   }
 

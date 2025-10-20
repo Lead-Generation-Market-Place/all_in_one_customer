@@ -51,6 +51,7 @@ Future<void> init() async {
         baseUrl: Endpoints.baseUrl,
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
+        validateStatus: (status) => status != null && status < 500,
       ),
     ),
   );
@@ -105,6 +106,7 @@ Future<void> init() async {
   getIt.registerFactory<HomeServicesController>(
     () => HomeServicesController(
       homeServicesUsecase: getIt<HomeServicesUsecase>(),
+      locationData: getIt<HomeServicesLocationController>(),
     ),
   );
 
@@ -117,6 +119,7 @@ Future<void> init() async {
   getIt.registerFactory<HomeServicesPromotionController>(
     () => HomeServicesPromotionController(
       usecase: getIt<HomeServicesPromotionsUsecase>(),
+      
     ),
   );
 
@@ -147,7 +150,6 @@ Future<void> init() async {
   getIt.registerLazySingleton<HomeServicesGetCurrentLocationUsecase>(
     () => HomeServicesGetCurrentLocationUsecase(
       repository: getIt<HomeServicesRepository>(),
-
     ),
   );
   getIt.registerFactory<HomeServicesLocationController>(

@@ -1,26 +1,24 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yelpax/config/routes/router.dart';
-import 'package:yelpax/core/constants/app_constants.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/app_bar_widget.dart';
 import '../../../../config/themes/theme_mode_type.dart';
 import '../../../../config/themes/theme_provider.dart';
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
-import '../controllers/promotion_controller.dart';
+import '../../../home_services/presentation/controllers/home_services_location_controller.dart';
+import '../controllers/home_page_controller.dart';
 import '../widgets/notice_banner.dart';
 import '../../../../shared/widgets/custom_input.dart';
 import '../../../../shared/widgets/custom_shimmer.dart';
 
-class PromotionScreen extends StatefulWidget {
-  const PromotionScreen({super.key});
+class HomePageScreen extends StatefulWidget {
+  const HomePageScreen({super.key});
 
   @override
-  State<PromotionScreen> createState() => _PromotionScreenState();
+  State<HomePageScreen> createState() => _HomePageScreenState();
 }
 
-class _PromotionScreenState extends State<PromotionScreen> {
+class _HomePageScreenState extends State<HomePageScreen> {
   @override
   void initState() {
     _initializeData();
@@ -28,27 +26,26 @@ class _PromotionScreenState extends State<PromotionScreen> {
     super.initState();
   }
 
- void _initializeData() {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (!mounted) return; // ✅ this avoids calling context after dispose
-    final theme = Provider.of<ThemeProvider>(context, listen: false);
-    theme.setTheme(ThemeModeType.dark);
-  });
-}
+  void _initializeData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return; // ✅ this avoids calling context after dispose
+      final theme = Provider.of<ThemeProvider>(context, listen: false);
+      theme.setTheme(ThemeModeType.dark);
+      var _locationController= Provider.of<HomeServicesLocationController>(context, listen: false);
+  _locationController.getCurrentLocation();//getting user current location in homepage 
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _controller = Provider.of<PromotionController>(
-      context,
-      listen: false,
-    );
+    final _controller = Provider.of<HomePageController>(context, listen: false);
     TextEditingController _searchController = TextEditingController();
     return SafeArea(
       child: Scaffold(
-       appBar: PreferredSize(
-        child: AppBarWidget(),
-        preferredSize: Size.fromHeight(height(context) / 15),
-      ),
+        appBar: PreferredSize(
+          child: AppBarWidget(),
+          preferredSize: Size.fromHeight(height(context) / 15),
+        ),
         body: RefreshIndicator.adaptive(
           onRefresh: () => _controller.retry(),
           child: SingleChildScrollView(
@@ -72,7 +69,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
                     },
                   ),
                 ),
-                Consumer<PromotionController>(
+                Consumer<HomePageController>(
                   builder: (context, value, child) {
                     if (value.categoryLoading) {
                       return CustomShimmer(

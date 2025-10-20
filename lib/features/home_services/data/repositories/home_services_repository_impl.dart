@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:yelpax/core/network/network_info.dart';
@@ -73,16 +74,18 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
       return Left(NetworkFailure(e.message));
     } on CustomDioException catch (e) {
       return Left(DioFailure(e.message));
+    } on NotFoundException catch (e) {
+      return Left(NotFoundFailure(e.message));
     } catch (e) {
       return Left(GenericFailure(e.toString()));
     }
   }
 
-   
-
   @override
-  Future<Either<Failure, List<HomeServicesFetchProfessionalsEntity>>> fetchPros(String query) async{
-      try {
+  Future<Either<Failure, List<HomeServicesFetchProfessionalsEntity>>> fetchPros(
+    String query,
+  ) async {
+    try {
       final models = await remoteDataSource.findPros(query);
       if (!await networkInfo.isConnected) {
         return Left(NoInternetFailure('No Internet Connection'));
@@ -98,11 +101,15 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
       return Left(GenericFailure(e.toString()));
     }
   }
-  
+
   @override
-  Future<Either<Failure, List<HomeServicesFetchProfessionalsEntity>>> fetchProsByServiceIdAndZip(String serviceId, String zipCode) async{
-      try {
-      final models = await remoteDataSource.fetchProsByServiceAndZip(serviceId,zipCode);
+  Future<Either<Failure, List<HomeServicesFetchProfessionalsEntity>>>
+  fetchProsByServiceIdAndZip(String serviceId, String zipCode) async {
+    try {
+      final models = await remoteDataSource.fetchProsByServiceAndZip(
+        serviceId,
+        zipCode,
+      );
       if (!await networkInfo.isConnected) {
         return Left(NoInternetFailure('No Internet Connection'));
       }
@@ -118,14 +125,18 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
     }
   }
 
-
   @override
-  Future<Either<Failure, HomeServicesLocationEntity>> getCurrentLocation() async {
+  Future<Either<Failure, HomeServicesLocationEntity>>
+  getCurrentLocation() async {
     try {
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        return Left(LocationFailure('Location services are disabled. Please enable them.'));
+        return Left(
+          LocationFailure(
+            'Location services are disabled. Please enable them.',
+          ),
+        );
       }
 
       // Check permissions
@@ -138,7 +149,11 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
       }
 
       if (permission == LocationPermission.deniedForever) {
-        return Left(PermissionFailure('Location permissions are permanently denied. Please enable them in app settings.'));
+        return Left(
+          PermissionFailure(
+            'Location permissions are permanently denied. Please enable them in app settings.',
+          ),
+        );
       }
 
       // Get current position
@@ -180,7 +195,6 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
       );
 
       return Right(locationEntity);
-
     } on LocationServiceDisabledException {
       return Left(LocationFailure('Location services are disabled.'));
     } on PermissionDeniedException {
@@ -194,7 +208,7 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
 
   String _buildAddressLine(Placemark placemark) {
     List<String> addressParts = [];
-    
+
     if (placemark.street != null && placemark.street!.isNotEmpty) {
       addressParts.add(placemark.street!);
     }
@@ -204,10 +218,9 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
     if (placemark.locality != null && placemark.locality!.isNotEmpty) {
       addressParts.add(placemark.locality!);
     }
-    
-    return addressParts.isNotEmpty ? addressParts.join(', ') : 'Location information not available';
-  }
-  
-  
 
+    return addressParts.isNotEmpty
+        ? addressParts.join(', ')
+        : 'Location information not available';
+  }
 }

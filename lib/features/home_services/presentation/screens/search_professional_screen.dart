@@ -8,15 +8,18 @@ import '../../../../shared/widgets/custom_input.dart';
 import '../controllers/fetch_services_query_controller.dart';
 
 class SearchProfessionalScreen extends StatelessWidget {
-  const SearchProfessionalScreen({super.key});
-
+  String zipCode;
+   SearchProfessionalScreen({super.key,required this.zipCode});
   @override
   Widget build(BuildContext context) {
-    return _searchProBody();
+   
+    return _searchProBody(zipCode:zipCode,);
   }
 }
 
 class _searchProBody extends StatefulWidget {
+  final String? zipCode;
+  const _searchProBody({this.zipCode});
   @override
   State<_searchProBody> createState() => __searchProBodyState();
 }
@@ -29,7 +32,7 @@ class __searchProBodyState extends State<_searchProBody> {
   @override
   void initState() {
     _searchController = TextEditingController();
-    _zipController = TextEditingController();
+    _zipController = TextEditingController(text: widget.zipCode??"12345");
     super.initState();
   }
 

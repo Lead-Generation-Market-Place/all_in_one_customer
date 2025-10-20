@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/home_services_location_controller.dart';
 
 import '../../../../config/routes/router.dart';
 
-class PromotionController extends ChangeNotifier {
+class HomePageController extends ChangeNotifier {
   bool _refreshLoading = false;
   bool _categoryLoading = false;
   List _categories = [];
-  PromotionController() {
+ 
+  HomePageController() {
     getCategories();
+  
   }
 
   bool get refreshLoading => _refreshLoading;

@@ -36,6 +36,7 @@ class HomeServicesLocationLocalDataSourceImpl implements HomeServicesLocationLoc
       // Get current position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
+        
       );
 
       // Get address from coordinates
@@ -62,8 +63,6 @@ class HomeServicesLocationLocalDataSourceImpl implements HomeServicesLocationLoc
         createdAt: DateTime.now().toIso8601String(),
         updatedAt: DateTime.now().toIso8601String(),
         coordinates: HomeServicesCoordinatesModel(
-          //longitude: position.longitude,
-          //latitude: position.latitude,
            type: '', geoPoints: HomeServicesCoordinatePointsModel.empty(),
         ),
       );
