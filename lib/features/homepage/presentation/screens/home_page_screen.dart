@@ -31,8 +31,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
       if (!mounted) return; // ✅ this avoids calling context after dispose
       final theme = Provider.of<ThemeProvider>(context, listen: false);
       theme.setTheme(ThemeModeType.dark);
-      var _locationController= Provider.of<HomeServicesLocationController>(context, listen: false);
-  _locationController.getCurrentLocation();//getting user current location in homepage 
+      var _locationController = Provider.of<HomeServicesLocationController>(
+        context,
+        listen: false,
+      );
+      _locationController
+          .getCurrentLocation(); //getting user current location in homepage
     });
   }
 
@@ -75,7 +79,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       return CustomShimmer(
                         crossAxisCount: 8,
                         scrollDirection: Axis.horizontal,
-
                         layoutType: ShimmerLayoutType.horizontalList,
                       );
                     }
@@ -95,7 +98,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: _controller.categories.length,
-
                         itemBuilder: (context, index) {
                           return _buildCategory(
                             context,
@@ -114,10 +116,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     );
                   },
                 ),
-                ...List.generate(5, (index) {
+                ...List.generate(25, (index) {
                   return Container(
                     width: 100,
-                    height: 500,
+                    height: 20,
                     color: Colors.amber,
                     margin: const EdgeInsets.all(10),
                   );
@@ -145,7 +147,7 @@ Widget _buildCategory(
         InkWell(
           onTap: onPress,
           child: Container(
-            height: height(context) / 15,
+            height: height(context) / 16,
             width: width(context) / 3,
             decoration: BoxDecoration(
               image: DecorationImage(image: AssetImage(imageUrl)),

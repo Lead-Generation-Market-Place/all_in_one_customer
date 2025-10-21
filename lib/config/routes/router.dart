@@ -55,17 +55,14 @@ class AppRouter {
       case homeServices:
         return MaterialPageRoute(builder: (_) => const HomeServicesScreen());
       case seeAllServices:
-        final _seeAllArgs = settings.arguments ?? {};
-        return MaterialPageRoute(
-          builder: (_) => SeeAllServicesScreen(services: _seeAllArgs),
-        );
+        return MaterialPageRoute(builder: (_) => SeeAllServicesScreen());
       case serviceProfessionalsScreen:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (context) => ServiceProfessionalsScreen(
-            serviceId: args['serviceId']??"",
-            serviceName: args['serviceName']??"",
-            zipCode: args['zipCode']??"",
+            serviceId: args['serviceId'] ?? "",
+            serviceName: args['serviceName'] ?? "",
+            zipCode: args['zipCode'] ?? "",
           ),
         );
       case singleServiceProfessionalScreen:
@@ -79,9 +76,11 @@ class AppRouter {
               const UnknowRouteScreen(message: 'Unknown Route Screen'),
         );
       case questionFlowScreen:
-        final List<HomeServicesQuestionEntity> questions = 
-    (settings.arguments as List<HomeServicesQuestionEntity>?) ?? [];
-        return MaterialPageRoute(builder: (_) =>  QuestionFlowScreen(entities: questions,));
+        final List<HomeServicesQuestionEntity> questions =
+            (settings.arguments as List<HomeServicesQuestionEntity>?) ?? [];
+        return MaterialPageRoute(
+          builder: (_) => QuestionFlowScreen(entities: questions),
+        );
       case itHomeScreen:
         return MaterialPageRoute(builder: (_) => const ItHomeScreen());
       case settingsScreen:

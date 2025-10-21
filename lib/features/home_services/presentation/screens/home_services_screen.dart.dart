@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_location_controller.dart';
-import 'package:yelpax/features/home_services/presentation/widgets/location_widget.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/popular_categories_widget.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/section_title_widget.dart';
 import '../../../../app/presentation/shell/widgets/custom_bottom_nav.dart';
@@ -25,7 +24,6 @@ class HomeServicesScreen extends StatefulWidget {
 }
 
 class _HomeServicesScreenState extends State<HomeServicesScreen> {
-  
   @override
   void initState() {
     super.initState();
@@ -43,10 +41,9 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
       theme.setTheme(ThemeModeType.homeServices);
 
       await controller
-          .fetchHomeServices(); //fetching home services when user navigated to home screen of home services
+          .fetchPopularHomeServices(); //fetching home services when user navigated to home screen of home services
       await controller.locationData
           .getCurrentLocation(); //getting use current location when the app is installed
-    
     });
   }
 
@@ -54,7 +51,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        child: AppBarWidget(title: _buildLocationTitle(),),
+        child: AppBarWidget(title: _buildLocationTitle()),
         preferredSize: Size.fromHeight(height(context) / 15),
       ),
       drawer: Drawer(),
@@ -95,7 +92,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               HomeServicesPromotionScreen(),
               PopularCategoriesWidget(),
               const SizedBox(height: 50),
-              LocationWidget(),
+              //  LocationWidget(),
               //   CompactLocationWidget(),
               //   LocationDisplayWidget(),
               //     _buildActivityBasedCategories(),
@@ -389,7 +386,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
 
         if (controller.categories == null) {
           return InkWell(
-            onTap: () => controller.fetchHomeServices(),
+            onTap: () => controller.fetchPopularHomeServices(),
             child: const Icon(Icons.refresh),
           );
         }
@@ -476,7 +473,6 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   }
 }
 
-
 Widget _buildLocationTitle() {
   return Consumer<HomeServicesLocationController>(
     builder: (context, controller, child) {
@@ -485,7 +481,7 @@ Widget _buildLocationTitle() {
         return const SizedBox(
           width: 24,
           height: 24,
-          child: CircularProgressIndicator(strokeWidth: 2,color: Colors.white,),
+          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
         );
       }
 
@@ -493,7 +489,11 @@ Widget _buildLocationTitle() {
       if ((controller.error ?? '').isNotEmpty) {
         return const Text(
           "Allneeda",
-          style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20,color: Colors.white),
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            color: Colors.white,
+          ),
         );
       }
 
@@ -502,16 +502,23 @@ Widget _buildLocationTitle() {
       if (location != null && (location.city?.isNotEmpty ?? false)) {
         return Text(
           location.city!,
-          style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 20,color: Colors.white),
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            color: Colors.white,
+          ),
         );
       }
 
       // 4️⃣ Fallback if nothing else is available
       return const Text(
         "Allneeda",
-        style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20,color: Colors.white),
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 20,
+          color: Colors.white,
+        ),
       );
     },
   );
 }
-

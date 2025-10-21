@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:yelpax/core/network/network_info.dart';
@@ -41,9 +40,9 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
   }
 
   @override
-  Future<Either<Failure, List<HomeServicesEntity>>> getHomeServices() async {
+  Future<Either<Failure, List<HomeServicesEntity>>> fetchPopularHomeServices() async {
     try {
-      final models = await remoteDataSource.fetchHomeServices();
+      final models = await remoteDataSource.fetchPopularHomeServices();
       if (!await networkInfo.isConnected) {
         return Left(NoInternetFailure('No Internet Connection'));
       }
@@ -222,5 +221,24 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
     return addressParts.isNotEmpty
         ? addressParts.join(', ')
         : 'Location information not available';
+  }
+  
+  @override
+  Future<Either<Failure, List<HomeServicesEntity>>> fetchAllHomeServices() async {
+    try {
+      final models = await remoteDataSource.fetchAllHomeServices();
+      if (!await networkInfo.isConnected) {
+        return Left(NoInternetFailure('No Internet Connection'));
+      }
+      return Right(models);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on CustomDioException catch (e) {
+      return Left(DioFailure(e.message));
+    } catch (e) {
+      return Left(GenericFailure(e.toString()));
+    }
   }
 }

@@ -24,10 +24,28 @@ class HomeServicesController extends ChangeNotifier {
   String get searchQuery => _searchQuery;
 
   // Fetch home services Methods
-  Future<void> fetchHomeServices() async {
+  Future<void> fetchPopularHomeServices() async {
     _isLoading = true;
     notifyListeners();
     final response = await homeServicesUsecase.call();
+    response.fold(
+      (problem) {
+        _error = problem.message;
+        _isLoading = false;
+        notifyListeners();
+      },
+      (success) {
+        _homeServices = success;
+        _isLoading = false;
+        notifyListeners();
+      },
+    );
+  }
+    // Fetch home services Methods
+  Future<void> fetchAllHomeServices() async {
+    _isLoading = true;
+    notifyListeners();
+    final response = await homeServicesUsecase.all();
     response.fold(
       (problem) {
         _error = problem.message;

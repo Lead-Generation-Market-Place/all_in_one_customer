@@ -11,7 +11,8 @@ import '../../../../core/error/exceptions/exceptions.dart';
 
 abstract class HomeServicesRemoteDataSource {
   Future<List<HomeServicesModel>> fetchServicesQuery(String query);
-  Future<List<HomeServicesModel>> fetchHomeServices();
+  Future<List<HomeServicesModel>> fetchPopularHomeServices();
+  Future<List<HomeServicesModel>> fetchAllHomeServices();
   Future<List<HomeServicePromotionModel>> fetchPromotions();
   Future<List<HomeServicesFetchProfessionalModel>> findPros(String query);
   Future<List<HomeServicesFetchProfessionalModel>> fetchProsByServiceAndZip(
@@ -49,7 +50,20 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
   }
 
   @override
-  Future<List<HomeServicesModel>> fetchHomeServices() async {
+  Future<List<HomeServicesModel>> fetchPopularHomeServices() async {
+    final response = await dioClient.get(Endpoints.getPopularServices);
+    if (response.statusCode == 200) {
+      final json = response.data as Map<String, dynamic>;
+      final List<dynamic> listData = json['data'];
+      return listData.map((e) => HomeServicesModel.fromJson(e)).toList();
+    } else if (response.statusCode == 404) {
+      throw NotFoundException("Not Found Home Services");
+    } else {
+      throw ServerException("Faild To Get Home Services");
+    }
+  }
+  @override
+  Future<List<HomeServicesModel>> fetchAllHomeServices() async {
     final response = await dioClient.get(Endpoints.getServices);
     if (response.statusCode == 200) {
       final json = response.data as Map<String, dynamic>;

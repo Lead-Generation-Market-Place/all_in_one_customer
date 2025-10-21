@@ -7,7 +7,8 @@ import '../../../../core/error/failures/failure.dart';
 
 abstract class HomeServicesRepository {
   Future<Either<Failure, List<HomeServicesEntity>>> fetchServicesQuery(String query);
-  Future<Either<Failure,List<HomeServicesEntity>>>getHomeServices();
+  Future<Either<Failure,List<HomeServicesEntity>>>fetchPopularHomeServices();
+  Future<Either<Failure,List<HomeServicesEntity>>>fetchAllHomeServices();
   Future<Either<Failure,List<HomeServicesPromotionEntity>>>getPromotions();
   Future<Either<Failure,List<HomeServicesFetchProfessionalsEntity>>>fetchPros(String query);
   Future<Either<Failure,List<HomeServicesFetchProfessionalsEntity>>>fetchProsByServiceIdAndZip(String serviceId,String zipCode);

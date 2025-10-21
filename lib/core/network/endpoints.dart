@@ -17,6 +17,7 @@ abstract class Endpoints {
 
   // Services endpoints
   static const String getServices = '/services';
+  static const String getPopularServices = '/popular-services';
   // static const String getProductDetail = '/products/{id}';
   // static const String createProduct = '/products';
   // static const String updateProduct = '/products/{id}';

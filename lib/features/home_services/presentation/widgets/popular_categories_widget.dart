@@ -23,7 +23,7 @@ class PopularCategoriesWidget extends StatelessWidget {
 
         if (controller.homeServices.isEmpty) {
           return InkWell(
-            onTap: () => controller.fetchHomeServices(),
+            onTap: () => controller.fetchPopularHomeServices(),
             child: const Icon(Icons.refresh),
           );
         }

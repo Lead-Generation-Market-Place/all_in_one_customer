@@ -1,31 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 
-class SeeAllServicesScreen extends StatelessWidget {
-  var  services;
+import '../../../../core/constants/height.dart';
+import '../controllers/home_services_controller.dart';
+import '../widgets/app_bar_widget.dart';
 
-   SeeAllServicesScreen({super.key, required this.services});
+class SeeAllServicesScreen extends StatefulWidget {
+  SeeAllServicesScreen({super.key});
 
+  @override
+  State<SeeAllServicesScreen> createState() => _SeeAllServicesScreenState();
+}
+
+class _SeeAllServicesScreenState extends State<SeeAllServicesScreen> {
+
+
+  Future<void> initialize()async{
+    final controller = Provider.of<HomeServicesController>(context, listen: false);
+    await controller.fetchAllHomeServices();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initialize();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("All Services"),
+      appBar: PreferredSize(
+        child: AppBarWidget(title: Text("All Services")),
+        preferredSize: Size.fromHeight(height(context) / 15),
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(12),
-        itemCount: services.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // 2 items per row
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          childAspectRatio: 3 / 2, // adjust height vs width
-        ),
-        itemBuilder: (context, index) {
-         final service=services[index];
-          return _buildServiceCard(context, service["name"]!, service["imageUrl"]!);
-        },
+      body: Consumer(builder: (context, value, child) {
+        final controller = Provider.of<HomeServicesController>(context);
+        if (controller.isLoading) {
+          return _buildLoadingWidget();
+        } else if (controller.error != null) {
+          return _buildErrorWidget(controller.error!);
+        } else {
+          return _buildSuccessWidget(controller.homeServices);
+        }
+      }),
+    );
+  }
+
+  Widget _buildErrorWidget(String message) {
+    return Center(
+      child: Text(
+        message,
+        style: const TextStyle(color: Colors.red, fontSize: 16),
       ),
+    );
+  }
+
+  Widget _buildLoadingWidget() {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Widget _buildSuccessWidget(List<HomeServicesEntity> services) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(12),
+      itemCount: services.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // 2 items per row
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 3 / 2, // adjust height vs width
+      ),
+      itemBuilder: (context, index) {
+        final service = services[index];
+        return _buildServiceCard(context, service.name, service.image_url);
+      },
     );
   }
 
@@ -33,9 +82,9 @@ class SeeAllServicesScreen extends StatelessWidget {
     return InkWell(
       onTap: () {
         // TODO: Navigate to service detail screen
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Selected: $name")),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Selected: $name")));
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
@@ -59,7 +108,9 @@ class SeeAllServicesScreen extends StatelessWidget {
               child: Text(
                 name,
                 style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
