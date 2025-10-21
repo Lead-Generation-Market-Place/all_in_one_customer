@@ -68,7 +68,7 @@ Widget _buildHorizontalCategoryList(
               return _buildCategoryItem(
                 context,
                 service.name,
-                service.subcategory_id,
+               AssetConstants.AssetApi+service.image_url,
                 service.id,
               );
             },
@@ -83,7 +83,7 @@ Widget _buildHorizontalCategoryList(
 Widget _buildCategoryItem(
   BuildContext context,
   String name,
-  String imageUrl,
+  String  imageUrl,
   String id,
 ) {
   final controller = context.read<HomeServicesController>();
@@ -102,7 +102,7 @@ Widget _buildCategoryItem(
             CachedNetworkImage(
               height: height(context),
               width: width(context) / 1.8,
-              imageUrl: imageUrl,
+              imageUrl:imageUrl,
 
               fit: BoxFit.cover,
               errorWidget: (context, url, error) => _buildErrorWidget(),

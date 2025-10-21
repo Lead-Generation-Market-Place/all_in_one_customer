@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/core/constants/asset_constants.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 
 import '../../../../core/constants/height.dart';
@@ -81,18 +82,20 @@ class _SeeAllServicesScreenState extends State<SeeAllServicesScreen> {
   Widget _buildServiceCard(BuildContext context, String name, String imageUrl) {
     return InkWell(
       onTap: () {
+     
         // TODO: Navigate to service detail screen
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text("Selected: $name")));
       },
+      
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             CachedNetworkImage(
-              imageUrl: imageUrl,
+              imageUrl:AssetConstants.AssetApi+imageUrl,
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
