@@ -1,6 +1,4 @@
-import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:yelpax/core/network/dio_client.dart';
 import 'package:yelpax/core/network/endpoints.dart';
 import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
