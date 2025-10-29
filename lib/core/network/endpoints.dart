@@ -2,7 +2,7 @@
 abstract class Endpoints {
   //static const String baseUrl = 'https://servicyee-backend.onrender.com/api/v1';  //real server
  // static const String baseUrl='http://10.0.2.2:4000/api/v1';   //test server for android emulator
-  static const String baseUrl="http://192.168.0.160:4000/api/v1";
+  static const String baseUrl="http://192.168.0.179:4000/api/v1";
 
   // Auth endpoints
   static const String login = '/auth/login';
@@ -16,8 +16,9 @@ abstract class Endpoints {
   static const String changePassword = '/users/change-password';
 
   // Services endpoints
-  static const String getServices = '/services';
-  static const String getPopularServices = '/popular-services';
+  static const String getServices = '/services'; //all services
+  static const String getPopularServices = '/popular-services'; //Popular Services
+  static const String nearbyServices='/findpros/zip'; //nearby services based on zip code
   // static const String getProductDetail = '/products/{id}';
   // static const String createProduct = '/products';
   // static const String updateProduct = '/products/{id}';

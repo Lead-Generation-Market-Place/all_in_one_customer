@@ -4,7 +4,6 @@ import 'package:yelpax/core/network/endpoints.dart';
 import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_fetch_professional_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_model.dart';
-
 import '../../../../core/error/exceptions/exceptions.dart';
 
 abstract class HomeServicesRemoteDataSource {
@@ -17,6 +16,7 @@ abstract class HomeServicesRemoteDataSource {
     String serviceId,
     String zipCode,
   );
+  Future<List<HomeServicesModel>> fetchNearbyHomeServices(String zipCode);
 }
 
 class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
@@ -146,5 +146,36 @@ Future<List<HomeServicesFetchProfessionalModel>> fetchProsByServiceAndZip(
     throw ServerException("An error occurred while fetching professionals");
   }
 }
+
+  @override
+  Future<List<HomeServicesModel>> fetchNearbyHomeServices(String zipCode) async{
+   try {
+    final response = await dioClient.get(
+      Endpoints.nearbyServices+"/$zipCode",
+      
+    );
+
+    if (response.statusCode == 200) {
+      final json = response.data;
+
+    
+        final List<dynamic> listData = json['data'] ?? [];
+        return listData
+            .map((e) => HomeServicesModel.fromJson(e))
+            .toList();
+      
+    } else if (response.statusCode == 404) {
+      throw NotFoundException(
+        "No Services Found On zip code",
+      );
+    } else {
+      throw ServerException(
+        "Failed to get Services Server PRobelm: ${response.statusCode}",
+      );
+    }
+  } catch (e, s) {
+    throw ServerException("An error occurred while fetching Services");
+  }
+  }
 
 }

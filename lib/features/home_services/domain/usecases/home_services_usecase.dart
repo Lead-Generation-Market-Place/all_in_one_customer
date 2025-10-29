@@ -15,4 +15,7 @@ class HomeServicesUsecase {
     return homeServicesRepository.fetchAllHomeServices();
     
   }
+    Future<Either<Failure, List<HomeServicesEntity>>> nearbyHomeServices(String zipCode) async{
+    return  homeServicesRepository.fetchNearbyHomeServices(zipCode);
+  }
 }

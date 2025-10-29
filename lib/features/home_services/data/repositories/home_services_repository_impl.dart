@@ -241,4 +241,23 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
       return Left(GenericFailure(e.toString()));
     }
   }
+  
+  @override
+  Future<Either<Failure, List<HomeServicesEntity>>> fetchNearbyHomeServices(String zipCode)async {
+    try {
+      final models = await remoteDataSource.fetchNearbyHomeServices(zipCode);
+      if (!await networkInfo.isConnected) {
+        return Left(NoInternetFailure('No Internet Connection'));
+      }
+      return Right(models);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on CustomDioException catch (e) {
+      return Left(DioFailure(e.message));
+    } catch (e) {
+      return Left(GenericFailure(e.toString()));
+    }
+  }
 }

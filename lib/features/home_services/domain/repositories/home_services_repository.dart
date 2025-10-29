@@ -13,4 +13,5 @@ abstract class HomeServicesRepository {
   Future<Either<Failure,List<HomeServicesFetchProfessionalsEntity>>>fetchPros(String query);
   Future<Either<Failure,List<HomeServicesFetchProfessionalsEntity>>>fetchProsByServiceIdAndZip(String serviceId,String zipCode);
   Future<Either<Failure, HomeServicesLocationEntity>> getCurrentLocation();
+  Future<Either<Failure,List<HomeServicesEntity>>> fetchNearbyHomeServices(String zipCode);
 }

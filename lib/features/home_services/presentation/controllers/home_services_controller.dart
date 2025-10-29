@@ -16,12 +16,16 @@ class HomeServicesController extends ChangeNotifier {
   bool _isLoading = false;
   String? _error;
   String _searchQuery = '';
+  bool _isNearbyServicesLoading = false;
+  List<HomeServicesEntity> _nearbyHomeServices = [];
 
   // Getters
   List<HomeServicesEntity> get homeServices => _homeServices;
   bool get isLoading => _isLoading;
   String? get error => _error;
   String get searchQuery => _searchQuery;
+  bool get isNearbyServicesLoading => _isNearbyServicesLoading;
+  List<HomeServicesEntity> get nearbyHomeServices => _nearbyHomeServices;
 
   // Fetch home services Methods
   Future<void> fetchPopularHomeServices() async {
@@ -40,6 +44,38 @@ class HomeServicesController extends ChangeNotifier {
         notifyListeners();
       },
     );
+  }
+
+
+  //fetch Nearby Home Services
+  Future<void> fetchNearbyHomeServices(String zipCode) async {
+    _isLoading = true;
+    notifyListeners();
+    final response = await homeServicesUsecase.nearbyHomeServices(zipCode);
+   try {
+     
+    response.fold(
+      (problem) {
+        _error = problem.message;
+        _isLoading = false;
+        
+        notifyListeners();
+      },
+      (success) {
+      
+        _nearbyHomeServices = success;
+        _isLoading = false;
+        notifyListeners();
+        print("-------------------------");
+        print(_nearbyHomeServices[0].name);
+        print(_nearbyHomeServices[0].slug);
+        print(_nearbyHomeServices[0].image_url);
+        
+      },
+    );
+   } catch (e) {
+     print(e);
+   }
   }
     // Fetch home services Methods
   Future<void> fetchAllHomeServices() async {
@@ -65,7 +101,7 @@ class HomeServicesController extends ChangeNotifier {
     if (service['name'] == 'See All') {
       AppConstants.navigateKeyword.currentState?.pushNamed(
         AppRouter.seeAllServices,
-        arguments: _categories,
+        
       );
     } else {
        
@@ -82,19 +118,10 @@ class HomeServicesController extends ChangeNotifier {
     }
   }
 
-  bool _categoryLoading = false;
-  bool _isAddressExists = false;
-  List _categories = [];
 
-  bool get categoryLoading => _categoryLoading;
-  bool get isAddressExists => _isAddressExists;
-
-  List get categories => _categories;
-  bool _refreshLoading = false;
-  bool get refreshLoading => _refreshLoading;
 
   Future<void> retry() async {
-    _refreshLoading = true;
+    _isLoading = true;
     notifyListeners();
     try {
       await Future.delayed(Duration(seconds: 5));
@@ -103,7 +130,7 @@ class HomeServicesController extends ChangeNotifier {
     } catch (e) {
       print('❌ Error: $e');
     } finally {
-      _refreshLoading = false;
+      _isLoading = false;
       notifyListeners();
     }
   }
