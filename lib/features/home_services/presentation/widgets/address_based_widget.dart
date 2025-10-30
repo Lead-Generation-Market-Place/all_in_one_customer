@@ -23,7 +23,7 @@ class AddressBasedWidget extends StatelessWidget {
 
         if (controller.nearbyHomeServices.isEmpty && controller.isNearbyServicesLoading == false) {
           return InkWell(
-            onTap: () => controller.fetchNearbyHomeServices("10004"),
+            onTap: () => controller.fetchNearbyHomeServices(),
             child: Center(child: const Icon(Icons.refresh)),
           );
         }

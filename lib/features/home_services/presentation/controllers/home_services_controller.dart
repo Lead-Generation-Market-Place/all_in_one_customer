@@ -30,6 +30,8 @@ class HomeServicesController extends ChangeNotifier {
   bool get isNearbyServicesLoading => _isNearbyServicesLoading;
   List<HomeServicesEntity> get nearbyHomeServices => _nearbyHomeServices;
 
+
+
   // Fetch home services Methods
   Future<void> fetchPopularHomeServices() async {
     _isLoading = true;
@@ -49,11 +51,19 @@ class HomeServicesController extends ChangeNotifier {
     );
   }
 
+  String? _getZipCodeFromLocation() {
+    final location = locationData.currentLocation;
+    return location?.zipCode;
+  }
+
   //fetch Nearby Home Services
-  Future<void> fetchNearbyHomeServices(String zipCode) async {
+  Future<void> fetchNearbyHomeServices() async {
     _isNearbyServicesLoading = true;
+
     notifyListeners();
-    final response = await homeServicesUsecase.nearbyHomeServices(zipCode);
+    final response = await homeServicesUsecase.nearbyHomeServices(
+      _getZipCodeFromLocation() ?? "",
+    );
     try {
       response.fold(
         (problem) {

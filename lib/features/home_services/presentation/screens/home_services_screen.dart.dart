@@ -3,7 +3,6 @@ import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_location_controller.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/popular_categories_widget.dart';
-import 'package:yelpax/features/home_services/presentation/widgets/section_title_widget.dart';
 import '../../../../app/presentation/shell/widgets/custom_bottom_nav.dart';
 import '../../../../config/routes/router.dart';
 import '../../../../config/themes/theme_mode_type.dart';
@@ -45,7 +44,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           .fetchPopularHomeServices(); //fetching home services when user navigated to home screen of home services
       await controller.locationData
           .getCurrentLocation(); //getting use current location when the app is installed
-      await controller.fetchNearbyHomeServices("10004"); //fetching nearby home services based on zip code
+      await controller.fetchNearbyHomeServices(); //fetching nearby home services based on zip code
     });
   }
 
