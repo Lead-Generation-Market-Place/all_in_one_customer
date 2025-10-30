@@ -147,35 +147,35 @@ Future<List<HomeServicesFetchProfessionalModel>> fetchProsByServiceAndZip(
   }
 }
 
-  @override
-  Future<List<HomeServicesModel>> fetchNearbyHomeServices(String zipCode) async{
-   try {
+@override
+Future<List<HomeServicesModel>> fetchNearbyHomeServices(String zipCode) async {
+  try {
     final response = await dioClient.get(
-      Endpoints.nearbyServices+"/$zipCode",
-      
+      Endpoints.nearbyServices + "/$zipCode",
     );
 
     if (response.statusCode == 200) {
       final json = response.data;
-
-    
-        final List<dynamic> listData = json['data'] ?? [];
-        return listData
-            .map((e) => HomeServicesModel.fromJson(e))
-            .toList();
+      final List<dynamic> listData = json['data'] ?? [];
       
+      var res = listData
+          .map((e) {
+            // Extract the nested service_id object
+            final serviceData = e['service_id'] ?? {};
+            return HomeServicesModel.fromJson(serviceData);
+          })
+          .toList();
+          
+    
+      return res;
     } else if (response.statusCode == 404) {
-      throw NotFoundException(
-        "No Services Found On zip code",
-      );
+      throw NotFoundException("No Services Found On zip code");
     } else {
-      throw ServerException(
-        "Failed to get Services Server PRobelm: ${response.statusCode}",
-      );
+      throw ServerException("Failed to get Services Server Problem: ${response.statusCode}");
     }
   } catch (e, s) {
     throw ServerException("An error occurred while fetching Services");
   }
-  }
+}
 
 }

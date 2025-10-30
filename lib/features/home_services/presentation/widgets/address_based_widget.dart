@@ -21,16 +21,16 @@ class AddressBasedWidget extends StatelessWidget {
           );
         }
 
-        if (controller.nearbyHomeServices.isEmpty) {
+        if (controller.nearbyHomeServices.isEmpty && controller.isNearbyServicesLoading == false) {
           return InkWell(
-            onTap: () => controller.fetchPopularHomeServices(),
+            onTap: () => controller.fetchNearbyHomeServices("10004"),
             child: Center(child: const Icon(Icons.refresh)),
           );
         }
 
         return _buildHorizontalCategoryList(
-          'Popular on Yelpax',
-          controller.homeServices,
+          'Services Near You',
+          controller.nearbyHomeServices,
           context,
         );
       

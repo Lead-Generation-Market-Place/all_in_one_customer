@@ -9,7 +9,10 @@ import '../../../../config/routes/router.dart';
 class HomeServicesController extends ChangeNotifier {
   HomeServicesUsecase homeServicesUsecase;
   HomeServicesLocationController locationData;
-  HomeServicesController({required this.homeServicesUsecase,required this.locationData});
+  HomeServicesController({
+    required this.homeServicesUsecase,
+    required this.locationData,
+  });
 
   //real states
   List<HomeServicesEntity> _homeServices = [];
@@ -46,38 +49,31 @@ class HomeServicesController extends ChangeNotifier {
     );
   }
 
-
   //fetch Nearby Home Services
   Future<void> fetchNearbyHomeServices(String zipCode) async {
-    _isLoading = true;
+    _isNearbyServicesLoading = true;
     notifyListeners();
     final response = await homeServicesUsecase.nearbyHomeServices(zipCode);
-   try {
-     
-    response.fold(
-      (problem) {
-        _error = problem.message;
-        _isLoading = false;
-        
-        notifyListeners();
-      },
-      (success) {
-      
-        _nearbyHomeServices = success;
-        _isLoading = false;
-        notifyListeners();
-        print("-------------------------");
-        print(_nearbyHomeServices[0].name);
-        print(_nearbyHomeServices[0].slug);
-        print(_nearbyHomeServices[0].image_url);
-        
-      },
-    );
-   } catch (e) {
-     print(e);
-   }
+    try {
+      response.fold(
+        (problem) {
+          _error = problem.message;
+          notifyListeners();
+        },
+        (success) {
+          _nearbyHomeServices = success;
+          notifyListeners();
+        },
+      );
+    } catch (e) {
+      print(e);
+    } finally {
+      _isNearbyServicesLoading = false;
+      notifyListeners();
+    }
   }
-    // Fetch home services Methods
+
+  // Fetch home services Methods
   Future<void> fetchAllHomeServices() async {
     _isLoading = true;
     notifyListeners();
@@ -96,29 +92,24 @@ class HomeServicesController extends ChangeNotifier {
     );
   }
 
-//opening a service from home screen of home services
+  //opening a service from home screen of home services
   Future<void> openService(Map service) async {
     if (service['name'] == 'See All') {
       AppConstants.navigateKeyword.currentState?.pushNamed(
         AppRouter.seeAllServices,
-        
       );
     } else {
-       
       AppConstants.navigateKeyword.currentState?.pushNamed(
         AppRouter.serviceProfessionalsScreen,
         arguments: {
-          'serviceId':service['id'],
-          'serviceName':service['name'],
-          'zipCode':service['zipCode'] ?? '',
-          'imageUrl':service['imageUrl'],
-        }
-
+          'serviceId': service['id'],
+          'serviceName': service['name'],
+          'zipCode': service['zipCode'] ?? '',
+          'imageUrl': service['imageUrl'],
+        },
       );
     }
   }
-
-
 
   Future<void> retry() async {
     _isLoading = true;
@@ -135,7 +126,6 @@ class HomeServicesController extends ChangeNotifier {
     }
   }
 
- 
   @override
   void dispose() {
     super.dispose();
