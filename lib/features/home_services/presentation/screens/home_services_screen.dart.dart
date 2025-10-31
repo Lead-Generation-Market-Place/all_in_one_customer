@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_location_controller.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/popular_categories_widget.dart';
 import '../../../../app/presentation/shell/widgets/custom_bottom_nav.dart';
@@ -9,6 +10,7 @@ import '../../../../config/themes/theme_mode_type.dart';
 import '../../../../config/themes/theme_provider.dart';
 import '../controllers/home_services_controller.dart';
 import '../widgets/address_based_widget.dart';
+import '../widgets/section_title_widget.dart';
 import 'home_services_promotion_screen.dart';
 import '../widgets/app_bar_widget.dart';
 import '../../../../shared/widgets/custom_shimmer.dart';
@@ -44,7 +46,8 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           .fetchPopularHomeServices(); //fetching home services when user navigated to home screen of home services
       await controller.locationData
           .getCurrentLocation(); //getting use current location when the app is installed
-      await controller.fetchNearbyHomeServices(); //fetching nearby home services based on zip code
+      await controller
+          .fetchNearbyHomeServices(); //fetching nearby home services based on zip code
     });
   }
 
@@ -98,13 +101,14 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               //   LocationDisplayWidget(),
               //     _buildActivityBasedCategories(),
               _buildDivider(),
-                  AddressBasedWidget(),
-      //        _buildYourGoals(),
-               _buildDivider(),
+              AddressBasedWidget(),
+              _buildDivider(),
+              _buildYourGoals(),
+              _buildDivider(),
               // _buildPopularCategories(),
-        //      _buildDivider(),
+              //      _buildDivider(),
               //  _buildPopularCategories(),
-      //        _buildYourGoals(),
+              //        _buildYourGoals(),
               //   // _buildDivider(),
               _buildMoreGuides(),
               _buildDivider(),
@@ -234,78 +238,78 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   //   );
   // }
 
-  // Widget _buildYourGoals() {
-  //   return Consumer<HomeServicesController>(
-  //     builder: (context, value, child) {
-  //       if (value.isLoading) {
-  //         return CustomShimmer(
-  //           layoutType: ShimmerLayoutType.list,
-  //           itemCount: 4,
-  //         );
-  //       }
-  //       if (value.homeServices.isEmpty) {
-  //         return Icon(Icons.error_outline);
-  //       }
-  //       return Column(
-  //         children: [
-  //           Card(
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Container(
-  //                   color: Theme.of(context).secondaryHeaderColor,
-  //                   width: width(context),
-  //                   height: height(context) / 5,
-  //                   child: Image.network(
-  //                     'https://images.pexels.com/photos/4246109/pexels-photo-4246109.jpeg',
-  //                     fit: BoxFit.cover,
-  //                   ),
-  //                 ),
-  //                 SectionTitleWidget(title: 'Keep things clean'),
-  //                 Container(
-  //                   padding: const EdgeInsets.all(8),
-  //                   width: width(context),
-  //                   height: height(context) / 3.7,
-  //                   child: ListView.builder(
-  //                     itemCount: 3,
-  //                     itemBuilder: (context, index) =>
-  //                         _buildCardForGoals(value.homeServices, index),
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   padding: const EdgeInsets.all(8),
-  //                   child: Card(
-  //                     child: ListTile(
-  //                       title: Text(
-  //                         'View Guide ->',
-  //                         textAlign: TextAlign.center,
-  //                         style: Theme.of(context).textTheme.titleSmall,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //           SizedBox(height: 30),
-  //           Card(
-  //             child: ListTile(
-  //               title: Text(
-  //                 'Looking for  something tailored to you?',
-  //                 style: Theme.of(context).textTheme.bodySmall,
-  //                 textAlign: TextAlign.center,
-  //               ),
-  //               subtitle: TextButton(
-  //                 onPressed: () => print('Tell us about button pressed'),
-  //                 child: Text('Tell us about your goals'),
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+  Widget _buildYourGoals() {
+    return Consumer<HomeServicesController>(
+      builder: (context, value, child) {
+        // if (value.isLoading) {
+        //   return CustomShimmer(
+        //     layoutType: ShimmerLayoutType.list,
+        //     itemCount: 4,
+        //   );
+        // }
+        // if (value.homeServices.isEmpty) {
+        //   return Icon(Icons.error_outline);
+        // }
+        return Column(
+          children: [
+            Card(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: Theme.of(context).secondaryHeaderColor,
+                    width: width(context),
+                    height: height(context) / 5,
+                    child: Image.network(
+                      'https://images.pexels.com/photos/4246109/pexels-photo-4246109.jpeg',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SectionTitleWidget(title: 'Keep things clean'),
+                  // Container(
+                  //   padding: const EdgeInsets.all(8),
+                  //   width: width(context),
+                  //   height: height(context) / 3.7,
+                  //   child: ListView.builder(
+                  //     itemCount: 3,
+                  //     itemBuilder: (context, index) =>
+                  //         _buildCardForGoals(value.homeServices, index),
+                  //   ),
+                  // ),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Card(
+                      child: ListTile(
+                        title: Text(
+                          'View Guide ->',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 30),
+            Card(
+              child: ListTile(
+                title: Text(
+                  'Looking for  something tailored to you?',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                ),
+                subtitle: TextButton(
+                  onPressed: () => print('Tell us about button pressed'),
+                  child: Text('Tell us about your goals'),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Widget _buildMoreGuides() {
     return Consumer<HomeServicesController>(
@@ -438,25 +442,25 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     return Container(margin: const EdgeInsets.all(24), child: Divider());
   }
 
-  // Widget _buildCardForGoals(List category, int index) {
-  //   return Card(
-  //     child: ListTile(
-  //       leading: Image.network(category[index]['imageUrl'], fit: BoxFit.cover),
-  //       title: Text(
-  //         category[index]['name'],
-  //         style: Theme.of(context).textTheme.titleSmall,
-  //       ),
-  //       subtitle: Text(
-  //         '\$${100}-150 avg.',
-  //         style: Theme.of(context).textTheme.bodySmall,
-  //       ),
-  //       trailing: IconButton(
-  //         onPressed: () => print('saved'),
-  //         icon: Icon(Icons.bookmark_outline),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _buildCardForGoals(List<HomeServicesEntity> services, int index) {
+    return Card(
+      child: ListTile(
+        leading: Image.network(services[index].image_url, fit: BoxFit.cover),
+        title: Text(
+          services[index].name,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        subtitle: Text(
+          '\$${100}-150 avg.',
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        trailing: IconButton(
+          onPressed: () => print('saved'),
+          icon: Icon(Icons.bookmark_outline),
+        ),
+      ),
+    );
+  }
 
   Widget _buildFooter() {
     return Center(
@@ -523,5 +527,3 @@ Widget _buildLocationTitle() {
     },
   );
 }
-
-

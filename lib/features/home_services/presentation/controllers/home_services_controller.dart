@@ -21,6 +21,7 @@ class HomeServicesController extends ChangeNotifier {
   String _searchQuery = '';
   bool _isNearbyServicesLoading = false;
   List<HomeServicesEntity> _nearbyHomeServices = [];
+  String _nearbyHomeServicesError = '';
 
   // Getters
   List<HomeServicesEntity> get homeServices => _homeServices;
@@ -29,7 +30,7 @@ class HomeServicesController extends ChangeNotifier {
   String get searchQuery => _searchQuery;
   bool get isNearbyServicesLoading => _isNearbyServicesLoading;
   List<HomeServicesEntity> get nearbyHomeServices => _nearbyHomeServices;
-
+  String get nearbyHomeServicesError => _nearbyHomeServicesError;
 
 
   // Fetch home services Methods
@@ -67,7 +68,7 @@ class HomeServicesController extends ChangeNotifier {
     try {
       response.fold(
         (problem) {
-          _error = problem.message;
+          _nearbyHomeServicesError = problem.message;
           notifyListeners();
         },
         (success) {
@@ -76,7 +77,7 @@ class HomeServicesController extends ChangeNotifier {
         },
       );
     } catch (e) {
-      print(e);
+      _nearbyHomeServicesError=e.toString();
     } finally {
       _isNearbyServicesLoading = false;
       notifyListeners();

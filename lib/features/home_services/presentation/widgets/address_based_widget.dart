@@ -21,11 +21,14 @@ class AddressBasedWidget extends StatelessWidget {
           );
         }
 
-        if (controller.nearbyHomeServices.isEmpty && controller.isNearbyServicesLoading == false) {
-          return InkWell(
-            onTap: () => controller.fetchNearbyHomeServices(),
-            child: Center(child: const Icon(Icons.refresh)),
-          );
+        if (controller.nearbyHomeServices.isEmpty &&
+            controller.isNearbyServicesLoading == false) {
+          return _buildEmptyNearbyWidget(controller);
+        }
+
+        if (controller.nearbyHomeServicesError.isNotEmpty &&
+            controller.isNearbyServicesLoading == false) {
+          return _buildErrorWidget();
         }
 
         return _buildHorizontalCategoryList(
@@ -33,7 +36,6 @@ class AddressBasedWidget extends StatelessWidget {
           controller.nearbyHomeServices,
           context,
         );
-      
       },
     );
   }
@@ -69,7 +71,7 @@ Widget _buildHorizontalCategoryList(
               return _buildCategoryItem(
                 context,
                 service.name,
-               AssetConstants.AssetApi+service.image_url,
+                AssetConstants.AssetApi + service.image_url,
                 service.id,
               );
             },
@@ -84,14 +86,18 @@ Widget _buildHorizontalCategoryList(
 Widget _buildCategoryItem(
   BuildContext context,
   String name,
-  String  imageUrl,
+  String imageUrl,
   String id,
 ) {
   final controller = context.read<HomeServicesController>();
   return InkWell(
     onTap: () {
-        controller.openService({'name': name, 'imageUrl': imageUrl, 'id': id,'zipCode':''});
-     
+      controller.openService({
+        'name': name,
+        'imageUrl': imageUrl,
+        'id': id,
+        'zipCode': '',
+      });
     },
     child: Padding(
       padding: const EdgeInsets.all(8.0),
@@ -103,7 +109,7 @@ Widget _buildCategoryItem(
             CachedNetworkImage(
               height: height(context),
               width: width(context) / 1.8,
-              imageUrl:imageUrl,
+              imageUrl: imageUrl,
 
               fit: BoxFit.cover,
               errorWidget: (context, url, error) => _buildErrorWidget(),
@@ -134,5 +140,29 @@ Widget _buildCategoryItem(
 Widget _buildErrorWidget() {
   return Container(
     child: const Icon(Icons.error_outline_outlined, color: Colors.red),
+  );
+}
+
+Widget _buildEmptyNearbyWidget(HomeServicesController controller) {
+  return Container(
+    decoration: BoxDecoration(
+      border: BoxBorder.all(color: Colors.grey),
+      borderRadius: BorderRadius.circular(7)
+    ),
+    child: Column(
+      children: [
+        Center(
+          child: Text(
+            "No Services Available In Your Current Area",
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+        ),
+        SizedBox(height: 8),
+        InkWell(
+          child: Icon(Icons.refresh, color: Colors.cyan),
+          onTap: () => controller.fetchNearbyHomeServices(),
+        ),
+      ],
+    ),
   );
 }
