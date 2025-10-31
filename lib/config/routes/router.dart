@@ -10,6 +10,7 @@ import '../../app/presentation/shell/main_shell_screen.dart';
 import '../../core/error/widgets/unknown_route_screen.dart';
 import '../../features/grocery/presentation/screens/grocery_screen_homepage.dart';
 import '../../features/home_services/presentation/screens/home_services_screen.dart.dart';
+import '../../features/home_services/presentation/screens/home_services_wishlist_screen.dart';
 import '../../features/home_services/sub_features/service_professionals_id_zipcode/screens/service_professionals_screen.dart';
 import '../../features/home_services/sub_features/single_service_professional/presentation/screens/single_service_professional_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -35,6 +36,7 @@ class AppRouter {
   static const String questionFlowScreen = '/questionFlowScreen';
   static const String itHomeScreen = '/itHomeScreen';
   static const String settingsScreen = '/settingsScreen';
+  static const String wishlistScreen = '/wishlistScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -85,6 +87,9 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const ItHomeScreen());
       case settingsScreen:
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
+      case wishlistScreen:
+        return MaterialPageRoute(
+            builder: (_) => const HomeServicesWishlistScreen());
       default:
         return unknownRoute(settings);
     }

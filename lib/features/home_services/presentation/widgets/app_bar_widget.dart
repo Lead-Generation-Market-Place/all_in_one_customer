@@ -34,7 +34,11 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         SizedBox(width: 10),
         InkWell(child: Icon(Icons.question_mark_outlined)),
         SizedBox(width: 10),
-        InkWell(child: Icon(CupertinoIcons.heart)),
+        InkWell(child: Icon(CupertinoIcons.heart),
+          onTap: () => AppConstants.navigateKeyword.currentState?.pushNamed(
+            AppRouter.wishlistScreen,
+          ),
+        ),
       ],
     );
   }
