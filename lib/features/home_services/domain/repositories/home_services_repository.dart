@@ -3,6 +3,7 @@ import 'package:yelpax/features/home_services/domain/entities/home_services_enti
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_location_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_promotion_entity.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_wishlist_entity.dart';
 import '../../../../core/error/failures/failure.dart';
 
 abstract class HomeServicesRepository {
@@ -14,4 +15,5 @@ abstract class HomeServicesRepository {
   Future<Either<Failure,List<HomeServicesFetchProfessionalsEntity>>>fetchProsByServiceIdAndZip(String serviceId,String zipCode);
   Future<Either<Failure,HomeServicesLocationEntity>> getCurrentLocation();
   Future<Either<Failure,List<HomeServicesEntity>>> fetchNearbyHomeServices(String zipCode);
+  Future<Either<Failure,List<HomeServicesWishlistEntity>>> fetchUserWishlist();
 }

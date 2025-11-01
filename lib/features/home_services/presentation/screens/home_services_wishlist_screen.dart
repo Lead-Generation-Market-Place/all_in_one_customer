@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_wishlist_entity.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/home_services_wishlist_controller.dart';
+
+import '../../../../core/constants/height.dart';
+import '../widgets/app_bar_widget.dart';
 
 class HomeServicesWishlistScreen extends StatefulWidget {
   const HomeServicesWishlistScreen({Key? key}) : super(key: key);
@@ -10,6 +16,14 @@ class HomeServicesWishlistScreen extends StatefulWidget {
 
 class _HomeServicesWishlistScreenState
     extends State<HomeServicesWishlistScreen> {
+  Future<void> _intialize() async {
+    var controller = Provider.of<HomeServicesWishlistController>(
+      context,
+      listen: false,
+    );
+    await controller.fetchUserWishlist();
+  }
+
   final List<WishlistItem> _items = [
     WishlistItem(
       id: '1',
@@ -69,7 +83,10 @@ class _HomeServicesWishlistScreenState
         title: const Text('Clear wishlist'),
         content: const Text('Are you sure you want to remove all items?'),
         actions: [
-          TextButton(onPressed: () => Navigator.of(ctx).pop(), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel'),
+          ),
           TextButton(
             onPressed: () {
               setState(() => _items.clear());
@@ -85,25 +102,54 @@ class _HomeServicesWishlistScreenState
   void _browseServices() {
     // Placeholder: wire navigation to services screen in real app.
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Navigate to services list (not implemented)')),
+      const SnackBar(
+        content: Text('Navigate to services list (not implemented)'),
+      ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _intialize();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Wishlist'),
-        actions: [
-          if (_items.isNotEmpty)
-            IconButton(
-              icon: const Icon(Icons.delete_sweep_outlined),
-              tooltip: 'Clear all',
-              onPressed: _clearAll,
-            ),
-        ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(height(context) / 15),
+        child: AppBarWidget(title: const Text('Wishlist')),
       ),
-      body: _items.isEmpty ? _buildEmptyState(context) : _buildList(),
+
+      // AppBar(
+      //   title: ,
+      //   actions: [
+      //     if (_items.isNotEmpty)
+      //       IconButton(
+      //         icon: const Icon(Icons.delete_sweep_outlined),
+      //         tooltip: 'Clear all',
+      //         onPressed: _clearAll,
+      //       ),
+      //   ],
+      // ),
+      body: Consumer<HomeServicesWishlistController>(
+        builder: (context, controller, child) {
+          if (controller.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (controller.error != null) {
+            return Center(child: Text('Error: ${controller.error}'));
+          } else if (controller.wishlists.isEmpty) {
+            return _buildEmptyState(context);
+          } else {
+            return _buildList(controller.wishlists);
+          }
+        },
+      ),
+      //  _items.isEmpty ? _buildEmptyState(context) : _buildList(),
     );
   }
 
@@ -144,13 +190,13 @@ class _HomeServicesWishlistScreenState
     );
   }
 
-  Widget _buildList() {
+  Widget _buildList(List<HomeServicesWishlistEntity> wishlist) {
     return ListView.separated(
       padding: const EdgeInsets.all(12),
-      itemCount: _items.length,
+      itemCount: wishlist.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
-        final item = _items[index];
+        final item = wishlist[index].homeServicesEntity;
         return Dismissible(
           key: ValueKey(item.id),
           direction: DismissDirection.endToStart,
@@ -165,19 +211,22 @@ class _HomeServicesWishlistScreenState
           ),
           onDismissed: (_) => _removeItem(item.id),
           child: Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             elevation: 2,
             child: ListTile(
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 12,
+              ),
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: SizedBox(
                   width: 64,
                   height: 64,
                   child: Image.network(
-                    item.imageUrl,
+                    item.image_url,
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => Container(
                       color: Colors.grey.shade200,
@@ -186,28 +235,32 @@ class _HomeServicesWishlistScreenState
                   ),
                 ),
               ),
-              title: Text(item.title),
+              title: Text(item.name),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(item.provider),
+                  Text(item.description),
                   const SizedBox(height: 6),
                   Row(
                     children: [
                       Container(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.green.shade50,
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: Text('\$${item.price.toStringAsFixed(0)}',
-                            style: const TextStyle(fontWeight: FontWeight.w600)),
+                        child: Text(
+                          '\$${40}',
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
                       ),
                       const SizedBox(width: 8),
                       Icon(Icons.star, size: 16, color: Colors.amber.shade700),
                       const SizedBox(width: 4),
-                      Text(item.rating.toStringAsFixed(1)),
+                      Text('${4.5}'),
                     ],
                   ),
                 ],
@@ -220,7 +273,9 @@ class _HomeServicesWishlistScreenState
               onTap: () {
                 // Placeholder for service detail navigation
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Open "${item.title}" (not implemented)')),
+                  SnackBar(
+                    content: Text('Open "${item.name}" (not implemented)'),
+                  ),
                 );
               },
             ),

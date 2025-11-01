@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:yelpax/core/auth/auth_manager.dart';
 import 'package:yelpax/core/network/network_info.dart';
 import 'package:yelpax/features/home_services/data/datasources/home_services_location_local_data_source.dart';
 import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
@@ -9,6 +10,7 @@ import 'package:yelpax/features/home_services/data/models/home_services_coordina
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_location_entity.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_wishlist_entity.dart';
 import '../../../../core/error/exceptions/exceptions.dart';
 import '../../../../core/error/failures/failure.dart';
 import '../datasources/home_services_remote_data_source.dart';
@@ -19,10 +21,12 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
   final HomeServicesRemoteDataSource remoteDataSource;
   final HomeServicesLocationLocalDataSource locationLocalDataSource;
   final NetworkInfo networkInfo;
+  final AuthManager authManager;
   HomeServicesRepositoryImpl({
     required this.remoteDataSource,
     required this.networkInfo,
     required this.locationLocalDataSource,
+    required this.authManager
   });
 
   @override
@@ -40,7 +44,8 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
   }
 
   @override
-  Future<Either<Failure, List<HomeServicesEntity>>> fetchPopularHomeServices() async {
+  Future<Either<Failure, List<HomeServicesEntity>>>
+  fetchPopularHomeServices() async {
     try {
       final models = await remoteDataSource.fetchPopularHomeServices();
       if (!await networkInfo.isConnected) {
@@ -222,9 +227,10 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
         ? addressParts.join(', ')
         : 'Location information not available';
   }
-  
+
   @override
-  Future<Either<Failure, List<HomeServicesEntity>>> fetchAllHomeServices() async {
+  Future<Either<Failure, List<HomeServicesEntity>>>
+  fetchAllHomeServices() async {
     try {
       final models = await remoteDataSource.fetchAllHomeServices();
       if (!await networkInfo.isConnected) {
@@ -241,9 +247,11 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
       return Left(GenericFailure(e.toString()));
     }
   }
-  
+
   @override
-  Future<Either<Failure, List<HomeServicesEntity>>> fetchNearbyHomeServices(String zipCode)async {
+  Future<Either<Failure, List<HomeServicesEntity>>> fetchNearbyHomeServices(
+    String zipCode,
+  ) async {
     try {
       final models = await remoteDataSource.fetchNearbyHomeServices(zipCode);
       if (!await networkInfo.isConnected) {
@@ -256,6 +264,36 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
       return Left(NetworkFailure(e.message));
     } on CustomDioException catch (e) {
       return Left(DioFailure(e.message));
+    } catch (e) {
+      return Left(GenericFailure(e.toString()));
+    }
+  }
+
+  // Helper method to get current user ID
+  String _getCurrentUserId() {
+    final userId = authManager.currentUser?.user.id;
+    if (userId == null) {
+      throw Exception('User must be logged in to access wishlist');
+    }
+    return userId;
+  }
+
+  @override
+  Future<Either<Failure, List<HomeServicesWishlistEntity>>>
+  fetchUserWishlist() async {
+    try {
+      if (!await networkInfo.isConnected) {
+        return Left(NoInternetFailure('No Internet Connection'));
+      }
+      // Get current user ID from storage/auth
+      final userId = await _getCurrentUserId();
+
+      final models = await remoteDataSource.fetchUserWishlists(userId);
+      return Right(models);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on NotFoundException catch (e) {
+      return Left(NotFoundFailure(e.message));
     } catch (e) {
       return Left(GenericFailure(e.toString()));
     }

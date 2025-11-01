@@ -1,9 +1,10 @@
-
+import 'package:flutter/material.dart';
 import 'package:yelpax/core/network/dio_client.dart';
 import 'package:yelpax/core/network/endpoints.dart';
 import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_fetch_professional_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_model.dart';
+import 'package:yelpax/features/home_services/data/models/home_services_wishlist_model.dart';
 import '../../../../core/error/exceptions/exceptions.dart';
 
 abstract class HomeServicesRemoteDataSource {
@@ -17,6 +18,7 @@ abstract class HomeServicesRemoteDataSource {
     String zipCode,
   );
   Future<List<HomeServicesModel>> fetchNearbyHomeServices(String zipCode);
+  Future<List<HomeServicesWishlistModel>> fetchUserWishlists(String userId);
 }
 
 class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
@@ -60,6 +62,7 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
       throw ServerException("Faild To Get Home Services");
     }
   }
+
   @override
   Future<List<HomeServicesModel>> fetchAllHomeServices() async {
     final response = await dioClient.get(Endpoints.getServices);
@@ -110,72 +113,111 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
     }
   }
 
- @override
-Future<List<HomeServicesFetchProfessionalModel>> fetchProsByServiceAndZip(
-  String serviceId,
-  String zipCode,
-) async {
-  try {
-    final response = await dioClient.post(
-      Endpoints.findpros,
-      data: {
-        "serviceId": serviceId,
-        "zipCode": zipCode,
-      },
-    );
+  @override
+  Future<List<HomeServicesFetchProfessionalModel>> fetchProsByServiceAndZip(
+    String serviceId,
+    String zipCode,
+  ) async {
+    try {
+      final response = await dioClient.post(
+        Endpoints.findpros,
+        data: {"serviceId": serviceId, "zipCode": zipCode},
+      );
 
-    if (response.statusCode == 200) {
-      final json = response.data;
+      if (response.statusCode == 200) {
+        final json = response.data;
 
-    
         final List<dynamic> listData = json['data'] ?? [];
         return listData
             .map((e) => HomeServicesFetchProfessionalModel.fromJson(e))
             .toList();
-      
-    } else if (response.statusCode == 404) {
-      throw NotFoundException(
-        "No professionals found for this service and zip code",
-      );
-    } else {
-      throw ServerException(
-        "Failed to get professionals: ${response.statusCode}",
-      );
+      } else if (response.statusCode == 404) {
+        throw NotFoundException(
+          "No professionals found for this service and zip code",
+        );
+      } else {
+        throw ServerException(
+          "Failed to get professionals: ${response.statusCode}",
+        );
+      }
+    } catch (e, s) {
+      throw ServerException("An error occurred while fetching professionals");
     }
-  } catch (e, s) {
-    throw ServerException("An error occurred while fetching professionals");
   }
-}
+
+  @override
+  Future<List<HomeServicesModel>> fetchNearbyHomeServices(
+    String zipCode,
+  ) async {
+    final endpoint = Endpoints.replacePathParameters(Endpoints.nearbyServices, {
+      "zipCode": zipCode,
+    });
+    try {
+      final response = await dioClient.get(endpoint);
+
+      if (response.statusCode == 200) {
+        final json = response.data;
+        final List<dynamic> listData = json['data'] ?? [];
+
+        var res = listData.map((e) {
+          // Extract the nested service_id object
+          final serviceData = e['service_id'] ?? {};
+          return HomeServicesModel.fromJson(serviceData);
+        }).toList();
+
+        return res;
+      } else if (response.statusCode == 404) {
+        throw NotFoundException("No Services Found On zip code");
+      } else {
+        throw ServerException(
+          "Failed to get Services Server Problem: ${response.statusCode}",
+        );
+      }
+    } catch (e, s) {
+      throw ServerException("An error occurred while fetching Services");
+    }
+  }
 
 @override
-Future<List<HomeServicesModel>> fetchNearbyHomeServices(String zipCode) async {
+Future<List<HomeServicesWishlistModel>> fetchUserWishlists(String userId) async {
+  final endpoint = Endpoints.replacePathParameters(Endpoints.wishlists, {
+    "userId": userId,
+  });
+  
   try {
-    final response = await dioClient.get(
-      Endpoints.nearbyServices + "/$zipCode",
-    );
+    final response = await dioClient.get(endpoint);
 
     if (response.statusCode == 200) {
-      final json = response.data;
-      final List<dynamic> listData = json['data'] ?? [];
+      final json = response.data as Map<String, dynamic>;
       
-      var res = listData
-          .map((e) {
-            // Extract the nested service_id object
-            final serviceData = e['service_id'] ?? {};
-            return HomeServicesModel.fromJson(serviceData);
-          })
+      // Handle empty or null data
+      if (json['data'] == null || json['data'] is! List) {
+        return [];
+      }
+      
+      final List<dynamic> listData = json['data'];
+      
+      // Convert to models, filtering out any invalid items
+      final result = listData
+          .where((item) => item is Map<String, dynamic>)
+          .map((e) => HomeServicesWishlistModel.fromJson(e))
           .toList();
           
-    
-      return res;
+      return result;
     } else if (response.statusCode == 404) {
-      throw NotFoundException("No Services Found On zip code");
+      throw NotFoundException("Wishlist not found for user");
+    } else if (response.statusCode == 500) {
+      throw ServerException("Server error while fetching wishlist");
     } else {
-      throw ServerException("Failed to get Services Server Problem: ${response.statusCode}");
+      throw ServerException("Failed to fetch wishlist: ${response.statusCode}");
     }
+  } on ServerException {
+    rethrow;
+  } on NotFoundException {
+    rethrow;
   } catch (e, s) {
-    throw ServerException("An error occurred while fetching Services");
+    debugPrint("Wishlist fetch error in remote data source: $e\nStack: $s");
+    throw ServerException("Network error while fetching wishlist");
   }
 }
-
 }
