@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_wishlist_entity.dart';
 import 'package:yelpax/features/home_services/presentation/controllers/home_services_wishlist_controller.dart';
 
+import '../../../../core/constants/asset_constants.dart';
 import '../../../../core/constants/height.dart';
 import '../widgets/app_bar_widget.dart';
 
@@ -24,80 +25,50 @@ class _HomeServicesWishlistScreenState
     await controller.fetchUserWishlist();
   }
 
-  final List<WishlistItem> _items = [
-    WishlistItem(
-      id: '1',
-      title: 'Deep Home Cleaning',
-      provider: 'Sparkle Cleaners',
-      price: 99.0,
-      rating: 4.8,
-      imageUrl:
-          'https://images.unsplash.com/photo-1581574200320-1a1e0fb13c3b?w=800&q=60',
-    ),
-    WishlistItem(
-      id: '2',
-      title: 'Plumbing Repair - Kitchen',
-      provider: 'QuickFix Plumbing',
-      price: 75.0,
-      rating: 4.5,
-      imageUrl:
-          'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=60',
-    ),
-    WishlistItem(
-      id: '3',
-      title: 'AC Maintenance',
-      provider: 'CoolTech Services',
-      price: 49.0,
-      rating: 4.6,
-      imageUrl:
-          'https://images.unsplash.com/photo-1582719478177-1d07f59b3e7b?w=800&q=60',
-    ),
-  ];
+  // void _removeItem(String id) {
+  //   final index = _items.indexWhere((element) => element.id == id);
+  //   if (index == -1) return;
+  //   final removed = _items[index];
+  //   setState(() => _items.removeWhere((i) => i.id == id));
+  //   ScaffoldMessenger.of(context).clearSnackBars();
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text('Removed "${removed.title}" from wishlist'),
+  //       action: SnackBarAction(
+  //         label: 'UNDO',
+  //         onPressed: () {
+  //           setState(() {
+  //             _items.insert(0, removed);
+  //           });
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  void _removeItem(String id) {
-    final index = _items.indexWhere((element) => element.id == id);
-    if (index == -1) return;
-    final removed = _items[index];
-    setState(() => _items.removeWhere((i) => i.id == id));
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Removed "${removed.title}" from wishlist'),
-        action: SnackBarAction(
-          label: 'UNDO',
-          onPressed: () {
-            setState(() {
-              _items.insert(0, removed);
-            });
-          },
-        ),
-      ),
-    );
-  }
+  // void _clearAll() {
 
-  void _clearAll() {
-    if (_items.isEmpty) return;
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Clear wishlist'),
-        content: const Text('Are you sure you want to remove all items?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() => _items.clear());
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Clear'),
-          ),
-        ],
-      ),
-    );
-  }
+  //   showDialog(
+  //     context: context,
+  //     builder: (ctx) => AlertDialog(
+  //       title: const Text('Clear wishlist'),
+  //       content: const Text('Are you sure you want to remove all items?'),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.of(ctx).pop(),
+  //           child: const Text('Cancel'),
+  //         ),
+  //         TextButton(
+  //           onPressed: () {
+  //             setState(() => _items.clear());
+  //             Navigator.of(ctx).pop();
+  //           },
+  //           child: const Text('Clear'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   void _browseServices() {
     // Placeholder: wire navigation to services screen in real app.
@@ -209,7 +180,7 @@ class _HomeServicesWishlistScreenState
             ),
             child: const Icon(Icons.delete, color: Colors.white),
           ),
-          onDismissed: (_) => _removeItem(item.id),
+          onDismissed: (_) => print("dismissed"),
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -226,7 +197,7 @@ class _HomeServicesWishlistScreenState
                   width: 64,
                   height: 64,
                   child: Image.network(
-                    item.image_url,
+                    AssetConstants.AssetApi + item.image_url,
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => Container(
                       color: Colors.grey.shade200,
@@ -267,7 +238,7 @@ class _HomeServicesWishlistScreenState
               ),
               trailing: IconButton(
                 icon: const Icon(Icons.favorite, color: Colors.redAccent),
-                onPressed: () => _removeItem(item.id),
+                onPressed: () => print("Remove item Pressed"),
                 tooltip: 'Remove from wishlist',
               ),
               onTap: () {
@@ -284,22 +255,4 @@ class _HomeServicesWishlistScreenState
       },
     );
   }
-}
-
-class WishlistItem {
-  final String id;
-  final String title;
-  final String provider;
-  final double price;
-  final double rating;
-  final String imageUrl;
-
-  WishlistItem({
-    required this.id,
-    required this.title,
-    required this.provider,
-    required this.price,
-    required this.rating,
-    required this.imageUrl,
-  });
 }
