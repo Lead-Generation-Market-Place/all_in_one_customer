@@ -96,17 +96,6 @@ class _HomeServicesWishlistScreenState
         child: AppBarWidget(title: const Text('Wishlist')),
       ),
 
-      // AppBar(
-      //   title: ,
-      //   actions: [
-      //     if (_items.isNotEmpty)
-      //       IconButton(
-      //         icon: const Icon(Icons.delete_sweep_outlined),
-      //         tooltip: 'Clear all',
-      //         onPressed: _clearAll,
-      //       ),
-      //   ],
-      // ),
       body: Consumer<HomeServicesWishlistController>(
         builder: (context, controller, child) {
           if (controller.isLoading) {
@@ -210,45 +199,46 @@ class _HomeServicesWishlistScreenState
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(item.description),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          '\$${40}',
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Icon(Icons.star, size: 16, color: Colors.amber.shade700),
-                      const SizedBox(width: 4),
-                      Text('${4.5}'),
-                    ],
+                  Text(
+                    item.description,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
+                  //  const SizedBox(height: 6),
+                  // services const and ratings widget here
+                  // Row(
+                  //   children: [
+                  //     Container(
+                  //       padding: const EdgeInsets.symmetric(
+                  //         horizontal: 8,
+                  //         vertical: 4,
+                  //       ),
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.green.shade50,
+                  //         borderRadius: BorderRadius.circular(6),
+                  //       ),
+                  //       child: Text(
+                  //         wishlist[index].homeServicesEntity.description,
+                  //         style: const TextStyle(fontWeight: FontWeight.w600),
+                  //       ),
+                  //     ),
+                  //     const SizedBox(width: 8),
+                  //     Icon(Icons.star, size: 16, color: Colors.amber.shade700),
+                  //     const SizedBox(width: 4),
+                  //     Text('${4.5}'),
+                  //   ],
+                  // ),
                 ],
               ),
               trailing: IconButton(
                 icon: const Icon(Icons.favorite, color: Colors.redAccent),
-                onPressed: () => print("Remove item Pressed"),
+                onPressed: ()  =>
+                     Provider.of<HomeServicesWishlistController>(
+                      context,
+                      listen: false,
+                    ).removeFromWishlist(wishlist[index].id),
                 tooltip: 'Remove from wishlist',
               ),
-              onTap: () {
-                // Placeholder for service detail navigation
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Open "${item.name}" (not implemented)'),
-                  ),
-                );
-              },
+           
             ),
           ),
         );

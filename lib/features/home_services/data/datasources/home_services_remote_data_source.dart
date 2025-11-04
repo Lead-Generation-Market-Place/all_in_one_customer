@@ -19,6 +19,8 @@ abstract class HomeServicesRemoteDataSource {
   );
   Future<List<HomeServicesModel>> fetchNearbyHomeServices(String zipCode);
   Future<List<HomeServicesWishlistModel>> fetchUserWishlists(String userId);
+  Future<void> addToWishlist(String serviceId, String userId);
+  Future<void> removeFromWishlist(String wishlistId);
 }
 
 class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
@@ -178,46 +180,111 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
     }
   }
 
-@override
-Future<List<HomeServicesWishlistModel>> fetchUserWishlists(String userId) async {
-  final endpoint = Endpoints.replacePathParameters(Endpoints.wishlists, {
-    "userId": userId,
-  });
-  
-  try {
-    final response = await dioClient.get(endpoint);
+  @override
+  Future<List<HomeServicesWishlistModel>> fetchUserWishlists(
+    String userId,
+  ) async {
+    final endpoint = Endpoints.replacePathParameters(Endpoints.wishlists, {
+      "userId": userId,
+    });
 
-    if (response.statusCode == 200) {
-      final json = response.data as Map<String, dynamic>;
-      
-      // Handle empty or null data
-      if (json['data'] == null || json['data'] is! List) {
-        return [];
+    try {
+      final response = await dioClient.get(endpoint);
+
+      if (response.statusCode == 200) {
+        final json = response.data as Map<String, dynamic>;
+
+        // Handle empty or null data
+        if (json['data'] == null || json['data'] is! List) {
+          return [];
+        }
+
+        final List<dynamic> listData = json['data'];
+
+        // Convert to models, filtering out any invalid items
+        final result = listData
+            .where((item) => item is Map<String, dynamic>)
+            .map((e) => HomeServicesWishlistModel.fromJson(e))
+            .toList();
+
+        return result;
+      } else if (response.statusCode == 404) {
+        throw NotFoundException("Wishlist not found for user");
+      } else if (response.statusCode == 500) {
+        throw ServerException("Server error while fetching wishlist");
+      } else {
+        throw ServerException(
+          "Failed to fetch wishlist: ${response.statusCode}",
+        );
       }
-      
-      final List<dynamic> listData = json['data'];
-      
-      // Convert to models, filtering out any invalid items
-      final result = listData
-          .where((item) => item is Map<String, dynamic>)
-          .map((e) => HomeServicesWishlistModel.fromJson(e))
-          .toList();
-          
-      return result;
-    } else if (response.statusCode == 404) {
-      throw NotFoundException("Wishlist not found for user");
-    } else if (response.statusCode == 500) {
-      throw ServerException("Server error while fetching wishlist");
-    } else {
-      throw ServerException("Failed to fetch wishlist: ${response.statusCode}");
+    } on ServerException {
+      rethrow;
+    } on NotFoundException {
+      rethrow;
+    } catch (e, s) {
+      debugPrint("Wishlist fetch error in remote data source: $e\nStack: $s");
+      throw ServerException("Network error while fetching wishlist");
     }
-  } on ServerException {
-    rethrow;
-  } on NotFoundException {
-    rethrow;
-  } catch (e, s) {
-    debugPrint("Wishlist fetch error in remote data source: $e\nStack: $s");
-    throw ServerException("Network error while fetching wishlist");
   }
-}
+
+  @override
+  Future<void> addToWishlist(String serviceId, String userId) async {
+    Map params = {"user_id": userId, "service_id": serviceId};
+
+    try {
+      final response = await dioClient.post(
+        Endpoints.addToWishlist,
+        data: params,
+      );
+
+      if (response.statusCode == 201) {
+
+
+      } else if (response.statusCode == 404) {
+        throw NotFoundException("Wishlist not added for user");
+      } else if (response.statusCode == 500) {
+        throw ServerException("Server error while adding wishlist");
+      } else {
+        throw ServerException(
+          "Failed to add wishlist: ${response.statusCode}",
+        );
+      }
+    } on ServerException {
+      rethrow;
+    } on NotFoundException {
+      rethrow;
+    } catch (e, s) {
+      debugPrint("Wishlist adding error in remote data source: $e\nStack: $s");
+      throw ServerException("Network error while fetching wishlist");
+    }
+  }
+
+  @override
+  Future<void> removeFromWishlist(String wishlistId) async{
+   try {
+      final response = await dioClient.delete(
+        Endpoints.removeFromWishlist,
+      );
+
+      if (response.statusCode == 200) {
+
+
+      } else if (response.statusCode == 404) {
+        throw NotFoundException("Wishlist deleted");
+      } else if (response.statusCode == 500) {
+        throw ServerException("Server error while deleting wishlist");
+      } else {
+        throw ServerException(
+          "Failed to Delete wishlist: ${response.statusCode}",
+        );
+      }
+    } on ServerException {
+      rethrow;
+    } on NotFoundException {
+      rethrow;
+    } catch (e, s) {
+      debugPrint("Wishlist deleting error in remote data source: $e\nStack: $s");
+      throw ServerException("Network error while deleting wishlist");
+    }
+  }
 }

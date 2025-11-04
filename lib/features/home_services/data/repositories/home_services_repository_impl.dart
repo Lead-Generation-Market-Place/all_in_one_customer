@@ -26,7 +26,7 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
     required this.remoteDataSource,
     required this.networkInfo,
     required this.locationLocalDataSource,
-    required this.authManager
+    required this.authManager,
   });
 
   @override
@@ -294,6 +294,45 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
       return Left(ServerFailure(e.message));
     } on NotFoundException catch (e) {
       return Left(NotFoundFailure(e.message));
+    } catch (e) {
+      return Left(GenericFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> addToWishlist(String serviceId) async {
+    try {
+      String userId = await _getCurrentUserId();
+      final response = await remoteDataSource.addToWishlist(serviceId, userId);
+      if (!await networkInfo.isConnected) {
+        return Left(NoInternetFailure('No Internet Connection'));
+      }
+      return Right(response);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on CustomDioException catch (e) {
+      return Left(DioFailure(e.message));
+    } catch (e) {
+      return Left(GenericFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> removeFromWishlist(String wishlistId) async {
+    try {
+      final response = await remoteDataSource.removeFromWishlist(wishlistId);
+      if (!await networkInfo.isConnected) {
+        return Left(NoInternetFailure('No Internet Connection'));
+      }
+      return Right(response);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on CustomDioException catch (e) {
+      return Left(DioFailure(e.message));
     } catch (e) {
       return Left(GenericFailure(e.toString()));
     }

@@ -16,4 +16,6 @@ abstract class HomeServicesRepository {
   Future<Either<Failure,HomeServicesLocationEntity>> getCurrentLocation();
   Future<Either<Failure,List<HomeServicesEntity>>> fetchNearbyHomeServices(String zipCode);
   Future<Either<Failure,List<HomeServicesWishlistEntity>>> fetchUserWishlist();
+  Future<Either<Failure,void>> addToWishlist(String serviceId);
+  Future<Either<Failure,void>> removeFromWishlist(String wishlistId);
 }

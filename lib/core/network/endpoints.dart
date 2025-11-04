@@ -2,7 +2,7 @@
 abstract class Endpoints {
   //static const String baseUrl = 'https://servicyee-backend.onrender.com/api/v1';  //real server
  // static const String baseUrl='http://10.0.2.2:4000/api/v1';   //test server for android emulator
-  static const String baseUrl="http://192.168.0.179:4000/api/v1";  //real devices api testing
+  static const String baseUrl="http://172.20.10.7:4000/api/v1";  //real devices api testing
 
   // Auth endpoints
   static const String login = '/auth/login';
@@ -37,6 +37,8 @@ abstract class Endpoints {
   
   //wishlist endpoints
   static const String wishlists="/wishlists/{userId}";
+  static const String addToWishlist="/wishlists/addwishlist";
+  static const String removeFromWishlist="/wishlists/{wishlistId}";
 
   // Helper method to replace path parameters
   static String replacePathParameters(String path, Map<String, dynamic> params) {
