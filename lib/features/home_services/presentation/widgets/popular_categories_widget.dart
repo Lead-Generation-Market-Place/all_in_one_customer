@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/core/constants/asset_constants.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/section_title_widget.dart';
+import 'package:yelpax/features/home_services/presentation/widgets/wishlist_heart_widget.dart';
 
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
@@ -29,7 +30,7 @@ class PopularCategoriesWidget extends StatelessWidget {
         }
 
         return _buildHorizontalCategoryList(
-          'Popular on Yelpax',
+          'Popular on Allneeda',
           controller.homeServices,
           context,
         );
@@ -108,6 +109,31 @@ Widget _buildCategoryItem(
               errorWidget: (context, url, error) => _buildErrorWidget(),
               progressIndicatorBuilder: (context, url, progress) => SizedBox(
                 child: LinearProgressIndicator(value: progress.progress),
+              ),
+            ),
+              Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  shape: BoxShape.circle,
+                ),
+                child: WishlistHeartWidget(
+                  service: HomeServicesEntity(
+                    id: id,
+                    name: name,
+                    image_url: imageUrl,
+                    // Add other required properties with default values
+                    description: '',
+                   
+                    is_active: true,
+                    created_at: '',
+                    updated_at: '', slug: '', subcategory_id: '',
+                  ),
+                  size: 20,
+                  color: Colors.white,
+                ),
               ),
             ),
             Container(

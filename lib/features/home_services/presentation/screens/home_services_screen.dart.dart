@@ -9,6 +9,7 @@ import '../../../../config/routes/router.dart';
 import '../../../../config/themes/theme_mode_type.dart';
 import '../../../../config/themes/theme_provider.dart';
 import '../controllers/home_services_controller.dart';
+import '../controllers/home_services_wishlist_controller.dart';
 import '../widgets/address_based_widget.dart';
 import '../widgets/section_title_widget.dart';
 import 'home_services_promotion_screen.dart';
@@ -39,7 +40,10 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
         context,
         listen: false,
       );
-
+      final wishlistController=Provider.of<HomeServicesWishlistController>(
+        context,
+        listen: false,
+      );
       theme.setTheme(ThemeModeType.homeServices);
 
       await controller
@@ -48,6 +52,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           .getCurrentLocation(); //getting use current location when the app is installed
       await controller
           .fetchNearbyHomeServices(); //fetching nearby home services based on zip code
+      await wishlistController.fetchUserWishlist();
     });
   }
 
