@@ -99,8 +99,10 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
   Future<List<HomeServicesFetchProfessionalModel>> findPros(
     String query,
   ) async {
+    print("Fetchingggggggggggggggggggg prosssssssssssssss in remote data source");
     final response = await dioClient.get("${Endpoints.findpros}/$query");
     if (response.statusCode == 200) {
+       print("Fetchingggggggggggggggggggg prosssssssssssssss in remote data source Success");
       final json = response.data as Map<String, dynamic>;
       final List<dynamic> listData = json['data'];
       return listData
@@ -142,7 +144,7 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
           "Failed to get professionals: ${response.statusCode}",
         );
       }
-    } catch (e, s) {
+    } catch (e) {
       throw ServerException("An error occurred while fetching professionals");
     }
   }
@@ -152,7 +154,7 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
     String zipCode,
   ) async {
     final endpoint = Endpoints.replacePathParameters(Endpoints.nearbyServices, {
-      "zipCode": zipCode,
+      "zipCode": "11235",
     });
     try {
       final response = await dioClient.get(endpoint);
@@ -175,7 +177,7 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
           "Failed to get Services Server Problem: ${response.statusCode}",
         );
       }
-    } catch (e, s) {
+    } catch (e) {
       throw ServerException("An error occurred while fetching Services");
     }
   }
@@ -238,16 +240,12 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
       );
 
       if (response.statusCode == 201) {
-
-
       } else if (response.statusCode == 404) {
         throw NotFoundException("Wishlist not added for user");
       } else if (response.statusCode == 500) {
         throw ServerException("Server error while adding wishlist");
       } else {
-        throw ServerException(
-          "Failed to add wishlist: ${response.statusCode}",
-        );
+        throw ServerException("Failed to add wishlist: ${response.statusCode}");
       }
     } on ServerException {
       rethrow;
@@ -260,15 +258,11 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
   }
 
   @override
-  Future<void> removeFromWishlist(String wishlistId) async{
-   try {
-      final response = await dioClient.delete(
-        Endpoints.removeFromWishlist,
-      );
+  Future<void> removeFromWishlist(String wishlistId) async {
+    try {
+      final response = await dioClient.delete(Endpoints.removeFromWishlist);
 
       if (response.statusCode == 200) {
-
-
       } else if (response.statusCode == 404) {
         throw NotFoundException("Wishlist deleted");
       } else if (response.statusCode == 500) {
@@ -283,9 +277,10 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
     } on NotFoundException {
       rethrow;
     } catch (e, s) {
-      debugPrint("Wishlist deleting error in remote data source: $e\nStack: $s");
+      debugPrint(
+        "Wishlist deleting error in remote data source: $e\nStack: $s",
+      );
       throw ServerException("Network error while deleting wishlist");
     }
   }
-
 }

@@ -75,7 +75,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
 
   Widget _buildBody() {
     final _controller = context.read<HomeServicesController>();
-    final _zipCode = _controller.locationData.currentLocation?.zipCode ?? "";
+    final _zipCode = _controller.locationData.currentLocation?.zipCode.first ?? "";
     return Container(
       padding: const EdgeInsets.all(16),
       child: RefreshIndicator.adaptive(

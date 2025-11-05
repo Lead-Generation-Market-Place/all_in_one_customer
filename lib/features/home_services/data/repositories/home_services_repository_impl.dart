@@ -185,7 +185,7 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
         country: placemark.country ?? 'Unknown',
         state: placemark.administrativeArea ?? 'Unknown',
         city: placemark.locality ?? 'Unknown',
-        zipCode: placemark.postalCode ?? 'Unknown',
+        zipCode: placemark.postalCode!=null?[placemark.postalCode!] : ['Unknown'],
         addressLine: _buildAddressLine(placemark),
         createdAt: DateTime.now().toIso8601String(),
         updatedAt: DateTime.now().toIso8601String(),

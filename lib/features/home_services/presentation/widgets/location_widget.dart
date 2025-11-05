@@ -74,7 +74,7 @@ class LocationWidget extends StatelessWidget {
             _buildInfoRow('Address', location.addressLine),
             _buildInfoRow('City', location.city),
             _buildInfoRow('State', location.state),
-            _buildInfoRow('Zip Code', location.zipCode),
+            _buildInfoRow('Zip Code', location.zipCode.first),
             _buildInfoRow('Country', location.country),
             _buildInfoRow('Coordinates', 
                 '${location.coordinates.geoPoints.latitude.toStringAsFixed(4)}, '

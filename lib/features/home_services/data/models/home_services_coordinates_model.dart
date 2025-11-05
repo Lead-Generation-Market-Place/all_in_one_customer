@@ -15,7 +15,7 @@ class HomeServicesCoordinatesModel extends HomeServicesCoordinatesEntity {
       type: json["type"] ?? "",
       geoPoints: json["coordinates"] != null
           ? HomeServicesCoordinatePointsModel.fromJson(
-              List<double>.from(json["coordinates"]),
+              List.from(json["coordinates"]),
             )
           : HomeServicesCoordinatePointsModel.empty(),
     );

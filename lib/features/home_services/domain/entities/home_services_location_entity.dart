@@ -6,7 +6,7 @@ class HomeServicesLocationEntity {
   final String country;
   final String state;
   final String city;
-  final String zipCode;
+  final List<String> zipCode;
   final String addressLine;
   final String createdAt;
   final String updatedAt;

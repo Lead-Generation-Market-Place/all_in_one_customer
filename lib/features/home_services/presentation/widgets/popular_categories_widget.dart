@@ -124,7 +124,7 @@ Widget _buildCategoryItem(
                     id: id,
                     name: name,
                     image_url: imageUrl,
-                    // Add other required properties with default values
+                 
                     description: '',
                    
                     is_active: true,

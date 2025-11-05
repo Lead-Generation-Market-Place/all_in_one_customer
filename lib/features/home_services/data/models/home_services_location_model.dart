@@ -23,7 +23,9 @@ class HomeServicesLocationModel extends HomeServicesLocationEntity {
       country: json["country"] ?? "",
       state: json["state"] ?? "",
       city: json["city"] ?? "",
-      zipCode: json["zipcode"] ?? "",
+       zipCode: json["zipcode"] is List 
+          ? List<String>.from(json["zipcode"].map((x) => x.toString()))
+          : <String>[],
       addressLine: json["address_line"] ?? "",
       createdAt: json["createdAt"] ?? "",
       updatedAt: json["updatedAt"] ?? "",
@@ -40,7 +42,7 @@ class HomeServicesLocationModel extends HomeServicesLocationEntity {
       country: "",
       state: "",
       city: "",
-      zipCode: "",
+      zipCode:[],
       addressLine: "",
       createdAt: "",
       updatedAt: "",

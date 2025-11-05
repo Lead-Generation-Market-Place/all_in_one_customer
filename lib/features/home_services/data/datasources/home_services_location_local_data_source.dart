@@ -58,7 +58,7 @@ class HomeServicesLocationLocalDataSourceImpl implements HomeServicesLocationLoc
         country: placemark.country ?? '',
         state: placemark.administrativeArea ?? '',
         city: placemark.locality ?? '',
-        zipCode: placemark.postalCode ?? '',
+        zipCode: placemark.postalCode!=null?[?placemark.postalCode] : [''],
         addressLine: _buildAddressLine(placemark),
         createdAt: DateTime.now().toIso8601String(),
         updatedAt: DateTime.now().toIso8601String(),

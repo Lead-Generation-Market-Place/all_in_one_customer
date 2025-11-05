@@ -28,15 +28,19 @@ class HomeServicesFindprosController extends ChangeNotifier {
 
   Future<void> getProfessionals(String query) async {
     _professionalsLoading = true;
+    _error="";
+    _professionals=[];
     notifyListeners();
     var response = await usecase.call(query);
     response.fold(
       (problem) {
+        print("Problem Executed DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD${problem.message}");
         _error = problem.message;
         _professionalsLoading = false;
         notifyListeners();
       },
       (success) {
+        print("Success Executed dddddddddddddddddddddddddddddddddddddddddddddddddddddddd$success");
         _professionals = success;
         _professionalsLoading = false;
         notifyListeners();

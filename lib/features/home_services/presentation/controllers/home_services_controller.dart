@@ -54,7 +54,7 @@ class HomeServicesController extends ChangeNotifier {
 
   String? _getZipCodeFromLocation() {
     final location = locationData.currentLocation;
-    return location?.zipCode;
+    return location?.zipCode.first;
   }
 
   //fetch Nearby Home Services
