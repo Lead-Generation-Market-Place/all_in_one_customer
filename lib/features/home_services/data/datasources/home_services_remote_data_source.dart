@@ -99,10 +99,8 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
   Future<List<HomeServicesFetchProfessionalModel>> findPros(
     String query,
   ) async {
-    print("Fetchingggggggggggggggggggg prosssssssssssssss in remote data source");
     final response = await dioClient.get("${Endpoints.findpros}/$query");
     if (response.statusCode == 200) {
-       print("Fetchingggggggggggggggggggg prosssssssssssssss in remote data source Success");
       final json = response.data as Map<String, dynamic>;
       final List<dynamic> listData = json['data'];
       return listData
@@ -154,7 +152,7 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
     String zipCode,
   ) async {
     final endpoint = Endpoints.replacePathParameters(Endpoints.nearbyServices, {
-      "zipCode": "11235",
+      "zipCode": zipCode,
     });
     try {
       final response = await dioClient.get(endpoint);

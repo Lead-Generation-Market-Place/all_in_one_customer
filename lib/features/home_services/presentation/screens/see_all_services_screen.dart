@@ -16,10 +16,11 @@ class SeeAllServicesScreen extends StatefulWidget {
 }
 
 class _SeeAllServicesScreenState extends State<SeeAllServicesScreen> {
-
-
-  Future<void> initialize()async{
-    final controller = Provider.of<HomeServicesController>(context, listen: false);
+  Future<void> initialize() async {
+    final controller = Provider.of<HomeServicesController>(
+      context,
+      listen: false,
+    );
     await controller.fetchAllHomeServices();
   }
 
@@ -29,6 +30,7 @@ class _SeeAllServicesScreenState extends State<SeeAllServicesScreen> {
     super.initState();
     initialize();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,16 +38,18 @@ class _SeeAllServicesScreenState extends State<SeeAllServicesScreen> {
         child: AppBarWidget(title: Text("All Services")),
         preferredSize: Size.fromHeight(height(context) / 15),
       ),
-      body: Consumer(builder: (context, value, child) {
-        final controller = Provider.of<HomeServicesController>(context);
-        if (controller.isLoading) {
-          return _buildLoadingWidget();
-        } else if (controller.error != null) {
-          return _buildErrorWidget(controller.error!);
-        } else {
-          return _buildSuccessWidget(controller.homeServices);
-        }
-      }),
+      body: Consumer(
+        builder: (context, value, child) {
+          final controller = Provider.of<HomeServicesController>(context);
+          if (controller.isLoading) {
+            return _buildLoadingWidget();
+          } else if (controller.error != null) {
+            return _buildErrorWidget(controller.error!);
+          } else {
+            return _buildSuccessWidget(controller.homeServices);
+          }
+        },
+      ),
     );
   }
 
@@ -74,28 +78,25 @@ class _SeeAllServicesScreenState extends State<SeeAllServicesScreen> {
       ),
       itemBuilder: (context, index) {
         final service = services[index];
-        return _buildServiceCard(context, service.name, service.image_url);
+        return _buildServiceCard(context, service.name, service.image_url,'', service.id);
       },
     );
   }
 
-  Widget _buildServiceCard(BuildContext context, String name, String imageUrl) {
+  Widget _buildServiceCard(BuildContext context, String name, String imageUrl,String zipCode,String id) {
     return InkWell(
       onTap: () {
-     
-        // TODO: Navigate to service detail screen
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("Selected: $name")));
+        final controller = context.read<HomeServicesController>();
+        controller.openService({'name': name, 'imageUrl': imageUrl, 'id': id,'zipCode':''});
       },
-      
+
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             CachedNetworkImage(
-              imageUrl:AssetConstants.AssetApi+imageUrl,
+              imageUrl: AssetConstants.AssetApi + imageUrl,
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,

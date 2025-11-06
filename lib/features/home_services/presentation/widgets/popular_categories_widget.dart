@@ -91,7 +91,6 @@ Widget _buildCategoryItem(
   return InkWell(
     onTap: () {
         controller.openService({'name': name, 'imageUrl': imageUrl, 'id': id,'zipCode':''});
-     
     },
     child: Padding(
       padding: const EdgeInsets.all(8.0),

@@ -110,7 +110,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               _buildDivider(),
               _buildYourGoals(),
               _buildDivider(),
-              // _buildPopularCategories(),
+            //   _buildPopularCategories(),
               //      _buildDivider(),
               //  _buildPopularCategories(),
               //        _buildYourGoals(),
