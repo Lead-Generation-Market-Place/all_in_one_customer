@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/core/constants/asset_constants.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/section_title_widget.dart';
+import 'package:yelpax/features/home_services/presentation/widgets/wishlist_heart_widget.dart';
 
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
@@ -88,6 +89,7 @@ Widget _buildCategoryItem(
   String name,
   String imageUrl,
   String id,
+  
 ) {
   final controller = context.read<HomeServicesController>();
   return InkWell(
@@ -110,13 +112,37 @@ Widget _buildCategoryItem(
               height: height(context),
               width: width(context) / 1.8,
               imageUrl: imageUrl,
-
               fit: BoxFit.cover,
               errorWidget: (context, url, error) => _buildErrorWidget(),
               progressIndicatorBuilder: (context, url, progress) => SizedBox(
                 child: LinearProgressIndicator(value: progress.progress),
               ),
             ),
+         id!="dummy_id"?   Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  shape: BoxShape.circle,
+                ),
+                child: WishlistHeartWidget(
+                  service: HomeServicesEntity(
+                    id: id,
+                    name: name,
+                    image_url: imageUrl,
+                    description: '',
+                    is_active: true,
+                    created_at: '',
+                    updated_at: '',
+                    slug: '',
+                    subcategory_id: '',
+                  ),
+                  size: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ):SizedBox.shrink(),
             Container(
               width: width(context) / 1.8,
               color: Colors.black.withOpacity(0.4),
@@ -147,7 +173,7 @@ Widget _buildEmptyNearbyWidget(HomeServicesController controller) {
   return Container(
     decoration: BoxDecoration(
       border: BoxBorder.all(color: Colors.grey),
-      borderRadius: BorderRadius.circular(7)
+      borderRadius: BorderRadius.circular(7),
     ),
     child: Column(
       children: [

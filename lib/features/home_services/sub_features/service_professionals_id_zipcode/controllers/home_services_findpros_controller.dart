@@ -94,6 +94,10 @@ class HomeServicesFindprosController extends ChangeNotifier {
     );
   }
 
+    Future<void> openProfessionalDetails()async{
+      print("Opening Professional Details");
+    }
+
   @override
   void dispose() {
     _professionals = [];

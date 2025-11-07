@@ -42,7 +42,6 @@ class PopularCategoriesWidget extends StatelessWidget {
 Widget _buildHorizontalCategoryList(
   String sectionTitle,
   List<HomeServicesEntity> services,
-
   BuildContext context,
 ) {
   return Card(
@@ -110,7 +109,7 @@ Widget _buildCategoryItem(
                 child: LinearProgressIndicator(value: progress.progress),
               ),
             ),
-              Positioned(
+           id!="dummy_id"?   Positioned(
               top: 8,
               right: 8,
               child: Container(
@@ -123,18 +122,18 @@ Widget _buildCategoryItem(
                     id: id,
                     name: name,
                     image_url: imageUrl,
-                 
                     description: '',
-                   
                     is_active: true,
                     created_at: '',
-                    updated_at: '', slug: '', subcategory_id: '',
+                    updated_at: '',
+                    slug: '',
+                    subcategory_id: '',
                   ),
                   size: 20,
                   color: Colors.white,
                 ),
               ),
-            ),
+            ):SizedBox.shrink(),
             Container(
               width: width(context) / 1.8,
               color: Colors.black.withOpacity(0.4),
