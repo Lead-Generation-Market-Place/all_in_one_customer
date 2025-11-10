@@ -10,6 +10,7 @@ import 'package:yelpax/features/home_services/data/models/home_services_coordina
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_location_entity.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_professional_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_wishlist_entity.dart';
 import '../../../../core/error/exceptions/exceptions.dart';
 import '../../../../core/error/failures/failure.dart';
@@ -185,7 +186,9 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
         country: placemark.country ?? 'Unknown',
         state: placemark.administrativeArea ?? 'Unknown',
         city: placemark.locality ?? 'Unknown',
-        zipCode: placemark.postalCode!=null?[placemark.postalCode!] : ['Unknown'],
+        zipCode: placemark.postalCode != null
+            ? [placemark.postalCode!]
+            : ['Unknown'],
         addressLine: _buildAddressLine(placemark),
         createdAt: DateTime.now().toIso8601String(),
         updatedAt: DateTime.now().toIso8601String(),
@@ -327,6 +330,26 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
         return Left(NoInternetFailure('No Internet Connection'));
       }
       return Right(response);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on CustomDioException catch (e) {
+      return Left(DioFailure(e.message));
+    } catch (e) {
+      return Left(GenericFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, HomeServicesProfessionalEntity>>
+  fetchProfessionalDetails(String proId) async {
+    try {
+      final models = await remoteDataSource.fetchProfessionalDetails(proId);
+      if (!await networkInfo.isConnected) {
+        return Left(NoInternetFailure('No Internet Connection'));
+      }
+      return Right(models);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     } on NetworkException catch (e) {

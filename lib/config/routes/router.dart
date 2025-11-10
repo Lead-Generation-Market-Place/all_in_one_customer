@@ -9,6 +9,7 @@ import 'package:yelpax/features/settings/presentation/screens/settings_screen.da
 import '../../app/presentation/shell/main_shell_screen.dart';
 import '../../core/error/widgets/unknown_route_screen.dart';
 import '../../features/grocery/presentation/screens/grocery_screen_homepage.dart';
+import '../../features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
 import '../../features/home_services/presentation/screens/home_services_screen.dart.dart';
 import '../../features/home_services/presentation/screens/home_services_wishlist_screen.dart';
 import '../../features/home_services/sub_features/service_professionals_id_zipcode/screens/service_professionals_screen.dart';
@@ -68,9 +69,9 @@ class AppRouter {
           ),
         );
       case singleServiceProfessionalScreen:
-        final _arg = settings.arguments ?? {};
+         String proId = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => SingleServiceProfessionalScreen(proDetails: _arg),
+          builder: (_) => SingleServiceProfessionalScreen(proId: proId),
         );
       case unknownRouteScreen:
         return MaterialPageRoute(

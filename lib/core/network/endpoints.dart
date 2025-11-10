@@ -34,6 +34,7 @@ abstract class Endpoints {
 
   //fetching professionals endpoints by service / service and zip code / highest rating.
   static const String findpros='/findpros';
+  static const String proCompleteDetails='/findpros/details/';
   
   //wishlist endpoints
   static const String wishlists="/wishlists/{userId}";

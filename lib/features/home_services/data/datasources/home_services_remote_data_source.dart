@@ -4,6 +4,7 @@ import 'package:yelpax/core/network/endpoints.dart';
 import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_fetch_professional_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_model.dart';
+import 'package:yelpax/features/home_services/data/models/home_services_professional_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_wishlist_model.dart';
 import '../../../../core/error/exceptions/exceptions.dart';
 
@@ -21,6 +22,7 @@ abstract class HomeServicesRemoteDataSource {
   Future<List<HomeServicesWishlistModel>> fetchUserWishlists(String userId);
   Future<void> addToWishlist(String serviceId, String userId);
   Future<void> removeFromWishlist(String wishlistId);
+  Future<HomeServicesProfessionalModel> fetchProfessionalDetails(String proId);
 }
 
 class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
@@ -279,6 +281,32 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
         "Wishlist deleting error in remote data source: $e\nStack: $s",
       );
       throw ServerException("Network error while deleting wishlist");
+    }
+  }
+  
+  @override
+  Future<HomeServicesProfessionalModel> fetchProfessionalDetails(String proId)async {
+       try {
+      final response = await dioClient.get(
+        Endpoints.proCompleteDetails+proId,
+       
+      );
+      if (response.statusCode == 200) {
+        final json = response.data;
+
+        final  proCompleteDetails = json['data'] ?? [];
+        return HomeServicesProfessionalModel.fromJson(proCompleteDetails);
+      } else if (response.statusCode == 404) {
+        throw NotFoundException(
+          "There is no professional with the given ID",
+        );
+      } else {
+        throw ServerException(
+          "Failed to get professional: ${response.statusCode}",
+        );
+      }
+    } catch (e) {
+      throw ServerException("An error occurred while fetching professional");
     }
   }
 }

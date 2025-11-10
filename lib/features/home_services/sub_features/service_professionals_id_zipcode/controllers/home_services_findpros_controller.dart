@@ -94,8 +94,11 @@ class HomeServicesFindprosController extends ChangeNotifier {
     );
   }
 
-    Future<void> openProfessionalDetails()async{
-      print("Opening Professional Details");
+    Future<void> openProfessionalDetails(BuildContext context,int index)async{
+      Navigator.pushNamed(context, AppRouter.singleServiceProfessionalScreen,
+      arguments: _professionals[index].professional.id
+      );
+      
     }
 
   @override
