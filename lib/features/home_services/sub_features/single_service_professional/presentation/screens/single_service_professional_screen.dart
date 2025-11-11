@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/core/injection_container.dart';
-import '../../../../domain/entities/home_services_fetch_professionals_entity.dart';
 import '../controllers/single_service_professional_controller.dart';
 import '../widgets/single_service_pro_personnel_details_widget.dart';
 
@@ -42,7 +41,7 @@ class _buildBody extends StatelessWidget {
           if (controller.proLoading) {
             return Center(child: CircularProgressIndicator.adaptive());
           }
-          if (controller.proId.isEmpty) {
+          if (controller.proId.isEmpty || controller.errorMessage.isNotEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -60,10 +59,10 @@ class _buildBody extends StatelessWidget {
               ),
             );
           }
-          return Text("Data is Exists Now Only the Testing is done");
-          // SingleServiceProPersonnelDetailsWidget(
-          //   professionalsEntity:professionalEntity,
-          // );
+          return 
+          SingleServiceProPersonnelDetailsWidget(
+            professionalsEntity:controller.getProfessionalEntity,
+          );
         },
       ),
     );

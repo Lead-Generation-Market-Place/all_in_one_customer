@@ -13,7 +13,7 @@ import '../../../../domain/entities/home_services_fetch_professionals_entity.dar
 
 
 class SingleServiceProPersonnelDetailsWidget extends StatelessWidget {
-  HomeServicesFetchProfessionalsEntity professionalsEntity;
+  HomeServicesProfessionalEntity professionalsEntity;
 
    SingleServiceProPersonnelDetailsWidget({
     super.key,
@@ -33,7 +33,7 @@ class SingleServiceProPersonnelDetailsWidget extends StatelessWidget {
 }
 
 class _PersonnelInfoSection extends StatelessWidget {
-  HomeServicesFetchProfessionalsEntity professionalsEntity;
+  HomeServicesProfessionalEntity professionalsEntity;
 
    _PersonnelInfoSection({
     required this.professionalsEntity
@@ -48,7 +48,7 @@ class _PersonnelInfoSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-       //   _buildProfileHeader(context,professionalsEntity.professional),
+          _buildProfileHeader(context,professionalsEntity),
           const SizedBox(height: 10),
       //    _buildBadgesSection(professionalsEntity.professional),
           const SizedBox(height: 30),

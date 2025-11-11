@@ -10,10 +10,18 @@ class HomeServicesProfessionalModel extends HomeServicesProfessionalEntity {
     required super.businessName,
     required super.introduction,
     required super.businessType,
+    super.website,
+    super.founded_year,
+    super.employees,
     required super.profileImage,
     required super.totalHire,
     required super.totalReview,
-    required super.ratingAverage
+    required super.ratingAverage,
+    super.payment_methods,
+    super.portfolio,
+    super.specializations,
+    super.createdAt,
+    super.updatedAt
   });
 
   factory HomeServicesProfessionalModel.fromJson(Map<String, dynamic> json) {
@@ -25,10 +33,18 @@ class HomeServicesProfessionalModel extends HomeServicesProfessionalEntity {
       businessName: json["business_name"] ?? "",
       introduction: json["introduction"] ?? "",
       businessType: json["business_type"] ?? "",
+      website: json["website"]??"",
+      founded_year: json["founded_year"]??0,
+      employees: json["employees"]??0,
       profileImage: json["profile_image"] ?? "",
       totalHire: json["total_hire"]??0,
       totalReview: json["total_review"]??0,
-      ratingAverage: json["rating_avg"]??0
+      ratingAverage: json["rating_avg"]??0,
+      payment_methods: json["payment_methods"]??[],
+      portfolio: json["portfolio"]??[],
+      specializations: json["specializations"]??[],
+      createdAt: json["createdAt"]??"",
+      updatedAt: json["updatedAt"]??""
 
     );
   }
@@ -40,10 +56,18 @@ class HomeServicesProfessionalModel extends HomeServicesProfessionalEntity {
       businessName: '',
       introduction: '',
       businessType: '',
+      website: '',
+      founded_year: 0,
+      employees: 0,
       profileImage: '',
       totalHire: 0,
       totalReview: 0,
-      ratingAverage: 0
+      ratingAverage: 0,
+      payment_methods: [],
+      portfolio: [],
+      specializations: [],
+      createdAt: '',
+      updatedAt: ''
     );
   }
 }

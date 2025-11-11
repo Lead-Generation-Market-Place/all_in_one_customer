@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_professional_entity.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_findpros_usecase.dart';
 
 class SingleServiceProfessionalController extends ChangeNotifier {
@@ -6,11 +7,18 @@ class SingleServiceProfessionalController extends ChangeNotifier {
   String proId;
   bool _proLoading = false;
   bool _disposed = false;
- 
- 
+  late HomeServicesProfessionalEntity _professionalEntity;
+  String _errorMessage = '';
+
   bool get proLoading => _proLoading;
- 
-  SingleServiceProfessionalController({required this.homeServicesFindprosUsecase,required this.proId}) {
+  HomeServicesProfessionalEntity get getProfessionalEntity =>
+      _professionalEntity;
+  String get errorMessage => _errorMessage;
+
+  SingleServiceProfessionalController({
+    required this.homeServicesFindprosUsecase,
+    required this.proId,
+  }) {
     getProCompleteDetails();
   }
 
@@ -22,13 +30,17 @@ class SingleServiceProfessionalController extends ChangeNotifier {
     try {
       _proLoading = true;
       _safeNotify();
-      final result=await homeServicesFindprosUsecase.callProCompleteDetails(proId);
-        result.fold((problem){
-          print("Error While fetching professional complete details: ${problem.message}");
-        }, 
-        (success){
-          print("Successfully fetched professional complete details: ${success.toString()}");
-        });
+      final result = await homeServicesFindprosUsecase.callProCompleteDetails(
+        proId,
+      );
+      result.fold(
+        (problem) {
+          _errorMessage = problem.message;
+        },
+        (success) {
+          _professionalEntity = success;
+        },
+      );
     } catch (e) {
       debugPrint(e.toString());
     } finally {
@@ -38,7 +50,8 @@ class SingleServiceProfessionalController extends ChangeNotifier {
   }
 
   Future<void> retry() async {
-   print("Retrying to fetch professional complete details....");
+    print("Retrying to fetch professional complete details....");
+    await getProCompleteDetails();
   }
 
   // @override
