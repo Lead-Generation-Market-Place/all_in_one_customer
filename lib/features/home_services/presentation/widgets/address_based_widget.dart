@@ -11,27 +11,30 @@ import '../../../../shared/widgets/custom_shimmer.dart';
 import '../../domain/entities/home_services_entity.dart';
 import '../controllers/home_services_controller.dart';
 
-class PopularCategoriesWidget extends StatelessWidget {
+class AddressBasedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeServicesController>(
       builder: (context, controller, _) {
-        if (controller.isLoading) {
+        if (controller.isNearbyServicesLoading) {
           return const CustomShimmer(
             layoutType: ShimmerLayoutType.horizontalList,
           );
         }
 
-        if (controller.homeServices.isEmpty) {
-          return InkWell(
-            onTap: () => controller.fetchPopularHomeServices(),
-            child: const Icon(Icons.refresh),
-          );
+        if (controller.nearbyHomeServices.isEmpty &&
+            controller.isNearbyServicesLoading == false) {
+          return _buildEmptyNearbyWidget(controller);
+        }
+
+        if (controller.nearbyHomeServicesError.isNotEmpty &&
+            controller.isNearbyServicesLoading == false) {
+          return _buildErrorWidget();
         }
 
         return _buildHorizontalCategoryList(
-          'Popular on Allneeda',
-          controller.homeServices,
+          'Services Near You',
+          controller.nearbyHomeServices,
           context,
         );
       },
@@ -42,6 +45,7 @@ class PopularCategoriesWidget extends StatelessWidget {
 Widget _buildHorizontalCategoryList(
   String sectionTitle,
   List<HomeServicesEntity> services,
+
   BuildContext context,
 ) {
   return Card(
@@ -68,7 +72,7 @@ Widget _buildHorizontalCategoryList(
               return _buildCategoryItem(
                 context,
                 service.name,
-               AssetConstants.AssetApi+service.image_url,
+                AssetConstants.AssetApi + service.image_url,
                 service.id,
               );
             },
@@ -83,13 +87,19 @@ Widget _buildHorizontalCategoryList(
 Widget _buildCategoryItem(
   BuildContext context,
   String name,
-  String  imageUrl,
+  String imageUrl,
   String id,
+  
 ) {
   final controller = context.read<HomeServicesController>();
   return InkWell(
     onTap: () {
-        controller.openService({'name': name, 'imageUrl': imageUrl, 'id': id,'zipCode':''});
+      controller.openService({
+        'name': name,
+        'imageUrl': imageUrl,
+        'id': id,
+        'zipCode': '',
+      });
     },
     child: Padding(
       padding: const EdgeInsets.all(8.0),
@@ -101,15 +111,14 @@ Widget _buildCategoryItem(
             CachedNetworkImage(
               height: height(context),
               width: width(context) / 1.8,
-              imageUrl:imageUrl,
-
+              imageUrl: imageUrl,
               fit: BoxFit.cover,
               errorWidget: (context, url, error) => _buildErrorWidget(),
               progressIndicatorBuilder: (context, url, progress) => SizedBox(
                 child: LinearProgressIndicator(value: progress.progress),
               ),
             ),
-           id!="dummy_id"?   Positioned(
+         id!="dummy_id"?   Positioned(
               top: 8,
               right: 8,
               child: Container(
@@ -157,5 +166,29 @@ Widget _buildCategoryItem(
 Widget _buildErrorWidget() {
   return Container(
     child: const Icon(Icons.error_outline_outlined, color: Colors.red),
+  );
+}
+
+Widget _buildEmptyNearbyWidget(HomeServicesController controller) {
+  return Container(
+    decoration: BoxDecoration(
+      border: BoxBorder.all(color: Colors.grey),
+      borderRadius: BorderRadius.circular(7),
+    ),
+    child: Column(
+      children: [
+        Center(
+          child: Text(
+            "No Services Available In Your Current Area",
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+        ),
+        SizedBox(height: 8),
+        InkWell(
+          child: Icon(Icons.refresh, color: Colors.cyan),
+          onTap: () => controller.fetchNearbyHomeServices(),
+        ),
+      ],
+    ),
   );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yelpax/core/constants/asset_constants.dart';
 import 'package:yelpax/core/injection_container.dart';
 import '../../../../core/constants/height.dart';
 import '../../../../core/constants/width.dart';
@@ -54,6 +55,7 @@ class _HomeServicesPromotionScreenState
   }
 
   Widget _buildPromotionCard(HomeServicesPromotionEntity entity) {
+   
     return Container(
       padding: const EdgeInsets.all(4),
       child: ListView(
@@ -110,7 +112,7 @@ class _HomeServicesPromotionScreenState
       decoration: BoxDecoration(
         color: Colors.blue,
         image: DecorationImage(
-          image: NetworkImage(entity.servicesEntity.image_url),
+          image: NetworkImage(AssetConstants.AssetApi+entity.servicesEntity.image_url),
 
           onError: (exception, stackTrace) {
             InkWell(

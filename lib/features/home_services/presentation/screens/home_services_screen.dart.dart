@@ -1,15 +1,17 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
+import 'package:yelpax/features/home_services/presentation/controllers/home_services_location_controller.dart';
 import 'package:yelpax/features/home_services/presentation/widgets/popular_categories_widget.dart';
-import 'package:yelpax/features/home_services/presentation/widgets/section_title_widget.dart';
 import '../../../../app/presentation/shell/widgets/custom_bottom_nav.dart';
 import '../../../../config/routes/router.dart';
 import '../../../../config/themes/theme_mode_type.dart';
 import '../../../../config/themes/theme_provider.dart';
 import '../controllers/home_services_controller.dart';
+import '../controllers/home_services_wishlist_controller.dart';
+import '../widgets/address_based_widget.dart';
+import '../widgets/section_title_widget.dart';
 import 'home_services_promotion_screen.dart';
 import '../widgets/app_bar_widget.dart';
 import '../../../../shared/widgets/custom_shimmer.dart';
@@ -31,18 +33,26 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     _initializeData();
   }
 
-  void _initializeData() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+  void _initializeData() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final theme = Provider.of<ThemeProvider>(context, listen: false);
       final controller = Provider.of<HomeServicesController>(
         context,
         listen: false,
       );
-
+      final wishlistController=Provider.of<HomeServicesWishlistController>(
+        context,
+        listen: false,
+      );
       theme.setTheme(ThemeModeType.homeServices);
-      
-      controller
-          .fetchHomeServices(); //fetching home services when user navigated to home screen of home services
+
+      await controller
+          .fetchPopularHomeServices(); //fetching home services when user navigated to home screen of home services
+      await controller.locationData
+          .getCurrentLocation(); //getting use current location when the app is installed
+      await controller
+          .fetchNearbyHomeServices(); //fetching nearby home services based on zip code
+      await wishlistController.fetchUserWishlist();
     });
   }
 
@@ -50,7 +60,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        child: AppBarWidget(),
+        child: AppBarWidget(title: _buildLocationTitle()),
         preferredSize: Size.fromHeight(height(context) / 15),
       ),
       drawer: Drawer(),
@@ -65,6 +75,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
 
   Widget _buildBody() {
     final _controller = context.read<HomeServicesController>();
+    final _zipCode = _controller.locationData.currentLocation?.zipCode.first ?? "";
     return Container(
       padding: const EdgeInsets.all(16),
       child: RefreshIndicator.adaptive(
@@ -85,24 +96,28 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                   ),
                 ],
               ),
-              SearchProfessionalScreen(),
+              SearchProfessionalScreen(zipCode: _zipCode),
               const SizedBox(height: 16),
               HomeServicesPromotionScreen(),
               PopularCategoriesWidget(),
               const SizedBox(height: 50),
-         //     _buildActivityBasedCategories(),
+              //  LocationWidget(),
+              //   CompactLocationWidget(),
+              //   LocationDisplayWidget(),
+              //     _buildActivityBasedCategories(),
               _buildDivider(),
-         //     _buildAddressBasedCategory(),
+              AddressBasedWidget(),
+              _buildDivider(),
               _buildYourGoals(),
-              // _buildDivider(),
-              // _buildPopularCategories(),
               _buildDivider(),
+            //   _buildPopularCategories(),
+              //      _buildDivider(),
               //  _buildPopularCategories(),
-              _buildYourGoals(),
+              //        _buildYourGoals(),
               //   // _buildDivider(),
               _buildMoreGuides(),
               _buildDivider(),
-          //    _buildSectionTitle('Outdoor upkeep'),
+              //    _buildSectionTitle('Outdoor upkeep'),
               //     _buildPopularCategories(),
               //     _buildDivider(),
               //     _buildSectionTitle('Essential Home Service'),
@@ -128,9 +143,9 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
               // _buildDivider(),
               // _buildSectionTitle('Online tutoring'),
               // _buildPopularCategories(),
-              _buildDivider(),
-              _buildGetInspiration(),
-              _buildDivider(),
+              //   _buildDivider(),
+              //   _buildGetInspiration(),
+              //   _buildDivider(),
               _buildFooter(),
             ],
           ),
@@ -196,18 +211,18 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   // Widget _buildAddressBasedCategory() {
   //   return Consumer<HomeServicesController>(
   //     builder: (context, value, child) {
-  //       if (value.categoryLoading) {
+  //       if (value.isNearbyServicesLoading) {
   //         return CustomShimmer(
   //           layoutType: ShimmerLayoutType.list,
   //           itemCount: 3,
   //         );
   //       }
-  //       if (value.isAddressExists) {
-  //         return _buildHorizontalCategoryList(
-  //           'For Your Home',
-  //           value.homeServices,
-  //         );
-  //       }
+  //       // if (value.isAddressExists) {
+  //       //   return _buildHorizontalCategoryList(
+  //       //     'For Your Home',
+  //       //     value.homeServices,
+  //       //   );
+  //       // }
   //       return Column(
   //         children: [
   //           Text(
@@ -231,15 +246,15 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget _buildYourGoals() {
     return Consumer<HomeServicesController>(
       builder: (context, value, child) {
-        if (value.categoryLoading) {
-          return CustomShimmer(
-            layoutType: ShimmerLayoutType.list,
-            itemCount: 4,
-          );
-        }
-        if (value.categories.isEmpty) {
-          return Icon(Icons.error_outline);
-        }
+        // if (value.isLoading) {
+        //   return CustomShimmer(
+        //     layoutType: ShimmerLayoutType.list,
+        //     itemCount: 4,
+        //   );
+        // }
+        // if (value.homeServices.isEmpty) {
+        //   return Icon(Icons.error_outline);
+        // }
         return Column(
           children: [
             Card(
@@ -256,16 +271,16 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
                     ),
                   ),
                   SectionTitleWidget(title: 'Keep things clean'),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    width: width(context),
-                    height: height(context) / 3.7,
-                    child: ListView.builder(
-                      itemCount: 3,
-                      itemBuilder: (context, index) =>
-                          _buildCardForGoals(value.categories, index),
-                    ),
-                  ),
+                  // Container(
+                  //   padding: const EdgeInsets.all(8),
+                  //   width: width(context),
+                  //   height: height(context) / 3.7,
+                  //   child: ListView.builder(
+                  //     itemCount: 3,
+                  //     itemBuilder: (context, index) =>
+                  //         _buildCardForGoals(value.homeServices, index),
+                  //   ),
+                  // ),
                   Container(
                     padding: const EdgeInsets.all(8),
                     child: Card(
@@ -304,14 +319,14 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget _buildMoreGuides() {
     return Consumer<HomeServicesController>(
       builder: (context, value, child) {
-        if (value.categoryLoading) {
+        if (value.isLoading) {
           return CustomShimmer(
             layoutType: ShimmerLayoutType.grid,
             crossAxisCount: 1,
             itemCount: 2,
           );
         }
-        if (value.categories.isEmpty) {
+        if (value.homeServices.isEmpty) {
           return Icon(Icons.error_outline);
         }
         return Container(
@@ -371,7 +386,7 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
   Widget _buildGetInspiration() {
     return Consumer<HomeServicesController>(
       builder: (context, controller, _) {
-        if (controller.categoryLoading) {
+        if (controller.isNearbyServicesLoading) {
           return const CustomShimmer(
             layoutType: ShimmerLayoutType.horizontalList,
             crossAxisCount: 1,
@@ -379,9 +394,9 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
           );
         }
 
-        if (controller.categories == null) {
+        if (controller.homeServices == null) {
           return InkWell(
-            onTap: () => controller.fetchHomeServices(),
+            onTap: () => controller.fetchPopularHomeServices(),
             child: const Icon(Icons.refresh),
           );
         }
@@ -432,12 +447,12 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
     return Container(margin: const EdgeInsets.all(24), child: Divider());
   }
 
-  Widget _buildCardForGoals(List category, int index) {
+  Widget _buildCardForGoals(List<HomeServicesEntity> services, int index) {
     return Card(
       child: ListTile(
-        leading: Image.network(category[index]['imageUrl'], fit: BoxFit.cover),
+        leading: Image.network(services[index].image_url, fit: BoxFit.cover),
         title: Text(
-          category[index]['name'],
+          services[index].name,
           style: Theme.of(context).textTheme.titleSmall,
         ),
         subtitle: Text(
@@ -466,4 +481,54 @@ class _HomeServicesScreenState extends State<HomeServicesScreen> {
       ),
     );
   }
+}
+
+Widget _buildLocationTitle() {
+  return Consumer<HomeServicesLocationController>(
+    builder: (context, controller, child) {
+      // 1️⃣ Handle loading state
+      if (controller.isLoading) {
+        return const SizedBox(
+          width: 24,
+          height: 24,
+          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+        );
+      }
+
+      // 2️⃣ Handle error state (make sure `error` isn’t null)
+      if ((controller.error ?? '').isNotEmpty) {
+        return const Text(
+          "Allneeda",
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        );
+      }
+
+      // 3️⃣ Handle location found
+      final location = controller.currentLocation;
+      if (location != null && (location.city?.isNotEmpty ?? false)) {
+        return Text(
+          location.city!,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        );
+      }
+
+      // 4️⃣ Fallback if nothing else is available
+      return const Text(
+        "Allneeda",
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 20,
+          color: Colors.white,
+        ),
+      );
+    },
+  );
 }

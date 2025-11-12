@@ -7,7 +7,7 @@ import 'package:yelpax/features/signin/domain/repositories/auth_repository.dart'
 
 class AuthManager with ChangeNotifier {
   final AuthRepository _authRepository;
-  
+
   // Auth state
   bool _isLoading = false;
   bool _isLoggedIn = false;
@@ -23,7 +23,6 @@ class AuthManager with ChangeNotifier {
   bool get isLoggedIn => _isLoggedIn;
   SigninEntity? get currentUser => _currentUser;
   String? get error => _error;
-
   // Initialize auth state
   Future<void> _initialize() async {
     _isLoading = true;
@@ -33,12 +32,14 @@ class AuthManager with ChangeNotifier {
       _isLoggedIn = await _authRepository.isLoggedIn();
       if (_isLoggedIn) {
         final result = await _authRepository.getCurrentUser();
-        result.fold((error) {
-          _error=error.message;
-        }, (user) {
-          _currentUser=user;
-        },);
-      
+        result.fold(
+          (error) {
+            _error = error.message;
+          },
+          (user) {
+            _currentUser = user;
+          },
+        );
       }
     } catch (e) {
       _error = 'Failed to initialize auth state: $e';
@@ -56,7 +57,7 @@ class AuthManager with ChangeNotifier {
 
     try {
       final result = await _authRepository.signIn(email, password);
-      
+
       return result.fold(
         (failure) {
           _error = failure.message;
@@ -88,7 +89,7 @@ class AuthManager with ChangeNotifier {
       _isLoggedIn = false;
       _currentUser = null;
       _error = null;
-      
+
       // Navigate to login screen
       _navigateToLogin();
     } catch (e) {
@@ -105,12 +106,15 @@ class AuthManager with ChangeNotifier {
       _isLoggedIn = await _authRepository.isLoggedIn();
       if (_isLoggedIn) {
         final result = await _authRepository.getCurrentUser();
-          result.fold((error) {
-          _error=error.message;
-        }, (user) {
-          _currentUser=user;
-        },);
-      
+        result.fold(
+          (error) {
+            _error = error.message;
+          },
+          (user) {
+          
+            _currentUser = user;
+          },
+        );
       }
       notifyListeners();
       return _isLoggedIn;
@@ -132,12 +136,15 @@ class AuthManager with ChangeNotifier {
     if (_isLoggedIn) {
       try {
         final result = await _authRepository.getCurrentUser();
-        result.fold((error) {
-          _error=error.message;
-        }, (user) {
-          _currentUser=user;
-        },);
-      
+        result.fold(
+          (error) {
+            _error = error.message;
+          },
+          (user) {
+            _currentUser = user;
+          },
+        );
+
         notifyListeners();
       } catch (e) {
         _error = 'Failed to refresh user data: $e';
@@ -150,21 +157,22 @@ class AuthManager with ChangeNotifier {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (AppConstants.navigateKeyword.currentState != null) {
         AppConstants.navigateKeyword.currentState?.pushNamedAndRemoveUntil(
-          AppRouter.signIn, 
+          AppRouter.signIn,
           (route) => false,
         );
       }
     });
   }
 
-Future<void> handleTokenExpired() async {
-  await _authRepository.signOut();
-  _isLoggedIn = false;
-  _currentUser = null;
-  _error = 'Session expired. Please login again.';
-  notifyListeners();
-  _navigateToLogin();
-}
+  Future<void> handleTokenExpired() async {
+    await _authRepository.signOut();
+    _isLoggedIn = false;
+    _currentUser = null;
+    _error = 'Session expired. Please login again.';
+    notifyListeners();
+    _navigateToLogin();
+  }
+
   // Force logout (e.g., when token is invalid)
   // Future<void> forceLogout() async {
   //   await _authRepository.
@@ -174,4 +182,6 @@ Future<void> handleTokenExpired() async {
   //   notifyListeners();
   //   _navigateToLogin();
   // }
+  // Get current user ID with validation
+
 }

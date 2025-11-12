@@ -26,3 +26,15 @@ class CustomDioException implements Exception{
   final String message;
   CustomDioException(this.message);
 }
+class PermissionException implements Exception{
+  final String message;
+  PermissionException(this.message);
+}
+class LocationException implements Exception{
+  final String message;
+  LocationException(this.message);
+}
+class TimeoutException implements Exception{
+  final String message;
+  TimeoutException(this.message);
+}

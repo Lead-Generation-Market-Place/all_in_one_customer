@@ -28,7 +28,7 @@ class CustomShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
-    final shimmerHeight = height ?? media.size.height / 12;
+    final shimmerHeight = height ?? media.size.height / 10;
     final shimmerWidth = width ?? media.size.width;
     final count = itemCount ?? 12;
 

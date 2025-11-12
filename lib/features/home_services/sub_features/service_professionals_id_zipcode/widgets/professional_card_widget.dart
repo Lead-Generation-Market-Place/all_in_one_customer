@@ -2,13 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/web.dart';
-import 'package:yelpax/core/constants/asset_constants.dart';
 import 'package:yelpax/core/utils/url_helper.dart';
-import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_professional_entity.dart';
-import 'package:yelpax/features/home_services/domain/entities/home_services_promotion_entity.dart';
 import '../../../../../shared/widgets/custom_button.dart';
 import '../../../../../shared/widgets/styled_asterisk_name.dart';
 import '../../../../../core/utils/get_rating_label.dart';
@@ -18,11 +14,13 @@ class ProfessionalCardWidget extends StatelessWidget {
   HomeServicesFetchProfessionalsEntity professional;
   GestureTapCallback onTap;
   VoidCallback onOpenQuotation;
+  VoidCallback onOpenDetails;
   ProfessionalCardWidget({
     super.key,
     required this.professional,
     required this.onTap,
     required this.onOpenQuotation,
+    required this.onOpenDetails
   });
 
   @override
@@ -45,7 +43,8 @@ class ProfessionalCardWidget extends StatelessWidget {
                   professional,
                   textTheme,
                   onTap,
-                  onOpenQuotation
+                  onOpenQuotation,
+                  onOpenDetails
                 ),
               ),
             ],
@@ -76,7 +75,8 @@ Widget _buildProfessionalDetails(
   HomeServicesFetchProfessionalsEntity professional,
   TextTheme textTheme,
   GestureTapCallback onTap,
-  VoidCallback onOpenQuotation
+  VoidCallback onOpenQuotation,
+  VoidCallback onOpenDetails
 ) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +91,7 @@ Widget _buildProfessionalDetails(
       const SizedBox(height: 8),
       _buildLastReview(professional.professional, textTheme, onTap),
       const SizedBox(height: 8),
- _buildDetailsOrQuotation(onOpenQuotation),
+ _buildDetailsOrQuotation(onOpenQuotation,onOpenDetails),
     ],
   );
 }
@@ -187,12 +187,12 @@ Widget _buildLastReview(
   );
 }
 
-Widget _buildDetailsOrQuotation(VoidCallback onOpenQuotation) {
+Widget _buildDetailsOrQuotation(VoidCallback onOpenQuotation,VoidCallback onOpenDetails) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       CustomButton(
-        onPressed: () => print('Details'),
+        onPressed: () => onOpenDetails(),
         text: 'Details',
         icon: Icons.info_outline,
         size: CustomButtonSize.small,

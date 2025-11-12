@@ -1,7 +1,8 @@
 //all endpoints will be rigestered here
 abstract class Endpoints {
   //static const String baseUrl = 'https://servicyee-backend.onrender.com/api/v1';  //real server
-  static const String baseUrl='http://10.0.2.2:4000/api/v1';   //test server
+ // static const String baseUrl='http://10.0.2.2:4000/api/v1';   //test server for android emulator
+  static const String baseUrl="http://172.20.10.7:4000/api/v1";  //real devices api testing
 
   // Auth endpoints
   static const String login = '/auth/login';
@@ -15,7 +16,9 @@ abstract class Endpoints {
   static const String changePassword = '/users/change-password';
 
   // Services endpoints
-  static const String getServices = '/services';
+  static const String getServices = '/services'; //all services
+  static const String getPopularServices = '/popular-services'; //Popular Services
+  static const String nearbyServices='/findpros/zip/{zipCode}'; //nearby services based on zip code
   // static const String getProductDetail = '/products/{id}';
   // static const String createProduct = '/products';
   // static const String updateProduct = '/products/{id}';
@@ -31,8 +34,12 @@ abstract class Endpoints {
 
   //fetching professionals endpoints by service / service and zip code / highest rating.
   static const String findpros='/findpros';
-
-
+  static const String proCompleteDetails='/findpros/details/';
+  
+  //wishlist endpoints
+  static const String wishlists="/wishlists/{userId}";
+  static const String addToWishlist="/wishlists/addwishlist";
+  static const String removeFromWishlist="/wishlists/{wishlistId}";
 
   // Helper method to replace path parameters
   static String replacePathParameters(String path, Map<String, dynamic> params) {

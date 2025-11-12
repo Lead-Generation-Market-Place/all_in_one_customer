@@ -8,6 +8,14 @@ class HomeServicesUsecase {
   HomeServicesUsecase({required this.homeServicesRepository});
 
   Future<Either<Failure, List<HomeServicesEntity>>> call() {
-    return homeServicesRepository.getHomeServices();
+    return homeServicesRepository.fetchPopularHomeServices();
+    
+  }
+   Future<Either<Failure, List<HomeServicesEntity>>> all() {
+    return homeServicesRepository.fetchAllHomeServices();
+    
+  }
+    Future<Either<Failure, List<HomeServicesEntity>>> nearbyHomeServices(String zipCode) async{
+    return  homeServicesRepository.fetchNearbyHomeServices(zipCode);
   }
 }

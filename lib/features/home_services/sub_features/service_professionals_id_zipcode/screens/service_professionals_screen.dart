@@ -26,17 +26,18 @@ class _ServiceProfessionalsScreenState
     extends State<ServiceProfessionalsScreen> {
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider<HomeServicesFindprosController>(
-      create: (context) => getIt<HomeServicesFindprosController>()..wrapper(widget.serviceId,widget.zipCode),
-      child:  _ServiceProfessionalsView(serviceName: widget.serviceName,),
+      create: (context) =>
+          getIt<HomeServicesFindprosController>()
+            ..wrapper(widget.serviceId, widget.zipCode),
+      child: _ServiceProfessionalsView(serviceName: widget.serviceName),
     );
   }
 }
 
 class _ServiceProfessionalsView extends StatelessWidget {
   String serviceName;
-   _ServiceProfessionalsView({required this.serviceName});
+  _ServiceProfessionalsView({required this.serviceName});
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +51,14 @@ class _ServiceProfessionalsView extends StatelessWidget {
         navigationBar: CupertinoNavigationBar(
           middle: Text(
             'Service Professionals',
-            style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        child: SafeArea(child: _buildBody(controller, theme, textTheme, context,serviceName)),
+        child: SafeArea(
+          child: _buildBody(controller, theme, textTheme, context, serviceName),
+        ),
       ),
     );
   }
@@ -63,7 +68,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
     ThemeData theme,
     TextTheme textTheme,
     BuildContext context,
-    String serviceName
+    String serviceName,
   ) {
     if (controller.professionalsLoading) {
       return const Center(child: CustomShimmer());
@@ -75,8 +80,8 @@ class _ServiceProfessionalsView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("No professionals found for", style: textTheme.bodyLarge),
-            Text(serviceName, style: textTheme.titleSmall,),
-            
+            Text(serviceName, style: textTheme.titleSmall),
+
             const SizedBox(height: 16),
             CupertinoButton.filled(
               child: const Text("Back"),
@@ -90,7 +95,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildHeader(controller, textTheme,serviceName),
+        _buildHeader(controller, textTheme, serviceName),
         const SizedBox(height: 8),
         //    ProfessionalFilterWidget(textTheme: textTheme, controller: controller),
         const Divider(),
@@ -103,9 +108,9 @@ class _ServiceProfessionalsView extends StatelessWidget {
   Widget _buildHeader(
     HomeServicesFindprosController controller,
     TextTheme textTheme,
-    String serviceName
+    String serviceName,
   ) {
-    String pros=controller.professionals.length.toString();
+    String pros = controller.professionals.length.toString();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: RichText(
@@ -114,7 +119,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
             TextSpan(text: 'Top ', style: textTheme.bodyMedium),
             TextSpan(text: pros, style: textTheme.titleSmall),
             TextSpan(text: ' matching ', style: textTheme.bodyMedium),
-            TextSpan(text:serviceName, style: textTheme.titleSmall),
+            TextSpan(text: serviceName, style: textTheme.titleSmall),
           ],
         ),
       ),
@@ -139,7 +144,11 @@ class _ServiceProfessionalsView extends StatelessWidget {
             professional: professional,
             onTap: () => print("opening a prfessional"),
             //controller.openCategory(professional, context),
-            onOpenQuotation: () => controller.openQuestionFlow(controller.professionals[index].questions, context),
+            onOpenDetails: () => controller.openProfessionalDetails(context,index),
+            onOpenQuotation: () => controller.openQuestionFlow(
+              controller.professionals[index].questions,
+              context,
+            ),
           );
         },
       ),
