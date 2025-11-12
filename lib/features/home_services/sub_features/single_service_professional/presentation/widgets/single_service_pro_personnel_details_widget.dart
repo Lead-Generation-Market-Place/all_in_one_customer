@@ -50,7 +50,7 @@ class _PersonnelInfoSection extends StatelessWidget {
         children: [
           _buildProfileHeader(context,professionalsEntity),
           const SizedBox(height: 10),
-      //    _buildBadgesSection(professionalsEntity.professional),
+          _buildBadgesSection(professionalsEntity),
           const SizedBox(height: 30),
         //  _buildPricingSection(textTheme),
       //     _buildProjectCard(context),
