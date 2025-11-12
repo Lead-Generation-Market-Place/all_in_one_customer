@@ -19,6 +19,7 @@ class HomeServicesProfessionalModel extends HomeServicesProfessionalEntity {
     required super.ratingAverage,
     super.payment_methods,
     super.portfolio,
+    super.business_hours,
     super.specializations,
     super.createdAt,
     super.updatedAt
@@ -42,6 +43,7 @@ class HomeServicesProfessionalModel extends HomeServicesProfessionalEntity {
       ratingAverage: json["rating_avg"]??0,
       payment_methods: json["payment_methods"]??[],
       portfolio: json["portfolio"]??[],
+      business_hours: json["business_hours"]??[],
       specializations: json["specializations"]??[],
       createdAt: json["createdAt"]??"",
       updatedAt: json["updatedAt"]??""
@@ -65,6 +67,7 @@ class HomeServicesProfessionalModel extends HomeServicesProfessionalEntity {
       ratingAverage: 0,
       payment_methods: [],
       portfolio: [],
+      business_hours: [],
       specializations: [],
       createdAt: '',
       updatedAt: ''

@@ -15,11 +15,12 @@ class HomeServicesProfessionalEntity {
   final int ratingAverage;
   final List? payment_methods;
   final List? portfolio;
+  final List? business_hours;
   final List? specializations;
   final String? createdAt;
   final String? updatedAt;
 
-  HomeServicesProfessionalEntity({
+  HomeServicesProfessionalEntity( {
     required this.id,
     this.user,
     required this.businessName,
@@ -34,6 +35,7 @@ class HomeServicesProfessionalEntity {
     required this.ratingAverage,
     this.payment_methods,
     this.portfolio,
+    this.business_hours,
     this.specializations,
     this.createdAt,
     this.updatedAt

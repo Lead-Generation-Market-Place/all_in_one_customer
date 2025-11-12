@@ -1,872 +1,692 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/web.dart';
 import 'package:yelpax/core/constants/asset_constants.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_professional_entity.dart';
-import '../../../../../../core/constants/height.dart';
-import '../../../../../../core/utils/get_rating_label.dart';
-import '../../../../../../shared/widgets/custom_button.dart';
-import '../../../../../../shared/widgets/styled_asterisk_name.dart';
-import '../../../../domain/entities/home_services_fetch_professionals_entity.dart';
-
+import 'package:yelpax/shared/widgets/custom_button.dart';
 
 class SingleServiceProPersonnelDetailsWidget extends StatelessWidget {
-  HomeServicesProfessionalEntity professionalsEntity;
+  final HomeServicesProfessionalEntity professional;
 
-   SingleServiceProPersonnelDetailsWidget({
-    super.key,
-    required this.professionalsEntity
-  });
+  const SingleServiceProPersonnelDetailsWidget({super.key, required this.professional});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: _PersonnelInfoSection(
-          professionalsEntity: professionalsEntity,
-        ),
-      ),
-    );
-  }
-}
-
-class _PersonnelInfoSection extends StatelessWidget {
-  HomeServicesProfessionalEntity professionalsEntity;
-
-   _PersonnelInfoSection({
-    required this.professionalsEntity
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    TextEditingController _reviewController = TextEditingController();
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildProfileHeader(context,professionalsEntity),
-          const SizedBox(height: 10),
-      //    _buildBadgesSection(professionalsEntity.professional),
-          const SizedBox(height: 30),
-        //  _buildPricingSection(textTheme),
-      //     _buildProjectCard(context),
-           const SizedBox(height: 10),
-      //     _buildAboutProSection(textTheme,professionalsEntity.professional.introduction),
-        //   const SizedBox(height: 20),
-       //    _buildOverviewSection(textTheme),
-        //   const SizedBox(height: 10),
-        //   _buildBusinessHours(textTheme),
-        //   const SizedBox(height: 10),
-        //   _buildPaymentSection(textTheme),
-        //   const SizedBox(height: 10),
-        //   _buildTopStatus(textTheme),
-        //   Divider(),
-        //   _buildServiceOfferedSection(textTheme),
-        //   Divider(),
-        //  // _buildProjectAndMedia(textTheme, proCompleteDetails),
-        //   Divider(height: 50),
-        //   _buildReviewSection(textTheme),
-        //   Divider(height: 50),
-        //   _buildReviews(textTheme, _reviewController),
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      body: CustomScrollView(
+        slivers: [
+          _buildAppBar(context),
+          _buildContent(context),
         ],
       ),
+      bottomNavigationBar: _buildBottomBar(context),
     );
   }
-}
-//   Widget _buildReviews(
-//     TextTheme textTheme,
-//     TextEditingController _reviewController,
-//   ) {
-//     return Column(
-//       children: [
-//         RichText(
-//           text: TextSpan(
-//             children: [
-//               TextSpan(
-//                 text: 'Your trust means everything to us. ',
-//                 style: textTheme.bodySmall,
-//               ),
-//               TextSpan(
-//                 text: 'Learn about our review guidelines.',
-//                 style: textTheme.bodySmall!.copyWith(
-//                   color: Colors.blue,
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//         SizedBox(height: 20),
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             Expanded(
-//               child: CustomInput(
-//                 hint: 'Review',
-//                 icon: Icons.person_outline,
-//                 controller: _reviewController,
-//               ),
-//             ),
-//             SizedBox(width: 10),
-//             DropdownButton(
-//               value: 'Highest rated',
-//               borderRadius: BorderRadius.circular(12),
 
-//               items: [
-//                 DropdownMenuItem(
-//                   value: 'Highest rated',
-//                   child: Text('Highest rated'),
-//                 ),
-//                 DropdownMenuItem(
-//                   value: 'Lowest rated',
-//                   child: Text('Lowest rated'),
-//                 ),
-//                 DropdownMenuItem(
-//                   value: 'Newest first',
-//                   child: Text('Newest first'),
-//                 ),
-//                 DropdownMenuItem(
-//                   value: 'Older first',
-//                   child: Text('Older first'),
-//                 ),
-//               ],
-//               onChanged: (value) => print(value),
-//             ),
-//           ],
-//         ),
-//         SizedBox(height: 20),
-//         Container(
-//           width: double.infinity,
-//           height: 600,
-//           child: ListView.separated(
-//             itemBuilder: (context, index) {
-//               return _singleReview(
-//                 textTheme: textTheme,
-//                 proCompleteDetails:
-//                     proCompleteDetails['reviewsCompleteDetails'][index],
-//               );
-//             },
-//             separatorBuilder: (context, index) => Divider(),
-//             itemCount: 3,
-//           ),
-//         ),
-//         SingleServiceProVideoRatings(),
-//       ],
-//     );
-//   }
-
-//   Widget _buildReviewSection(TextTheme textTheme) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text('Reviews', style: textTheme.titleSmall),
-//         RichText(
-//           text: TextSpan(
-//             children: [
-//               TextSpan(
-//                 text: 'Customers rated pro highly for ',
-//                 style: textTheme.bodySmall,
-//               ),
-//               TextSpan(
-//                 text: 'professionalism, work quality,',
-//                 style: textTheme.bodySmall!.copyWith(
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-
-//               TextSpan(text: ' and ', style: textTheme.bodySmall),
-//               TextSpan(
-//                 text: 'responsiveness.',
-//                 style: textTheme.bodySmall!.copyWith(
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//         Row(
-//           children: [
-//             Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(
-//                   '${getRatingLabel(proCompleteDetails['ratings'] ?? '')} ${proCompleteDetails['ratings'] ?? ''}',
-//                   style: textTheme.titleMedium!.copyWith(color: Colors.green),
-//                 ),
-//                 StarRatingWidget(
-//                   initialRating: proCompleteDetails['ratings'],
-//                   size: 30,
-//                 ),
-//                 Text('${proCompleteDetails['starsCount'] ?? ''} reviews'),
-//               ],
-//             ),
-//             VerticalDivider(),
-//             Column(
-//               children: [
-//                 Container(
-//                   height: 100,
-//                   width: 200,
-//                   child: ListView.builder(
-//                     reverse: true,
-//                     itemCount: 6,
-//                     itemBuilder: (context, index) {
-//                       return StarRatingWidget(initialRating: 2);
-//                     },
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ],
-//     );
-//   }
-
-  Widget _buildProfileHeader(BuildContext context,HomeServicesProfessionalEntity proDetails) {
-    Logger().d(AssetConstants.AssetApi+proDetails.profileImage);
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 50,
-          child: CachedNetworkImage(imageUrl: AssetConstants.AssetApi+proDetails.profileImage),
-       //   backgroundImage: CachedNetworkImage(imageUrl: ,),
-        ),
-        Expanded(
-          child: ListTile(
-            title: 
-             RichText(
-              text: TextSpan(
-                children: StyledAsteriskName(
-                  proDetails.businessName,
-                  Theme.of(context).textTheme.titleLarge,
+  SliverAppBar _buildAppBar(BuildContext context) {
+    return SliverAppBar(
+      expandedHeight: 250,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Stack(
+          fit: StackFit.expand,
+          children: [
+            CachedNetworkImage(
+              imageUrl: AssetConstants.AssetApi + professional.profileImage,
+              fit: BoxFit.cover,
+              errorWidget: (context, url, error) => Container(
+                color: Colors.grey[300],
+                child: const Icon(Icons.person, size: 80, color: Colors.grey),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.7),
+                    Colors.transparent,
+                  ],
                 ),
               ),
             ),
-
-            subtitle: Text(
-              'Typically responds in about constant value for this time',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
+          ],
         ),
-      ],
-    );
-  }
-
-  Widget _buildBadgesSection(HomeServicesProfessionalEntity proDetails) {
-    return Row(
-      children: [
-        _buildBadge('Top Pro'),
-        const SizedBox(width: 20),
-        _buildRatingBadge(proDetails.totalReview,proDetails.ratingAverage),
-      ],
-    );
-  }
-
-  Widget _buildBadge(String text) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.lightBlueAccent.shade100,
-        borderRadius: BorderRadius.circular(12),
       ),
-      child: Text(text),
+    
     );
   }
 
-  Widget _buildRatingBadge(int ratings,int starsCount) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.lightBlueAccent.shade100,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Text(getRatingLabel(ratings.toDouble())),
-          const SizedBox(width: 10),
-          Text(ratings.toString()),
-          const SizedBox(width: 10),
-          Text(starsCount.toString()),
-        ],
+  SliverToBoxAdapter _buildContent(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeaderSection(context),
+            const SizedBox(height: 24),
+            _buildBadgesSection(),
+            const SizedBox(height: 24),
+            _buildAboutSection(),
+            const SizedBox(height: 24),
+            _buildOverviewSection(),
+            const SizedBox(height: 24),
+            _buildSpecializationsSection(),
+            const SizedBox(height: 24),
+            _buildBusinessHoursSection(),
+            const SizedBox(height: 24),
+            _buildPortfolioSection(),
+            const SizedBox(height: 80), // Space for bottom bar
+          ],
+        ),
       ),
     );
   }
 
-  // Widget _buildPricingSection(TextTheme textTheme,HomeServicesProfessionalEntity) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         '${proCompleteDetails['estimatedPrice']}/hour',
-  //         style: textTheme.titleSmall,
-  //       ),
-  //       Text(
-  //         '${proCompleteDetails['response']} minutes minimum',
-  //         style: textTheme.bodySmall,
-  //       ),
-  //       TextButton(
-  //         onPressed: () => print('Tapped View price details'),
-  //         child: Text(
-  //           'View price details',
-  //           style: textTheme.titleSmall!.copyWith(color: Colors.blue),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  Widget _buildProjectCard(BuildContext context) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text('Your Project'),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text('Local Moving (under 50 miles) 3367'),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomButton(
-              text: 'Message pro',
-              icon: Icons.chat_outlined,
-              height: height(context) / 16,
-              enabled: true,
-              onPressed: () {},
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                const Icon(Icons.message_outlined),
-                Text('Responds in about 56}'),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAboutProSection(TextTheme textTheme,String aboutPro) {
+  Widget _buildHeaderSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('About this pro', style: textTheme.titleSmall),
-        ExpandableText(
-          text: aboutPro,
-          textTheme: textTheme,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 40,
+              backgroundColor: Colors.grey[200],
+              backgroundImage: CachedNetworkImageProvider(
+                AssetConstants.AssetApi + professional.profileImage,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    professional.businessName,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[800],
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    professional.businessType,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(Icons.star, color: Colors.amber[600], size: 20),
+                      const SizedBox(width: 4),
+                      Text(
+                        professional.ratingAverage.toString(),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '(${professional.totalReview} reviews)',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        _buildInfoChips(),
+      ],
+    );
+  }
+
+  Widget _buildInfoChips() {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        if (professional.employees != null)
+          _buildChip(
+            Icons.people_outline,
+            '${professional.employees}+ employees',
+          ),
+        if (professional.founded_year != null)
+          _buildChip(
+            Icons.calendar_today_outlined,
+            'Since ${professional.founded_year}',
+          ),
+        _buildChip(
+          Icons.work_outline,
+          '${professional.totalHire} hires',
+        ),
+        _buildChip(
+          Icons.verified_outlined,
+          'Verified Pro',
         ),
       ],
     );
   }
 
-//   Widget _buildOverviewSection(TextTheme textTheme) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text('Overview', style: textTheme.titleSmall),
-//         _OverviewSection(proCompleteDetails: proCompleteDetails),
-//       ],
-//     );
-//   }
+  Widget _buildChip(IconData icon, String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.blue[50],
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.blue[100]!),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: Colors.blue[700]),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: Colors.blue[700],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-//   Widget _buildBusinessHours(TextTheme textTheme) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text('Business hours', style: textTheme.titleSmall),
-//         _BusinessHoursSection(
-//           proCompleteDetails: proCompleteDetails,
-//           textTheme: textTheme,
-//         ),
-//       ],
-//     );
-//   }
-// }
+  Widget _buildBadgesSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildBadgeItem(Icons.verified_user, 'Verified', 'Trusted Pro'),
+          _buildBadgeItem(Icons.thumb_up, 'Top Rated', '${professional.ratingAverage}/5'),
+          _buildBadgeItem(Icons.work_history, 'Experience', '${professional.founded_year != null ? DateTime.now().year - professional.founded_year! : '5'}+ years'),
+        ],
+      ),
+    );
+  }
 
-// Widget _buildPaymentSection(TextTheme textTheme) {
-//   return Column(
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//     children: [
-//       Text('Payment methods', style: textTheme.titleSmall),
-//       Text(
-//         'This pro accepts payments via Apple Pay, Cash Credit card, PayPal, Stripe, Venomo and Zelle',
-//       ),
-//     ],
-//   );
-// }
+  Widget _buildBadgeItem(IconData icon, String title, String subtitle) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.blue[50],
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: Colors.blue[700], size: 24),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          title,
+          style: const TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+        Text(
+          subtitle,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+        ),
+      ],
+    );
+  }
 
-// Widget _buildTopStatus(TextTheme textTheme) {
-//   return Column(
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//     children: [
-//       Text('Top Pro status', style: textTheme.titleSmall),
-//       Text(
-//         'Top Pros are among the highest rated, most popular professionals on Thumbtack',
-//       ),
-//       SizedBox(height: 20),
-//       Container(
-//         height: 200,
-//         width: double.infinity,
-//         child: ListView(
-//           scrollDirection: Axis.horizontal,
+  Widget _buildAboutSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.info_outline, color: Colors.blue[700]),
+              const SizedBox(width: 8),
+              Text(
+                'About Us',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ExpandableText(text: professional.introduction),
+        ],
+      ),
+    );
+  }
 
-//           children: [
-//             Column(
-//               spacing: 10,
-//               children: [
-//                 CircleAvatar(
-//                   radius: 30,
-//                   child: Icon(Icons.star_outline, size: 50),
-//                 ),
-//                 Text('2024'),
-//               ],
-//             ),
-//             SizedBox(width: 20),
-//             Column(
-//               spacing: 10,
-//               children: [
-//                 CircleAvatar(
-//                   radius: 30,
-//                   child: Icon(Icons.star_outline, size: 50),
-//                 ),
-//                 Text('2023'),
-//               ],
-//             ),
-//             SizedBox(width: 20),
-//             Column(
-//               spacing: 10,
-//               children: [
-//                 CircleAvatar(
-//                   radius: 30,
-//                   child: Icon(Icons.star_outline, size: 50),
-//                 ),
-//                 Text('2022'),
-//               ],
-//             ),
-//             SizedBox(width: 20),
-//             Column(
-//               spacing: 10,
-//               children: [
-//                 CircleAvatar(
-//                   radius: 30,
-//                   child: Icon(Icons.star_outline, size: 50),
-//                 ),
-//                 Text('2021'),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//       Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           CustomButton(
-//             text: 'Message',
-//             onPressed: () => print('message'),
-//             icon: Icons.message_outlined,
-//           ),
-//           CustomButton(
-//             text: 'Request a call',
-//             onPressed: () => print('request call'),
-//             icon: Icons.call_outlined,
-//           ),
-//         ],
-//       ),
-//     ],
-//   );
-// }
+  Widget _buildOverviewSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.assessment_outlined, color: Colors.blue[700]),
+              const SizedBox(width: 8),
+              Text(
+                'Overview',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _buildOverviewItem(Icons.work_outline, 'Total Hires', '${professional.totalHire}'),
+          _buildOverviewItem(Icons.reviews_outlined, 'Total Reviews', '${professional.totalReview}'),
+          _buildOverviewItem(Icons.star_outline, 'Rating Average', professional.ratingAverage.toString()),
+          if (professional.employees != null)
+            _buildOverviewItem(Icons.people_outline, 'Team Size', '${professional.employees}+'),
+          if (professional.founded_year != null)
+            _buildOverviewItem(Icons.calendar_today_outlined, 'Years in Business', '${DateTime.now().year - professional.founded_year!}'),
+        ],
+      ),
+    );
+  }
 
-// Widget _buildServiceOfferedSection(TextTheme textTheme) {
-//   return Column(
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//     children: [
-//       Text('Service Offered', style: textTheme.titleSmall),
-//       SizedBox(height: 10),
+  Widget _buildOverviewItem(IconData icon, String title, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: Colors.grey[600]),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(title, style: TextStyle(color: Colors.grey[600])),
+          ),
+          Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
 
-//       SizedBox(height: 10),
-//       _serviceOfferedItem(
-//         title: 'Wall material',
-//         textTheme: textTheme,
-//         isTitle: false,
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Drywall',
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Brick, concerete, or stone',
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Plaster',
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Wood',
-//       ),
-//       _serviceOfferedItem(
-//         title: 'TV larger than 60 inches',
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: false,
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'No',
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Yes',
-//       ),
-//       _serviceOfferedItem(
-//         title: 'Conceal cables/wires?',
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: false,
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Yes',
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'No',
-//       ),
-//       _serviceOfferedItem(
-//         title: 'Type of mount',
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: false,
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Flat',
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Tilt',
-//       ),
+  Widget _buildSpecializationsSection() {
+    if (professional.specializations == null || professional.specializations!.isEmpty) {
+      return const SizedBox();
+    }
 
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Swivel',
-//       ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.build_outlined, color: Colors.blue[700]),
+              const SizedBox(width: 8),
+              Text(
+                'Specializations',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: professional.specializations!.map((spec) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.green[50],
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.green[100]!),
+                ),
+                child: Text(
+                  spec['specialization_tag'] ?? 'Specialization',
+                  style: TextStyle(
+                    color: Colors.green[700],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
 
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Articulating',
-//       ),
-//       _serviceOfferedItem(
-//         title: 'Peripheral devices to connect to the TV',
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: false,
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Cable/satellite box',
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'DVD/ Blue-ray player',
-//       ),
+Widget _buildBusinessHoursSection() {
+  if (professional.business_hours == null || professional.business_hours!.isEmpty) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.access_time_outlined, color: Colors.blue[700]),
+              const SizedBox(width: 8),
+              Text(
+                'Business Hours',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Business hours not available',
+            style: TextStyle(color: Colors.grey[600]),
+          ),
+        ],
+      ),
+    );
+  }
 
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Gaming console',
-//       ),
-//       _serviceOfferedItem(
-//         title: 'Sound system',
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: false,
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.done,
-//         isTitle: true,
-//         itemKey: 'Sound bar',
-//       ),
-//       _serviceOfferedItem(
-//         textTheme: textTheme,
-//         icon: Icons.close,
-//         isTitle: true,
-//         itemKey: "Doesn't offer: Stero sound system, surround sound",
-//       ),
-//     ],
-//   );
-// }
+  // Filter out any invalid business hours data
+  final validBusinessHours = professional.business_hours!.where((hour) {
+    final day = hour['day'];
+    return day != null && day >= 1 && day <= 7;
+  }).toList();
 
-// Widget _buildProjectAndMedia(TextTheme textTheme, Map proDetails) {
-//   List photos = proDetails['photos'];
-//   return Column(
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//     children: [
-//       Text('Project and media', style: textTheme.titleSmall),
-//       Text('${photos.length} photos'),
-//       Container(
-//         width: double.infinity,
-//         height: 200,
-//         child: ListView.separated(
-//           scrollDirection: Axis.horizontal,
-//           itemBuilder: (context, index) {
-//             return _projectAndMediaItem(proDetails: proDetails);
-//           },
-//           separatorBuilder: (context, index) {
-//             return Divider();
-//           },
-//           itemCount: 8,
-//         ),
-//       ),
-//     ],
-//   );
-// }
+  if (validBusinessHours.isEmpty) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.access_time_outlined, color: Colors.blue[700]),
+              const SizedBox(width: 8),
+              Text(
+                'Business Hours',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'No valid business hours available',
+            style: TextStyle(color: Colors.grey[600]),
+          ),
+        ],
+      ),
+    );
+  }
 
-// class _singleReview extends StatelessWidget {
-//   Map proCompleteDetails;
-//   TextTheme textTheme;
-//   _singleReview({
-//     super.key,
-//     required this.proCompleteDetails,
-//     required this.textTheme,
-//   });
+  return Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.1),
+          blurRadius: 10,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(Icons.access_time_outlined, color: Colors.blue[700]),
+            const SizedBox(width: 8),
+            Text(
+              'Business Hours',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[800],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        ...validBusinessHours.map((hour) {
+          final day = hour['day'] ?? 1;
+          final startTime = hour['start_time'] ?? '';
+          final endTime = hour['end_time'] ?? '';
+          final status = hour['status'] ?? 'open';
+          
+          return _buildBusinessHourRow(
+            _getDayName(day),
+            '${_formatTime(startTime)} - ${_formatTime(endTime)}',
+            status == 'open' ? Colors.green : Colors.grey,
+          );
+        }).toList(),
+      ],
+    ),
+  );
+}
+  Widget _buildBusinessHourRow(String day, String time, Color statusColor) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(day, style: const TextStyle(fontWeight: FontWeight.w500)),
+          ),
+          Text(time, style: TextStyle(color: Colors.grey[600])),
+          const SizedBox(width: 8),
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: statusColor,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         ListTile(
-//           leading: CircleAvatar(
-//             backgroundImage: NetworkImage(proCompleteDetails['imageUrl']),
-//             radius: 25,
-//           ),
-//           title: Text(proCompleteDetails['name'], style: textTheme.titleSmall),
-//           subtitle: StarRatingWidget(initialRating: 3),
-//           trailing: Column(
-//             children: [
-//               Text(
-//                 proCompleteDetails['lastOnline'],
-//                 style: textTheme.bodyMedium,
-//               ),
-//               Text('Hired on Yelpax', style: textTheme.bodyMedium),
-//             ],
-//           ),
-//         ),
-//         Text(proCompleteDetails['reviewText'], style: textTheme.bodySmall),
-//       ],
-//     );
-//   }
-// }
+  Widget _buildPortfolioSection() {
+    if (professional.portfolio == null || professional.portfolio!.isEmpty) {
+      return const SizedBox();
+    }
 
-// class _projectAndMediaItem extends StatefulWidget {
-//   Map proDetails;
-//   _projectAndMediaItem({super.key, required this.proDetails});
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.photo_library_outlined, color: Colors.blue[700]),
+              const SizedBox(width: 8),
+              Text(
+                'Portfolio',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 120,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: professional.portfolio!.length,
+              itemBuilder: (context, index) {
+                final item = professional.portfolio![index];
+                return Container(
+                  width: 160,
+                  margin: const EdgeInsets.only(right: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    image: DecorationImage(
+                      image: CachedNetworkImageProvider(item['media_url'] ?? ''),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-//   @override
-//   State<_projectAndMediaItem> createState() => __projectAndMediaItemState();
-// }
+  Widget _buildBottomBar(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: Row(
+          children: [
+            Expanded(
+              child: CustomButton(
+                text: 'Message',
+                icon: Icons.message_outlined,
+                //variant: 'outline',
+                onPressed: () {},
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: CustomButton(
+                text: 'Book Now',
+                icon: Icons.calendar_today,
+                onPressed: () {},
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-// class __projectAndMediaItemState extends State<_projectAndMediaItem> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       height: height(context) / 4,
-//       width: width(context) / 1.8,
-//       decoration: BoxDecoration(
-//         image: DecorationImage(
-//           image: AssetImage('assets/images/splash_1.jpg'),
-//           fit: BoxFit.cover,
-//         ),
-//         borderRadius: BorderRadius.circular(7),
-//       ),
-//     );
-//   }
-// }
+  String _getDayName(int day) {
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    return days[day - 1];
+  }
 
-// class _serviceOfferedItem extends StatelessWidget {
-//   String title;
-//   TextTheme textTheme;
-//   IconData icon;
-//   String itemKey;
-//   bool isTitle;
-//   _serviceOfferedItem({
-//     super.key,
-//     this.title = 'sample',
-//     required this.textTheme,
-//     this.icon = Icons.abc,
-//     this.itemKey = 'sample',
-//     this.isTitle = false,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       spacing: 5,
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         isTitle
-//             ? SizedBox.shrink()
-//             : Text(title, style: textTheme.titleSmall!.copyWith(fontSize: 16)),
-//         isTitle
-//             ? Row(
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 children: [
-//                   Icon(icon, color: Colors.green),
-//                   Text(itemKey, style: textTheme.bodySmall),
-//                 ],
-//               )
-//             : SizedBox.shrink(),
-//       ],
-//     );
-//   }
-// }
-
-// class _BusinessHoursSection extends StatelessWidget {
-//   Map proCompleteDetails;
-//   TextTheme textTheme;
-//   _BusinessHoursSection({
-//     super.key,
-//     required this.proCompleteDetails,
-//     required this.textTheme,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         spacing: 10,
-//         children: [
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [Text('Sun'), Text('8:00 am - 10:00 pm')],
-//           ),
-
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [Text('Mon'), Text('8:00 am - 10:00 pm')],
-//           ),
-
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [Text('Tues'), Text('8:00 am - 10:00 pm')],
-//           ),
-
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [Text('Wed'), Text('8:00 am - 10:00 pm')],
-//           ),
-
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [Text('Thurs'), Text('8:00 am - 10:00 pm')],
-//           ),
-//           SizedBox(height: 10),
-//           Text('Times in Eastern Time Zone', style: textTheme.bodySmall),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class _OverviewSection extends StatelessWidget {
-//   final Map proCompleteDetails;
-
-//   const _OverviewSection({required this.proCompleteDetails});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         _ProInfoRow(
-//           icon: Icons.star_outline,
-//           text: 'Hired ${proCompleteDetails['timesHired']} times',
-//         ),
-//         _ProInfoRow(
-//           icon: Icons.location_on_outlined,
-//           text: proCompleteDetails['location'] ?? "",
-//         ),
-//         _ProInfoRow(
-//           icon: Icons.done,
-//           text: proCompleteDetails['backgroundStatus'] ?? "",
-//         ),
-//         _ProInfoRow(
-//           icon: Icons.person_add_alt_1_outlined,
-//           text: proCompleteDetails['employeesCount'] ?? "",
-//         ),
-//         _ProInfoRow(
-//           icon: Icons.history,
-//           text: proCompleteDetails['timeInBusiness'] ?? "",
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-// class _ProInfoRow extends StatelessWidget {
-//   final IconData icon;
-//   final String text;
-
-//   const _ProInfoRow({required this.icon, required this.text});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(children: [Icon(icon), const SizedBox(width: 10), Text(text)]);
-//   }
-// }
+  String _formatTime(String timeString) {
+    try {
+      final time = DateTime.parse(timeString);
+      return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+    } catch (e) {
+      return timeString;
+    }
+  }
+}
 
 class ExpandableText extends StatefulWidget {
   final String text;
-  final TextTheme textTheme;
 
-  const ExpandableText({
-    super.key,
-    required this.text,
-    required this.textTheme,
-  });
+  const ExpandableText({super.key, required this.text});
 
   @override
   State<ExpandableText> createState() => _ExpandableTextState();
@@ -877,27 +697,27 @@ class _ExpandableTextState extends State<ExpandableText> {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          WidgetSpan(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.text,
+          style: TextStyle(color: Colors.grey[700], height: 1.5),
+          maxLines: isExpanded ? null : 3,
+          overflow: isExpanded ? null : TextOverflow.ellipsis,
+        ),
+        if (widget.text.length > 150)
+          GestureDetector(
+            onTap: () => setState(() => isExpanded = !isExpanded),
             child: Text(
-              widget.text,
-              style: widget.textTheme.bodyMedium,
-              maxLines: isExpanded ? 100 : 3,
-              overflow: TextOverflow.ellipsis,
+              isExpanded ? 'Show less' : 'Show more',
+              style: TextStyle(
+                color: Colors.blue[700],
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-          TextSpan(
-            text: isExpanded ? ' See Less' : ' See More',
-            style: TextStyle(color: Colors.blue),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                setState(() => isExpanded = !isExpanded);
-              },
-          ),
-        ],
-      ),
+      ],
     );
   }
 }
