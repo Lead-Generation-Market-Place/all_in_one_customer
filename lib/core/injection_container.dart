@@ -137,6 +137,7 @@ Future<void> init() async {
   getIt.registerFactory<HomeServicesFindprosController>(
     () => HomeServicesFindprosController(
       usecase: getIt<HomeServicesFindprosUsecase>(),
+      leadUsecase: getIt<HomeServicesLeadUsecase>(),
     ),
   );
 

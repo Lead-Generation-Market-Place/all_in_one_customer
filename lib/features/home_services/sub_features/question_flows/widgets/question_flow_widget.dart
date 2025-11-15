@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/controllers/question_flow_controller.dart';
 import 'package:yelpax/features/home_services/sub_features/question_flows/widgets/question_page.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals_id_zipcode/controllers/home_services_findpros_controller.dart';
 
 import '../../../../../../shared/widgets/custom_button.dart';
 
@@ -14,6 +15,27 @@ class QuestionFlowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _completeFlow() {
+      final answers = Provider.of<QuestionFlowController>(
+        context,
+        listen: false,
+      ).completeFlow();
+
+      final findProsController = Provider.of<HomeServicesFindprosController>(
+        context,
+        listen: false,
+      );
+
+      // Save answers to findProsController
+      findProsController.saveQuestionAnswers(answers);
+
+      // Navigate to lead creation
+      // Navigator.pushNamed(
+      //   context,
+      //   AppRouter.createLeadScreen,
+      // );
+    }
+
     return ChangeNotifierProvider(
       create: (context) => QuestionFlowController(questions: questions),
       child: Consumer<QuestionFlowController>(
@@ -32,10 +54,8 @@ class QuestionFlowWidget extends StatelessWidget {
           //Handle Question Flow completed and send to professional
           if (controller.isQuestionFlowCompleted) {
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-              sendQuotationToProfessionals(
-                context,
-                controller,
-              );
+              sendQuotationToProfessionals(context, controller);
+              _completeFlow();
             });
           }
           // Show the Flow

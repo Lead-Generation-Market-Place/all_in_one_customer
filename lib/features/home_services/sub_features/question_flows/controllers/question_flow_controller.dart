@@ -10,7 +10,7 @@ import 'package:yelpax/features/home_services/domain/entities/home_services_ques
 class QuestionFlowController extends ChangeNotifier {
   final List<HomeServicesQuestionEntity> _questions;
   QuestionFlowController({required List<HomeServicesQuestionEntity> questions})
-      : _questions = questions {
+    : _questions = questions {
     _initializeUserAnswers();
   }
 
@@ -58,7 +58,8 @@ class QuestionFlowController extends ChangeNotifier {
   /// Check if the current question is valid (answered if required)
   bool isCurrentQuestionValid() {
     final currentQuestion = _questions[_currentPageIndex];
-    if (!currentQuestion.requiredField) return true; // Non-required questions are always valid
+    if (!currentQuestion.requiredField)
+      return true; // Non-required questions are always valid
     return isQuestionAnswered(_currentPageIndex);
   }
 
@@ -128,6 +129,34 @@ class QuestionFlowController extends ChangeNotifier {
     );
     _isQuestionFlowCompleted = false;
     SmartDialog.showToast('Quotation Will Send To $option');
+  }
+
+  /// Complete the flow and return answers in the correct format
+  Map<String, dynamic> completeFlow() {
+    final Map<String, dynamic> formattedAnswers = {};
+
+    for (int i = 0; i < _questions.length; i++) {
+      final question = _questions[i];
+      final answer = _userAnswers[i];
+
+      if (answer != null && _isValidAnswer(answer)) {
+        formattedAnswers[question.id] = answer.toString();
+      }
+    }
+
+    _isQuestionFlowCompleted = true;
+    notifyListeners();
+
+    return formattedAnswers;
+
+  }
+
+
+  bool _isValidAnswer(dynamic answer) {
+    if (answer == null) return false;
+    if (answer is String) return answer.trim().isNotEmpty;
+    if (answer is List) return answer.isNotEmpty;
+    return true;
   }
 
   @override

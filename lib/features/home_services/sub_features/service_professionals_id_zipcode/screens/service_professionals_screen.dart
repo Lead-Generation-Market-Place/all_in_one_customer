@@ -342,7 +342,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
                 onOpenDetails: () => controller.openProfessionalDetails(context, index),
                 onOpenQuotation: () => controller.openQuestionFlow(
                   professional.questions,
-                  context,
+                  context, serviceId: '68eaad6c73f142e5115639ed',
                 ),
               );
             },
