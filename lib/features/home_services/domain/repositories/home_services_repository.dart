@@ -1,9 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_lead_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_location_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_professional_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_promotion_entity.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_user_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_wishlist_entity.dart';
 import '../../../../core/error/failures/failure.dart';
 
@@ -20,4 +22,15 @@ abstract class HomeServicesRepository {
   Future<Either<Failure,void>> addToWishlist(String serviceId);
   Future<Either<Failure,void>> removeFromWishlist(String wishlistId);
   Future<Either<Failure,HomeServicesProfessionalEntity>> fetchProfessionalDetails(String proId);
+  Future<Either<Failure, HomeServicesLeadEntity>> createLead({
+    required String serviceId,
+    required Map<String, dynamic> responses,
+    required HomeServicesUserEntity userInfo,
+    required HomeServicesLocationEntity userLocation,
+    required String sendOption,
+    String? professionalId,
+    List<String>? professionalIds,
+    List<String>? filePaths,
+  });
+
 }

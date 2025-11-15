@@ -1,16 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:yelpax/core/injection_container.dart';
 import 'package:yelpax/core/utils/url_helper.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
-import 'package:yelpax/features/home_services/domain/entities/home_services_professional_entity.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals_id_zipcode/controllers/home_services_findpros_controller.dart';
-import '../../../../../shared/widgets/custom_button.dart';
+
 import '../../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../../shared/widgets/styled_asterisk_name.dart';
-import '../../../../../core/utils/get_rating_label.dart';
 import '../../../../../shared/widgets/star_rating_widget.dart';
 
 class ServiceProfessionalsScreen extends StatefulWidget {
@@ -117,7 +115,6 @@ class _ServiceProfessionalsView extends StatelessWidget {
 
     return _buildSuccessState(controller, textTheme);
   }
-
   Widget _buildLoadingState() {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
@@ -137,29 +134,87 @@ class _ServiceProfessionalsView extends StatelessWidget {
               ),
             ],
           ),
-          child: const Row(
-            children: [
-              CustomShimmer(height: 60, width: 60),
-              SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomShimmer(height: 16, width: 120),
-                    SizedBox(height: 8),
-                    CustomShimmer(height: 12, width: 80),
-                    SizedBox(height: 8),
-                    CustomShimmer(height: 12, width: 100),
-                  ],
+          child: Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Avatar shimmer
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    shape: BoxShape.circle,
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(width: 16),
+                // Content shimmer
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 16,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        height: 12,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        height: 12,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Container(
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
     );
   }
-
   Widget _buildErrorState(
     HomeServicesFindprosController controller,
     BuildContext context,
