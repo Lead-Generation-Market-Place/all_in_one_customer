@@ -10,6 +10,7 @@ import 'package:yelpax/features/home_services/data/datasources/home_services_loc
 import 'package:yelpax/features/home_services/data/datasources/home_services_remote_data_source.dart';
 import 'package:yelpax/features/home_services/data/repositories/home_services_repository_impl.dart';
 import 'package:yelpax/features/home_services/domain/repositories/home_services_repository.dart';
+import 'package:yelpax/features/home_services/domain/usecases/home_services_lead_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_wishlist_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_findpros_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_get_current_location_usecase.dart';
@@ -169,5 +170,8 @@ Future<void> init() async {
        homeServicesWishlistUsecase: getIt<HomeServicesWishlistUsecase>(),
     ),
   );
+
+  //home services lead di
+  getIt.registerLazySingleton<HomeServicesLeadUsecase>(() => HomeServicesLeadUsecase(repository: getIt()),);
 
 }

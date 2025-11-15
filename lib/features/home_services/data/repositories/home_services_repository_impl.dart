@@ -7,13 +7,16 @@ import 'package:yelpax/features/home_services/data/datasources/home_services_loc
 import 'package:yelpax/features/home_services/data/models/home_service_promotion_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_CoordinatePoints_model.dart';
 import 'package:yelpax/features/home_services/data/models/home_services_coordinates_model.dart';
+import 'package:yelpax/features/home_services/data/models/home_services_lead_model.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_lead_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_location_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_professional_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_wishlist_entity.dart';
 import '../../../../core/error/exceptions/exceptions.dart';
 import '../../../../core/error/failures/failure.dart';
+import '../../domain/entities/home_services_user_entity.dart';
 import '../datasources/home_services_remote_data_source.dart';
 import '../../domain/repositories/home_services_repository.dart';
 import '../models/home_services_location_model.dart';
@@ -361,8 +364,50 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
     }
   }
 
-  // @override
-  // Future<Either<Failure, HomeServicesLeadEntity>> createLead({required String serviceId, required Map<String, dynamic> responses, required HomeServicesUserEntity userInfo, required HomeServicesLocationEntity userLocation, required String sendOption, String? professionalId, List<String>? professionalIds, List<String>? filePaths}) {
-    
-  // }
+  @override
+  Future<Either<Failure, HomeServicesLeadEntity>> createLead({
+    required String serviceId,
+    required Map<String, dynamic> responses,
+    required HomeServicesUserEntity userInfo,
+    required HomeServicesLocationEntity userLocation,
+    required String sendOption,
+    String? professionalId,
+    List<String>? professionalIds,
+    List<String>? filePaths,
+  }) async {
+    try {
+      final leadData = {
+        'serviceId': serviceId,
+        'responses': responses,
+        'userInfo': {
+          'email': userInfo.email,
+          'phone': userInfo.phone,
+          if (userInfo.description != null) 'description': userInfo.description,
+        },
+        'userLocation': {
+          'latitude': userLocation.coordinates.geoPoints.latitude,
+          'longitude': userLocation..coordinates.geoPoints.longitude,
+          'address': userLocation.addressLine,
+        },
+        'sendOption': sendOption,
+        if (professionalId != null) 'professionalId': professionalId,
+        if (professionalIds != null) 'professionalIds': professionalIds,
+      };
+
+      final response = await remoteDataSource.createLead(leadData);
+
+      if (response['success'] == true) {
+        final leadModel = HomeServicesLeadModel.fromJson(response['lead']);
+        return Right(leadModel);
+      } else {
+        return Left(
+          ServerFailure(response['message'] ?? 'Unknown error'),
+        );
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure('Unexpected error: $e'));
+    }
+  }
 }
