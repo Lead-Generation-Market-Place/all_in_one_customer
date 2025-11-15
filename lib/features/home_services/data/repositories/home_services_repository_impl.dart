@@ -360,4 +360,9 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
       return Left(GenericFailure(e.toString()));
     }
   }
+
+  // @override
+  // Future<Either<Failure, HomeServicesLeadEntity>> createLead({required String serviceId, required Map<String, dynamic> responses, required HomeServicesUserEntity userInfo, required HomeServicesLocationEntity userLocation, required String sendOption, String? professionalId, List<String>? professionalIds, List<String>? filePaths}) {
+    
+  // }
 }

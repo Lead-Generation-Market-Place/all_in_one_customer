@@ -41,6 +41,9 @@ abstract class Endpoints {
   static const String addToWishlist="/wishlists/addwishlist";
   static const String removeFromWishlist="/wishlists/{wishlistId}";
 
+  //lead endpoints
+  static const String createLead="/lead/generate/";
+
   // Helper method to replace path parameters
   static String replacePathParameters(String path, Map<String, dynamic> params) {
     String result = path;

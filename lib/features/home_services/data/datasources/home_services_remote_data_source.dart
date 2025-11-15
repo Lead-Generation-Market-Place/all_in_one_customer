@@ -23,6 +23,7 @@ abstract class HomeServicesRemoteDataSource {
   Future<void> addToWishlist(String serviceId, String userId);
   Future<void> removeFromWishlist(String wishlistId);
   Future<HomeServicesProfessionalModel> fetchProfessionalDetails(String proId);
+  Future<Map<String, dynamic>> createLead(Map<String, dynamic> leadData);
 }
 
 class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
@@ -283,23 +284,22 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
       throw ServerException("Network error while deleting wishlist");
     }
   }
-  
+
   @override
-  Future<HomeServicesProfessionalModel> fetchProfessionalDetails(String proId)async {
-       try {
+  Future<HomeServicesProfessionalModel> fetchProfessionalDetails(
+    String proId,
+  ) async {
+    try {
       final response = await dioClient.get(
-        Endpoints.proCompleteDetails+proId,
-       
+        Endpoints.proCompleteDetails + proId,
       );
       if (response.statusCode == 200) {
         final json = response.data;
 
-        final  proCompleteDetails = json['data'] ?? [];
+        final proCompleteDetails = json['data'] ?? [];
         return HomeServicesProfessionalModel.fromJson(proCompleteDetails);
       } else if (response.statusCode == 404) {
-        throw NotFoundException(
-          "There is no professional with the given ID",
-        );
+        throw NotFoundException("There is no professional with the given ID");
       } else {
         throw ServerException(
           "Failed to get professional: ${response.statusCode}",
@@ -307,6 +307,26 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
       }
     } catch (e) {
       throw ServerException("An error occurred while fetching professional");
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> createLead(Map<String, dynamic> leadData) async {
+    try {
+      final response = await dioClient.post(
+        Endpoints.createLead,
+        data: leadData,
+      );
+      if (response.statusCode == 201) {
+        final json = response.data as Map<String, dynamic>;
+        return json;
+      } else if (response.statusCode == 404) {
+        throw NotFoundException("Lead Not Created");
+      } else {
+        throw ServerException("Faild To Create Lead");
+      }
+    } catch (e) {
+      throw ServerException("An error occurred while creating lead");
     }
   }
 }
