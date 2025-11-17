@@ -44,6 +44,7 @@ class HomeServicesFindprosController extends ChangeNotifier {
     required this.leadUsecase,
   });
 
+
   // ========== PROFESSIONAL METHODS ==========
 
   Future<void> wrapper(String query, String zipCode) async {
@@ -124,7 +125,7 @@ class HomeServicesFindprosController extends ChangeNotifier {
     Navigator.pushNamed(
       context,
       AppRouter.questionFlowScreen,
-      arguments: {'questions': questions, 'serviceId': serviceId},
+      arguments: questions,
     );
   }
 
@@ -151,7 +152,7 @@ class HomeServicesFindprosController extends ChangeNotifier {
   Future<void> createLeadFromQuestionFlow({
     required HomeServicesUserEntity userInfo,
     required HomeServicesLocationEntity userLocation,
-    String sendOption = 'top5',
+    String sendOption = 'selected',
   }) async {
     if (_selectedServiceId == null) {
       _error = 'No service selected';
@@ -197,6 +198,7 @@ class HomeServicesFindprosController extends ChangeNotifier {
         _error = failure.message;
         _professionalsLoading = false;
         notifyListeners();
+        print("Error On Creating Lead 👌😒😒");
       },
       (lead) {
         _leadEntity = lead;

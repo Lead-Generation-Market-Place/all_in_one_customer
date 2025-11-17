@@ -11,7 +11,7 @@ import 'config/routes/router.dart';
 import 'config/themes/theme_provider.dart';
 import 'core/constants/app_constants.dart';
 import 'core/utils/app_restart.dart';
-import 'providers/providers.dart';
+import 'providers/providers.dart';  
 import 'shared/screens/unexpected_error_screen.dart';
 import 'shared/screens/unexpected_release_mode_error.dart';
 import 'generated/app_localizations.dart';

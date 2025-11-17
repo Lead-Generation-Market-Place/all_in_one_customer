@@ -6,8 +6,6 @@ import 'package:yelpax/core/injection_container.dart';
 import 'package:yelpax/core/utils/url_helper.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals_id_zipcode/controllers/home_services_findpros_controller.dart';
-
-import '../../../../../shared/widgets/custom_shimmer.dart';
 import '../../../../../shared/widgets/styled_asterisk_name.dart';
 import '../../../../../shared/widgets/star_rating_widget.dart';
 
@@ -90,7 +88,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () => controller.retry(),
-        child: _buildBody(controller, theme, textTheme, context),
+        child: _buildBody(controller, theme, textTheme, context,serviceId),
       ),
     );
   }
@@ -100,6 +98,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
     ThemeData theme,
     TextTheme textTheme,
     BuildContext context,
+    String serviceId,
   ) {
     if (controller.professionalsLoading) {
       return _buildLoadingState();
@@ -113,7 +112,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
       return _buildEmptyState(context, textTheme);
     }
 
-    return _buildSuccessState(controller, textTheme);
+    return _buildSuccessState(serviceId,controller, textTheme);
   }
   Widget _buildLoadingState() {
     return ListView.builder(
@@ -319,6 +318,7 @@ class _ServiceProfessionalsView extends StatelessWidget {
   }
 
   Widget _buildSuccessState(
+    String serviceId,
     HomeServicesFindprosController controller,
     TextTheme textTheme,
   ) {
@@ -342,7 +342,8 @@ class _ServiceProfessionalsView extends StatelessWidget {
                 onOpenDetails: () => controller.openProfessionalDetails(context, index),
                 onOpenQuotation: () => controller.openQuestionFlow(
                   professional.questions,
-                  context, serviceId: '68eaad6c73f142e5115639ed',
+                  context, serviceId: serviceId,
+                  professionalId: professional.professional.id,
                 ),
               );
             },

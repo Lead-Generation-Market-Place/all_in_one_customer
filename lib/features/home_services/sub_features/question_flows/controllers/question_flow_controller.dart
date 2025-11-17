@@ -2,15 +2,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:provider/provider.dart';
 import 'package:yelpax/config/routes/router.dart';
 import 'package:yelpax/core/constants/app_constants.dart';
+import 'package:yelpax/features/home_services/data/models/home_services_location_model.dart';
 
 import 'package:yelpax/features/home_services/domain/entities/home_services_question_entity.dart';
+import 'package:yelpax/features/home_services/domain/entities/home_services_user_entity.dart';
+import 'package:yelpax/features/home_services/sub_features/service_professionals_id_zipcode/controllers/home_services_findpros_controller.dart';
 
 class QuestionFlowController extends ChangeNotifier {
   final List<HomeServicesQuestionEntity> _questions;
-  QuestionFlowController({required List<HomeServicesQuestionEntity> questions})
-    : _questions = questions {
+  final Function(Map<String, dynamic>)? onFlowCompleted;
+  QuestionFlowController({
+    required List<HomeServicesQuestionEntity> questions,
+    this.onFlowCompleted,
+  }) : _questions = questions {
     _initializeUserAnswers();
   }
 
@@ -116,19 +123,101 @@ class QuestionFlowController extends ChangeNotifier {
     _isQuestionFlowCompleted = true;
     _isLoading = true;
     notifyListeners();
-    // TODO: Here you would call another usecase to submit the final answers.
-    // For example: _usecase.submitAnswers(_userAnswers);
-    // Then handle the result, set _isLoading to false, etc.
+
+    final formattedAnswers = _getFormattedAnswers();
+    onFlowCompleted?.call(formattedAnswers);
+  }
+
+  /// Get answers in the format needed for lead creation
+  Map<String, dynamic> _getFormattedAnswers() {
+    final Map<String, dynamic> formattedAnswers = {};
+
+    for (int i = 0; i < _questions.length; i++) {
+      final question = _questions[i];
+      final answer = _userAnswers[i];
+
+      if (answer != null && _isValidAnswer(answer)) {
+        formattedAnswers[question.id] = answer is List
+            ? answer.join(', ')
+            : answer.toString();
+      }
+    }
+
+    return formattedAnswers;
   }
 
   /// Submit the flow with the selected option
-  void submitFlow(String option) {
-    // A flow where submit to send 5 or one professional and get back
-    AppConstants.navigateKeyword.currentState!.pushNamed(
-      AppRouter.homeServices,
+  void submitFlow(String option, BuildContext context) {
+    final findProsController = Provider.of<HomeServicesFindprosController>(
+      context,
+      listen: false,
     );
+    // Determine send option based on user selection
+    String sendOption;
+    if (option == 'fiveProfessionals') {
+      sendOption = 'top5';
+      print('📤 Sending to top 5 professionals');
+    } else {
+      sendOption = 'selected';
+      print('📤 Sending to selected professional');
+    }
+    // Create the lead
+    _createLead(findProsController, sendOption, context);
     _isQuestionFlowCompleted = false;
-    SmartDialog.showToast('Quotation Will Send To $option');
+    SmartDialog.showToast('Quotation sent to $option!');
+    // // A flow where submit to send 5 or one professional and get back
+    // AppConstants.navigateKeyword.currentState!.pushNamed(
+    //   AppRouter.homeServices,
+    // );
+    // _isQuestionFlowCompleted = false;
+    // SmartDialog.showToast('Quotation Will Send To $option');
+  }
+
+  /// Create lead with the collected data
+  void _createLead(
+    HomeServicesFindprosController findProsController,
+    String sendOption,
+    BuildContext context,
+  ) async {
+    print('🚀 Starting lead creation...');
+    print('🔍 Question Answers: ${findProsController.questionAnswers}');
+    print(
+      '🎯 Selected Professional: ${findProsController.selectedProfessionalId}',
+    );
+    print('🛠️ Service ID: ${findProsController.selectedServiceId}');
+    print('📤 Send Option: $sendOption');
+
+    try {
+      // You need to get actual user data here - this is just an example
+      // await findProsController.createQuickLead(
+      //   userEmail: 'user@example.com', // TODO: Get from user profile/input
+      //   userPhone: '+1234567890',      // TODO: Get from user profile/input
+      //   description: 'Service request completed via question flow',
+      // );
+      
+      await findProsController.createLeadFromQuestionFlow(
+        userInfo: HomeServicesUserEntity(
+          id: "68e54c37ae88e501d382771f",
+          email: "assisstant45@gmail.com",
+          username: "Assisstant",
+        ),
+        sendOption: "selected",
+        userLocation: HomeServicesLocationModel.empty()
+      );
+      
+      print('✅ Lead creation process completed');
+
+      // Navigate after successful lead creation
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppConstants.navigateKeyword.currentState!.pushNamedAndRemoveUntil(
+          AppRouter.homeServices,
+          (route) => false,
+        );
+      });
+    } catch (e) {
+      print('❌ Lead creation failed: $e');
+      SmartDialog.showToast('Failed to create lead: $e');
+    }
   }
 
   /// Complete the flow and return answers in the correct format
@@ -140,17 +229,17 @@ class QuestionFlowController extends ChangeNotifier {
       final answer = _userAnswers[i];
 
       if (answer != null && _isValidAnswer(answer)) {
-        formattedAnswers[question.id] = answer.toString();
+        formattedAnswers[question.id] = answer is List
+            ? answer.join(', ')
+            : answer.toString();
       }
     }
 
-    _isQuestionFlowCompleted = true;
-    notifyListeners();
+    // DON'T set _isQuestionFlowCompleted here to avoid infinite loops
+    print('📝 Flow completed with ${formattedAnswers.length} answers');
 
     return formattedAnswers;
-
   }
-
 
   bool _isValidAnswer(dynamic answer) {
     if (answer == null) return false;
