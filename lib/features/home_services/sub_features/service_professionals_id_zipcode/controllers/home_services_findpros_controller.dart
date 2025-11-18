@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yelpax/features/home_services/domain/entities/home_services_coordinate_points_entity.dart';
-import 'package:yelpax/features/home_services/domain/entities/home_services_coordinates_entity.dart';
+import 'package:yelpax/config/routes/router.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_lead_entity.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_location_entity.dart';
@@ -8,18 +7,21 @@ import 'package:yelpax/features/home_services/domain/entities/home_services_ques
 import 'package:yelpax/features/home_services/domain/entities/home_services_user_entity.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_findpros_usecase.dart';
 import 'package:yelpax/features/home_services/domain/usecases/home_services_lead_usecase.dart';
-import '../../../../../config/routes/router.dart';
+
+import '../../../domain/entities/home_services_coordinate_points_entity.dart';
+import '../../../domain/entities/home_services_coordinates_entity.dart';
 
 class HomeServicesFindprosController extends ChangeNotifier {
-  HomeServicesFindprosUsecase usecase;
-  HomeServicesLeadUsecase leadUsecase;
+  final HomeServicesFindprosUsecase _usecase;
+  final HomeServicesLeadUsecase _leadUsecase;
 
+  // State
   bool _professionalsLoading = false;
   List<HomeServicesFetchProfessionalsEntity> _professionals = [];
   String _error = "";
   HomeServicesLeadEntity? _leadEntity;
 
-  // Question Flow Data
+  // Question Flow State
   Map<String, dynamic> _questionAnswers = {};
   String? _selectedServiceId;
   String? _selectedProfessionalId;
@@ -27,12 +29,9 @@ class HomeServicesFindprosController extends ChangeNotifier {
 
   // Getters
   bool get professionalsLoading => _professionalsLoading;
-  List<HomeServicesFetchProfessionalsEntity> get professionals =>
-      _professionals;
+  List<HomeServicesFetchProfessionalsEntity> get professionals => _professionals;
   String get error => _error;
   HomeServicesLeadEntity? get leadEntity => _leadEntity;
-
-  // Question Flow Getters
   Map<String, dynamic> get questionAnswers => _questionAnswers;
   String? get selectedServiceId => _selectedServiceId;
   String? get selectedProfessionalId => _selectedProfessionalId;
@@ -40,156 +39,198 @@ class HomeServicesFindprosController extends ChangeNotifier {
   bool get hasQuestionAnswers => _questionAnswers.isNotEmpty;
 
   HomeServicesFindprosController({
-    required this.usecase,
-    required this.leadUsecase,
-  });
+    required HomeServicesFindprosUsecase usecase,
+    required HomeServicesLeadUsecase leadUsecase,
+  })  : _usecase = usecase,
+        _leadUsecase = leadUsecase;
 
+  // ========== PUBLIC METHODS ==========
 
-  // ========== PROFESSIONAL METHODS ==========
-
-  Future<void> wrapper(String query, String zipCode) async {
+  /// Main entry point for loading professionals
+  Future<void> loadProfessionals({required String serviceId, String zipCode = ''}) async {
     if (zipCode.isNotEmpty) {
-      await getProfessionalByIdAndZip(query, zipCode);
+      await _getProfessionalsByZipCode(serviceId, zipCode);
     } else {
-      await getProfessionals(query);
+      await _getProfessionalsByService(serviceId);
     }
   }
-
-  Future<void> getProfessionals(String query) async {
-    _professionalsLoading = true;
-    _error = "";
-    _professionals = [];
-    notifyListeners();
-
-    var response = await usecase.call(query);
-    response.fold(
-      (problem) {
-        _error = problem.message;
-        _professionalsLoading = false;
-        notifyListeners();
-      },
-      (success) {
-        _professionals = success;
-        _professionalsLoading = false;
-        notifyListeners();
-      },
-    );
-  }
-
-  Future<void> getProfessionalByIdAndZip(
-    String serviceId,
-    String zipCode,
-  ) async {
-    _professionalsLoading = true;
-    notifyListeners();
-
-    final result = await usecase.callByServiceIdZipCode(serviceId, zipCode);
-    result.fold(
-      (problem) {
-        _error = problem.message;
-        _professionalsLoading = false;
-        notifyListeners();
-      },
-      (success) {
-        _professionals = success;
-        _professionalsLoading = false;
-        notifyListeners();
-      },
-    );
-  }
-
-  Future<void> retry() async {
-    print('Retrying....');
-  }
-
-  // ========== QUESTION FLOW METHODS ==========
-
-  /// Start question flow and store professional selection
-  Future<void> openQuestionFlow(
-    List<HomeServicesQuestionEntity> questions,
-    BuildContext context, {
+List<String> _getTop5ProfessionalIds() {
+  // Example: Get IDs of first 5 professionals, or implement your own sorting logic
+  return _professionals
+      .take(5)
+      .map((pro) => pro.professional.id)
+      .toList();
+}
+  /// Start question flow for a professional
+  Future<void> startQuestionFlow(List<HomeServicesQuestionEntity> questions, {
+    //required List<HomeServicesQuestionEntity> questions,
+    required BuildContext context,
     required String serviceId,
     String? professionalId,
-    List<String>? professionalIds,
   }) async {
-       print('🚀 OPENING QUESTION FLOW');
-    print('📦 Service ID: $serviceId');
-    print('📦 Professional ID: $professionalId');
-    print('📦 Questions count: ${questions.length}');
-    // Store the service and professional selection
-    _selectedServiceId = serviceId;
-    _selectedProfessionalId = professionalId;
-    _selectedProfessionalIds = professionalIds;
-
-    // Clear previous answers
-    _questionAnswers = {};
-   // Verify data is stored
-    print('💾 STORED IN CONTROLLER:');
-    print('💾 _selectedServiceId: $_selectedServiceId');
-    print('💾 _selectedProfessionalId: $_selectedProfessionalId');
-    print('💾 _selectedProfessionalIds: $_selectedProfessionalIds');
-    notifyListeners();
-
-    Navigator.pushNamed(
-      context,
-      AppRouter.questionFlowScreen,
-      arguments: questions,
-    );
+    _logQuestionFlowStart(serviceId, professionalId, questions.length);
+    
+    _storeQuestionFlowData(serviceId, professionalId);
+    Navigator.pushNamed(context, AppRouter.questionFlowScreen, arguments: questions);
   }
 
-  /// Save answers from question flow
+  /// Save answers from completed question flow
   void saveQuestionAnswers(Map<String, dynamic> answers) {
     _questionAnswers = Map<String, dynamic>.from(answers);
     notifyListeners();
-    print('✅ Saved ${_questionAnswers.length} question answers');
+    _logQuestionAnswersSaved(answers.length);
   }
 
-  /// Clear question flow data
+  /// Create lead from collected question flow data
+  Future<void> createLeadFromQuestionFlow({
+    required HomeServicesUserEntity userInfo,
+    required HomeServicesLocationEntity userLocation,
+    String sendOption = 'selected',
+  }) async {
+    if (!_validateLeadCreationData()) return;
+
+    _setLoadingState(true);
+    
+    final params = _buildLeadParams(sendOption, userInfo, userLocation);
+    final result = await _leadUsecase(params);
+
+    result.fold(
+      (failure) => _handleLeadCreationFailure(failure.message),
+      (lead) => _handleLeadCreationSuccess(lead),
+    );
+  }
+
+  /// Quick lead creation with basic user info
+  Future<void> createQuickLead({
+    required String userEmail,
+    required String userPhone,
+    required String description,
+    required String sendOption
+  }) async {
+    _logQuickLeadCreation();
+    
+    if (!_validateLeadCreationData()) return;
+
+    final userInfo = _buildUserInfo(userEmail, userPhone, description);
+    final userLocation = _buildDefaultLocation();
+    
+    await createLeadFromQuestionFlow(
+      userInfo: userInfo,
+      userLocation: userLocation,
+      sendOption: sendOption,
+    );
+  }
+
+  /// Retry loading professionals
+  Future<void> retry() async {
+    if (_selectedServiceId != null) {
+      await loadProfessionals(serviceId: _selectedServiceId!);
+    }
+  }
+
+  /// Navigate to professional details
+  void navigateToProfessionalDetails(BuildContext context, int index) {
+    Navigator.pushNamed(
+      context,
+      AppRouter.singleServiceProfessionalScreen,
+      arguments: _professionals[index].professional.id,
+    );
+  }
+
+  /// Clear question flow data (useful for resetting state)
   void clearQuestionFlowData() {
     _questionAnswers = {};
     _selectedServiceId = null;
     _selectedProfessionalId = null;
     _selectedProfessionalIds = null;
     notifyListeners();
-    print('🧹 Cleared question flow data');
+    _logQuestionFlowCleared();
   }
 
-  // ========== LEAD CREATION METHODS ==========
+  // ========== PRIVATE METHODS ==========
 
-  /// Create lead using question flow answers
-  Future<void> createLeadFromQuestionFlow({
-    required HomeServicesUserEntity userInfo,
-    required HomeServicesLocationEntity userLocation,
-    String sendOption = 'selected',
-  }) async {
+  // Professional Loading
+  Future<void> _getProfessionalsByService(String serviceId) async {
+    _setLoadingState(true, clearError: true, clearProfessionals: true);
+    final response = await _usecase.call(serviceId);
+    response.fold(
+      (problem) => _handleProfessionalsError(problem.message),
+      (success) => _handleProfessionalsSuccess(success),
+    );
+  }
+
+  Future<void> _getProfessionalsByZipCode(String serviceId, String zipCode) async {
+    _setLoadingState(true);
+    
+    final result = await _usecase.callByServiceIdZipCode(serviceId, zipCode);
+    result.fold(
+      (problem) => _handleProfessionalsError(problem.message),
+      (success) => _handleProfessionalsSuccess(success),
+    );
+  }
+
+  // State Management
+  void _setLoadingState(bool loading, {bool clearError = false, bool clearProfessionals = false}) {
+    _professionalsLoading = loading;
+    if (clearError) _error = "";
+    if (clearProfessionals) _professionals = [];
+    notifyListeners();
+  }
+
+  void _handleProfessionalsSuccess(List<HomeServicesFetchProfessionalsEntity> professionals) {
+    _professionals = professionals;
+    _setLoadingState(false);
+  }
+
+  void _handleProfessionalsError(String error) {
+    _error = error;
+    _setLoadingState(false);
+  }
+
+  // Question Flow Management
+  void _storeQuestionFlowData(String serviceId, String? professionalId) {
+    _selectedServiceId = serviceId;
+    _selectedProfessionalId = professionalId;
+    _selectedProfessionalIds = professionalId != null ? [professionalId] : null;
+    _questionAnswers = {};
+    notifyListeners();
+  }
+
+  bool _validateLeadCreationData() {
     if (_selectedServiceId == null) {
       _error = 'No service selected';
       notifyListeners();
-      return;
+      return false;
     }
 
     if (_questionAnswers.isEmpty) {
       _error = 'No question answers available';
       notifyListeners();
-      return;
+      return false;
     }
 
-    _professionalsLoading = true;
-    _error = '';
-    notifyListeners();
+    return true;
+  }
 
-    // Determine which professionals to send to
+  // Lead Creation
+  CreateLeadParams _buildLeadParams(
+    String sendOption,
+    HomeServicesUserEntity userInfo,
+    HomeServicesLocationEntity userLocation,
+  ) {
     List<String>? professionalIds;
     String? professionalId;
 
-    if (sendOption == 'top5' && _selectedProfessionalIds != null) {
-      professionalIds = _selectedProfessionalIds;
-    } else if (sendOption == 'selected' && _selectedProfessionalId != null) {
-      professionalId = _selectedProfessionalId;
-      professionalIds = [_selectedProfessionalId!];
-    }
+    if (sendOption == 'top5') {
+    professionalIds = _getTop5ProfessionalIds();
+    print('📋 Top 5 Professional IDs: $professionalIds');
+  } else if (sendOption == 'selected' && _selectedProfessionalId != null) {
+    professionalId = _selectedProfessionalId;
+    professionalIds = [_selectedProfessionalId!];
+    print('📋 Selected Professional ID: $professionalId');
+  }
 
-    final params = CreateLeadParams(
+    return CreateLeadParams(
       serviceId: _selectedServiceId!,
       responses: _questionAnswers,
       userInfo: userInfo,
@@ -198,66 +239,20 @@ class HomeServicesFindprosController extends ChangeNotifier {
       professionalId: professionalId,
       professionalIds: professionalIds,
     );
-
-    final result = await leadUsecase(params);
-
-    result.fold(
-      (failure) {
-        _error = failure.message;
-        _professionalsLoading = false;
-        notifyListeners();
-        print("Error On Creating Lead 👌😒😒");
-      },
-      (lead) {
-        _leadEntity = lead;
-        _professionalsLoading = false;
-        _error = '';
-
-        // Clear question flow data after successful creation
-        clearQuestionFlowData();
-        notifyListeners();
-
-        print('🎉 Lead created successfully: ${lead.id}');
-      },
-    );
   }
 
-  /// Quick method to create lead with basic user info
-  Future<void> createQuickLead({
-    required String userEmail,
-    required String userPhone,
-    required String description,
-  }) async {
-        print('🚀 CREATE QUICK LEAD CALLED');
-    print('🔍 _selectedServiceId: $_selectedServiceId');
-    print('🔍 _selectedProfessionalId: $_selectedProfessionalId');
-    print('🔍 _selectedProfessionalIds: $_selectedProfessionalIds');
-    print('🔍 _questionAnswers: $_questionAnswers');
-  
-
-    if (_selectedServiceId == null) {
-      print('❌ CANNOT CREATE LEAD: No service ID');
-      _error = 'No service selected';
-      notifyListeners();
-      return;
-    }
-
-    if (_questionAnswers.isEmpty) {
-      print('❌ CANNOT CREATE LEAD: No question answers');
-      _error = 'No question answers available';
-      notifyListeners();
-      return;
-    }
-     print('✅ Proceeding with lead creation...');
-
-   final userInfo = HomeServicesUserEntity(
+  HomeServicesUserEntity _buildUserInfo(String email, String phone, String description) {
+    return HomeServicesUserEntity(
       id: '',
-      email: userEmail,
-      phone: userPhone,
+      email: email,
+      phone: phone,
       description: description,
       username: '',
     );
-     final userLocation = HomeServicesLocationEntity(
+  }
+
+  HomeServicesLocationEntity _buildDefaultLocation() {
+    return HomeServicesLocationEntity(
       addressLine: 'User Address',
       id: '',
       type: '',
@@ -275,60 +270,50 @@ class HomeServicesFindprosController extends ChangeNotifier {
         ),
       ),
     );
-    
-    await createLeadFromQuestionFlow(
-      userInfo: userInfo,
-      userLocation: userLocation,
-      sendOption: _selectedProfessionalId != null ? 'selected' : 'top5',
-    );
   }
 
-  // ========== NAVIGATION METHODS ==========
-
-  Future<void> openCategory(Map categoryDetails, BuildContext context) async {
-    print(categoryDetails);
-    Navigator.pushNamed(
-      context,
-      AppRouter.singleServiceProfessionalScreen,
-      arguments: categoryDetails,
-    );
+  void _handleLeadCreationFailure(String error) {
+    _error = error;
+    _setLoadingState(false);
+    _logLeadCreationError(error);
   }
 
-  Future<void> openProfessionalDetails(BuildContext context, int index) async {
-    Navigator.pushNamed(
-      context,
-      AppRouter.singleServiceProfessionalScreen,
-      arguments: _professionals[index].professional.id,
-    );
+  void _handleLeadCreationSuccess(HomeServicesLeadEntity lead) {
+    _leadEntity = lead;
+    _setLoadingState(false);
+    clearQuestionFlowData();
+    _logLeadCreationSuccess(lead.id);
   }
 
-  /// Navigate to lead creation screen with collected data
-  Future<void> navigateToLeadCreation(BuildContext context) async {
-    if (_selectedServiceId == null || _questionAnswers.isEmpty) {
-      _error = 'Please complete the question flow first';
-      notifyListeners();
-      return;
-    }
-
-    // Navigator.pushNamed(
-    //   context,
-    //   AppRouter.createLeadScreen,
-    //   arguments: {
-    //     'serviceId': _selectedServiceId,
-    //     'answers': _questionAnswers,
-    //     'professionalId': _selectedProfessionalId,
-    //     'professionalIds': _selectedProfessionalIds,
-    //   },
-    // );
+  // Logging
+  void _logQuestionFlowStart(String serviceId, String? professionalId, int questionCount) {
+    print('🚀 OPENING QUESTION FLOW');
+    print('📦 Service ID: $serviceId');
+    print('📦 Professional ID: $professionalId');
+    print('📦 Questions count: $questionCount');
   }
 
-  @override
-  void dispose() {
-    _professionals = [];
-    _questionAnswers = {};
-    _selectedServiceId = null;
-    _selectedProfessionalId = null;
-    _selectedProfessionalIds = null;
-    super.dispose();
+  void _logQuestionAnswersSaved(int answerCount) {
+    print('✅ Saved $answerCount question answers');
+  }
+
+  void _logQuestionFlowCleared() {
+    print('🧹 Cleared question flow data');
+  }
+
+  void _logQuickLeadCreation() {
+    print('🚀 CREATE QUICK LEAD CALLED');
+    print('🔍 _selectedServiceId: $_selectedServiceId');
+    print('🔍 _selectedProfessionalId: $_selectedProfessionalId');
+    print('🔍 _selectedProfessionalIds: $_selectedProfessionalIds');
+    print('🔍 _questionAnswers: $_questionAnswers');
+  }
+
+  void _logLeadCreationError(String error) {
+    print('❌ Lead creation failed: $error');
+  }
+
+  void _logLeadCreationSuccess(String leadId) {
+    print('🎉 Lead created successfully: $leadId');
   }
 }

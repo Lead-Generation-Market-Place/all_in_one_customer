@@ -1,18 +1,22 @@
-// core/utils/url_helper.dart
-class UrlHelper {
-  static String fixImageUrl(String url) {
-    if (url.contains('localhost') || url.contains('127.0.0.1')) {
-      // Replace localhost with your actual domain
-      return url.replaceAll(
-        'http://localhost:4000',
-        'https://servicyee-backend.onrender.com',
-      );
-    }
-    return url;
-  }
+import 'package:yelpax/core/network/endpoints.dart';
 
-  static String? fixImageUrlNullable(String? url) {
-    if (url == null) return null;
-    return fixImageUrl(url);
+class UrlHelper {
+  static String fixImageUrl(String imageUrl) {
+    if (imageUrl.isEmpty) return '';
+    
+    // If it's already a full URL, return as is
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+    
+    // If it's a relative path, prepend the base URL
+    if (imageUrl.startsWith('uploads/') || imageUrl.startsWith('/uploads/')) {
+      // Remove leading slash if present
+      final cleanPath = imageUrl.startsWith('/') ? imageUrl.substring(1) : imageUrl;
+      return '${Endpoints.baseUrl}/$cleanPath';
+    }
+    
+    // For any other relative paths
+    return '${Endpoints.baseUrl}/$imageUrl';
   }
 }

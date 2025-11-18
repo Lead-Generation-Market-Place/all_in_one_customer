@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:yelpax/core/injection_container.dart';
 import 'package:yelpax/core/utils/url_helper.dart';
 import 'package:yelpax/features/home_services/domain/entities/home_services_fetch_professionals_entity.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals_id_zipcode/controllers/home_services_findpros_controller.dart';
@@ -29,17 +28,30 @@ class ServiceProfessionalsScreen extends StatefulWidget {
 class _ServiceProfessionalsScreenState
     extends State<ServiceProfessionalsScreen> {
 
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final controller=Provider.of<HomeServicesFindprosController>(context,listen: false);
+      print("(●'◡'●) Initializing Professional s");
+      controller.loadProfessionals(serviceId:  widget.serviceId,zipCode:  widget.zipCode);
+    },);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<HomeServicesFindprosController>(
-      create: (context) => getIt<HomeServicesFindprosController>()
-        ..wrapper(widget.serviceId, widget.zipCode),
-      child: _ServiceProfessionalsView(
-        serviceName: widget.serviceName,
-        serviceId: widget.serviceId,
-      ),
+    return Scaffold(
+      body: _ServiceProfessionalsView(serviceName: widget.serviceName, serviceId: widget.serviceId),
     );
+    // ChangeNotifierProvider<HomeServicesFindprosController>(
+    //   create: (context) => getIt<HomeServicesFindprosController>()
+    //     ..wrapper(widget.serviceId, widget.zipCode),
+    //   child: _ServiceProfessionalsView(
+    //     serviceName: widget.serviceName,
+    //     serviceId: widget.serviceId,
+    //   ),
+    // );
   }
 }
 
@@ -341,10 +353,10 @@ class _ServiceProfessionalsView extends StatelessWidget {
               return ProfessionalCard(
                 professional: professional,
                 onTap: () => _openProfessionalProfile(context, professional),
-                onOpenDetails: () => controller.openProfessionalDetails(context, index),
-                onOpenQuotation: () => controller.openQuestionFlow(
-                  professional.questions,
-                  context, serviceId: serviceId,
+                onOpenDetails: () => controller.navigateToProfessionalDetails(context, index),
+                onOpenQuotation: () => controller.startQuestionFlow(
+                 professional.questions,
+                 context: context, serviceId: serviceId,
                   professionalId: professional.professional.id,
                 ),
               );

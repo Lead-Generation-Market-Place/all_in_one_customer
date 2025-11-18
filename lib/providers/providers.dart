@@ -16,6 +16,7 @@ import '../config/localization/locale_provider.dart';
 import '../config/themes/theme_provider.dart';
 
 List<SingleChildWidget> appProviders = [
+  ChangeNotifierProvider(create: (_) => getIt<HomeServicesFindprosController>(),),
   ChangeNotifierProvider(create: (_) => ThemeProvider()),
   ChangeNotifierProvider(create: (_) => LocaleProvider()),
  // ChangeNotifierProvider(create: (_) => createSignInController()),
@@ -25,7 +26,6 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider(create: (_) => HomePageController(),),
   ChangeNotifierProvider(create: (_) => getIt<HomeServicesController>()),
   ChangeNotifierProvider(create: (_) => getIt<FetchServicesQueryController>(),),
-  ChangeNotifierProvider(create: (_) => getIt<HomeServicesFindprosController>(),),
   ChangeNotifierProvider(create: (context) => getIt<HomeServicesLocationController>(),),
   ChangeNotifierProvider(create: (context) => getIt<HomeServicesWishlistController>(),),
 ];  

@@ -75,7 +75,7 @@ class _QuestionFlowWidgetState extends State<QuestionFlowWidget> {
               ? const SizedBox.shrink()
               : IconButton(
                   icon: const Icon(Icons.arrow_back),
-                  onPressed: controller.previousPage,
+                  onPressed: controller.goToPreviousQuestion,
                   color: Colors.white,
                 ),
         ),
