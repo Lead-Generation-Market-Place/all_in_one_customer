@@ -15,10 +15,26 @@ class QuestionFlowWidget extends StatefulWidget {
 }
 
 class _QuestionFlowWidgetState extends State<QuestionFlowWidget> {
+
+ late QuestionFlowController _questionController;
+
+  @override
+  void initState() {
+     final findProsController = Provider.of<HomeServicesFindprosController>(
+      context,listen: false
+    );
+  _questionController = QuestionFlowController(
+      questions: widget.questions,
+    );
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => QuestionFlowController(questions: widget.questions),
+    return ChangeNotifierProvider.value(
+      value: _questionController,
+   //   create: (context) => QuestionFlowController(questions: widget.questions),
       child: Consumer<QuestionFlowController>(
         builder: (context, controller, child) {
           // Handle flow completion

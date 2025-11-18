@@ -386,7 +386,7 @@ class HomeServicesRepositoryImpl implements HomeServicesRepository {
         },
         'userLocation': {
           'latitude': userLocation.coordinates.geoPoints.latitude,
-          'longitude': userLocation..coordinates.geoPoints.longitude,
+          'longitude': userLocation.coordinates.geoPoints.longitude,
           'address': userLocation.addressLine,
         },
         'sendOption': sendOption,

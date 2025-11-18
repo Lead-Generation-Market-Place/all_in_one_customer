@@ -5,10 +5,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:yelpax/config/routes/router.dart';
 import 'package:yelpax/core/constants/app_constants.dart';
-import 'package:yelpax/features/home_services/data/models/home_services_location_model.dart';
-
 import 'package:yelpax/features/home_services/domain/entities/home_services_question_entity.dart';
-import 'package:yelpax/features/home_services/domain/entities/home_services_user_entity.dart';
 import 'package:yelpax/features/home_services/sub_features/service_professionals_id_zipcode/controllers/home_services_findpros_controller.dart';
 
 class QuestionFlowController extends ChangeNotifier {
@@ -148,10 +145,18 @@ class QuestionFlowController extends ChangeNotifier {
 
   /// Submit the flow with the selected option
   void submitFlow(String option, BuildContext context) {
+     print('🎯 Submitting flow with option: $option');
+    
     final findProsController = Provider.of<HomeServicesFindprosController>(
       context,
       listen: false,
     );
+        // Debug the controller state
+    print('🔍 CONTROLLER STATE BEFORE LEAD CREATION:');
+    print('🔍 selectedServiceId: ${findProsController.selectedServiceId}');
+    print('🔍 selectedProfessionalId: ${findProsController.selectedProfessionalId}');
+    print('🔍 questionAnswers: ${findProsController.questionAnswers}');
+    
     // Determine send option based on user selection
     String sendOption;
     if (option == 'fiveProfessionals') {
@@ -195,14 +200,10 @@ class QuestionFlowController extends ChangeNotifier {
       //   description: 'Service request completed via question flow',
       // );
       
-      await findProsController.createLeadFromQuestionFlow(
-        userInfo: HomeServicesUserEntity(
-          id: "68e54c37ae88e501d382771f",
-          email: "assisstant45@gmail.com",
-          username: "Assisstant",
-        ),
-        sendOption: "selected",
-        userLocation: HomeServicesLocationModel.empty()
+      await findProsController.createQuickLead(
+      userEmail: "assisstant45@gmail.com",
+       userPhone: '+1234567890',      // Test data
+        description: 'Service request completed via question flow',
       );
       
       print('✅ Lead creation process completed');

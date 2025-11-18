@@ -15,18 +15,23 @@ class HomeServicesLeadModel extends HomeServicesLeadEntity {
     required super.createdAt,
   });
 
-
-    factory HomeServicesLeadModel.fromJson(Map<String, dynamic> json) {
+  factory HomeServicesLeadModel.fromJson(Map<String, dynamic> json) {
     return HomeServicesLeadModel(
       id: json['_id'] ?? '',
       serviceId: json['service_id'] ?? '',
       userId: json['user_id'] ?? '',
       title: json['title'] ?? '',
       note: json['note'] ?? '',
-      answers: (json['answers'] as List? ?? []).map((e) => HomeServicesAnswersModel.fromJson(e)).toList(),
-      files: (json['files'] as List? ?? []).map((e) => HomeServicesLeadFileModel.fromJson(e)).toList(),
+      answers: (json['answers'] as List? ?? [])
+          .map((e) => HomeServicesAnswersModel.fromJson(e))
+          .toList(),
+      files: (json['files'] as List? ?? [])
+          .map((e) => HomeServicesLeadFileModel.fromJson(e))
+          .toList(),
       sendOption: json['send_option'] ?? 'top5',
-      createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toString()),
+      createdAt: DateTime.parse(
+        json['created_at'] ?? json['createdAt'] ?? DateTime.now().toString(),
+      ),
     );
   }
 }

@@ -134,12 +134,12 @@ Future<void> init() async {
       repository: getIt<HomeServicesRepository>(),
     ),
   );
-  getIt.registerFactory<HomeServicesFindprosController>(
-    () => HomeServicesFindprosController(
-      usecase: getIt<HomeServicesFindprosUsecase>(),
-      leadUsecase: getIt<HomeServicesLeadUsecase>(),
-    ),
-  );
+  getIt.registerLazySingleton<HomeServicesFindprosController>(
+  () => HomeServicesFindprosController(
+    usecase: getIt<HomeServicesFindprosUsecase>(),
+    leadUsecase: getIt<HomeServicesLeadUsecase>(),
+  ),
+);
 
   //home services search professional di
   getIt.registerLazySingleton<SearchProfessionalUsecase>(

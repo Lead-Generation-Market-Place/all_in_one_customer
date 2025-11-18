@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:yelpax/core/network/dio_client.dart';
 import 'package:yelpax/core/network/endpoints.dart';
@@ -310,23 +311,35 @@ class HomeServicesRemoteDataSourceImpl implements HomeServicesRemoteDataSource {
     }
   }
 
-  @override
-  Future<Map<String, dynamic>> createLead(Map<String, dynamic> leadData) async {
-    try {
-      final response = await dioClient.post(
-        Endpoints.createLead,
-        data: leadData,
-      );
-      if (response.statusCode == 201) {
-        final json = response.data as Map<String, dynamic>;
-        return json;
-      } else if (response.statusCode == 404) {
-        throw NotFoundException("Lead Not Created");
-      } else {
-        throw ServerException("Faild To Create Lead");
-      }
-    } catch (e) {
-      throw ServerException("An error occurred while creating lead");
+@override
+Future<Map<String, dynamic>> createLead(Map<String, dynamic> leadData) async {
+  try {
+    print('🌐 REMOTE DATA SOURCE: Making API call to ${Endpoints.createLead}');
+    print('🌐 Request data: $leadData');
+
+    final response = await dioClient.post(
+      Endpoints.createLead,
+      data: leadData,
+    );
+    
+    print('✅ REMOTE DATA SOURCE: Response status: ${response.statusCode}');
+    print('✅ Response data: ${response.data}');
+
+    if (response.statusCode == 201) {
+      final json = response.data as Map<String, dynamic>;
+      return json;
+    } else if (response.statusCode == 404) {
+      throw NotFoundException("Lead Not Created");
+    } else {
+      throw ServerException("Failed To Create Lead - Status: ${response.statusCode}");
     }
+  } on DioException catch (e) {
+    print('❌ DIO ERROR: ${e.message}');
+    print('❌ Response: ${e.response?.data}');
+    throw ServerException("Network error: ${e.message}");
+  } catch (e) {
+    print('❌ REMOTE DATA SOURCE CATCH ERROR: $e');
+    throw ServerException("An error occurred while creating lead: $e");
   }
+}
 }

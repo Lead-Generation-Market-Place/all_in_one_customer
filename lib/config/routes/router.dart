@@ -78,12 +78,12 @@ class AppRouter {
           builder: (_) =>
               const UnknowRouteScreen(message: 'Unknown Route Screen'),
         );
-      case questionFlowScreen:
-        final List<HomeServicesQuestionEntity> questions =
-            (settings.arguments as List<HomeServicesQuestionEntity>?) ?? [];
-        return MaterialPageRoute(
-          builder: (_) => QuestionFlowScreen(entities: questions),
-        );
+     case questionFlowScreen:
+  final List<HomeServicesQuestionEntity> questions =
+      (settings.arguments as List<HomeServicesQuestionEntity>?) ?? [];
+  return MaterialPageRoute(
+    builder: (_) => QuestionFlowScreen(entities: questions),
+  );
       case itHomeScreen:
         return MaterialPageRoute(builder: (_) => const ItHomeScreen());
       case settingsScreen:

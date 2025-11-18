@@ -112,6 +112,10 @@ class HomeServicesFindprosController extends ChangeNotifier {
     String? professionalId,
     List<String>? professionalIds,
   }) async {
+       print('🚀 OPENING QUESTION FLOW');
+    print('📦 Service ID: $serviceId');
+    print('📦 Professional ID: $professionalId');
+    print('📦 Questions count: ${questions.length}');
     // Store the service and professional selection
     _selectedServiceId = serviceId;
     _selectedProfessionalId = professionalId;
@@ -119,7 +123,11 @@ class HomeServicesFindprosController extends ChangeNotifier {
 
     // Clear previous answers
     _questionAnswers = {};
-
+   // Verify data is stored
+    print('💾 STORED IN CONTROLLER:');
+    print('💾 _selectedServiceId: $_selectedServiceId');
+    print('💾 _selectedProfessionalId: $_selectedProfessionalId');
+    print('💾 _selectedProfessionalIds: $_selectedProfessionalIds');
     notifyListeners();
 
     Navigator.pushNamed(
@@ -220,15 +228,36 @@ class HomeServicesFindprosController extends ChangeNotifier {
     required String userPhone,
     required String description,
   }) async {
-    final userInfo = HomeServicesUserEntity(
+        print('🚀 CREATE QUICK LEAD CALLED');
+    print('🔍 _selectedServiceId: $_selectedServiceId');
+    print('🔍 _selectedProfessionalId: $_selectedProfessionalId');
+    print('🔍 _selectedProfessionalIds: $_selectedProfessionalIds');
+    print('🔍 _questionAnswers: $_questionAnswers');
+  
+
+    if (_selectedServiceId == null) {
+      print('❌ CANNOT CREATE LEAD: No service ID');
+      _error = 'No service selected';
+      notifyListeners();
+      return;
+    }
+
+    if (_questionAnswers.isEmpty) {
+      print('❌ CANNOT CREATE LEAD: No question answers');
+      _error = 'No question answers available';
+      notifyListeners();
+      return;
+    }
+     print('✅ Proceeding with lead creation...');
+
+   final userInfo = HomeServicesUserEntity(
       id: '',
       email: userEmail,
       phone: userPhone,
       description: description,
       username: '',
     );
-
-    final userLocation = HomeServicesLocationEntity(
+     final userLocation = HomeServicesLocationEntity(
       addressLine: 'User Address',
       id: '',
       type: '',
@@ -244,9 +273,9 @@ class HomeServicesFindprosController extends ChangeNotifier {
           longitude: 0.0,
           latitude: 0.0,
         ),
-      ), // You can get from GPS
+      ),
     );
-
+    
     await createLeadFromQuestionFlow(
       userInfo: userInfo,
       userLocation: userLocation,

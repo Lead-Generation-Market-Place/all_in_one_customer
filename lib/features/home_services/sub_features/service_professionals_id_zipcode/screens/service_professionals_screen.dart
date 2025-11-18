@@ -28,6 +28,8 @@ class ServiceProfessionalsScreen extends StatefulWidget {
 
 class _ServiceProfessionalsScreenState
     extends State<ServiceProfessionalsScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<HomeServicesFindprosController>(
@@ -52,10 +54,10 @@ class _ServiceProfessionalsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<HomeServicesFindprosController>();
+      final controller = Provider.of<HomeServicesFindprosController>(context);
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-
+    
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
